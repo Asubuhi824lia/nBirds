@@ -4,9 +4,45 @@ fieldset {
   flex-direction: column;
 }
 
+body {
+  background-color: cornflowerblue;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+form {
+  width: 400px;
+  background-color: antiquewhite;
+  padding: 25px 30px;
+  border-radius: 3%;
+  gap: 20px;
+}
+
+input,
+textarea {
+  width: 100%;
+}
+
+fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-block: 20px;
+}
+
 /* Выделить в компонент */
 .addition-list-controls {
   display: flex;
   align-items: center;
   gap: 4px;
 }
+
+.addition-list {}
+
+.btn-add {}
+
+.btn-input {}

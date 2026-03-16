@@ -7,75 +7,81 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <!-- TODO: цветовое оформление деталей формы полей — может задать юзер по палитре с картинки -->
-    <form>
-      <div>
-        <label for="photoUrl">Загрузить фото (или ссылку)</label>
-        <div class="addition-list-controls">
-          <input id="photoUrl" placeholder="URL фото" type="url">
-          <button id="photoUrlBtn">+</button>
-        </div>
-        <input type="file">
-        <div class="addition-list"></div>
-      </div>
-
-      <fieldset>
-        <legend>Названия птицы</legend>
+    <main>
+      <!-- TODO: цветовое оформление деталей формы полей — может задать юзер по палитре с картинки -->
+      <form>
         <div>
-          <!-- TODO: +подкрепление источниками, почему именно это -->
-          <!-- TODO: +сортировка по типу дачи названия -->
-          <label for="nameMain">Название (основное)</label>
-          <input id="nameMain">
+          <label for="photoUrl">Загрузить фото (или ссылку)</label>
+          <div class="addition-list-controls">
+            <input id="photoUrl" placeholder="URL фото" type="url"
+              value="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Lophophanes_cristatus_-_01.jpg/500px-Lophophanes_cristatus_-_01.jpg">
+            <button id="photoUrlBtn">+</button>
+          </div>
+          <input type="file">
+          <div class="addition-list"></div>
         </div>
 
-        <div>
-          <!-- TODO: как связать с основным названием? -->
-          <label for="nameAlternative">Альтернативные названия</label>
-          <div class="addition-list-controls">
-            <input id="nameAlternative">
-            <button id="nameAlternativeBtn">+</button>
+        <fieldset>
+          <legend>Названия птицы</legend>
+          <div>
+            <!-- TODO: +подкрепление источниками, почему именно это -->
+            <!-- TODO: +сортировка по типу дачи названия -->
+            <label for="nameMain">Название (основное)</label>
+            <input id="nameMain" value="Хохлатая синица">
           </div>
-          <div class="addition-list"></div>
-        </div>
-        <div>
-          <label for="nameEtymology">Этимология названий</label>
-          <div class="addition-list-controls">
-            <input id="nameEtymology">
-            <button id="nameEtymologyBtn">+</button>
+
+          <div>
+            <!-- TODO: как связать с основным названием? -->
+            <label for="nameAlternative">Альтернативные названия</label>
+            <div class="addition-list-controls">
+              <input id="nameAlternative" value="Гренадерка">
+              <button id="nameAlternativeBtn">+</button>
+            </div>
+            <div class="addition-list"></div>
           </div>
-          <div class="addition-list"></div>
-        </div>
-      </fieldset>
-      <fieldset>
-        <legend>Факты</legend>
-        <!-- TODO: показ не перелистыванием, а перепроявлением opacity -->
-        <div>
-          <label for="interestFacts">Интресные факты</label>
-          <div class="addition-list-controls">
-            <input id="interestFacts">
-            <button id="interestFactsBtn">+</button>
+          <div>
+            <label for="nameEtymology">Этимология названий</label>
+            <div class="addition-list-controls">
+              <textarea rows="5"
+                id="nameEtymology">Своё название — гренадер — получила благодаря хорошо заметному коническому хохолку, похожему на шапки гренадеров — элитных пехотинцев XVII—XVIII веков.</textarea>
+              <button id="nameEtymologyBtn">+</button>
+            </div>
+            <div class="addition-list"></div>
           </div>
-          <div class="addition-list"></div>
-        </div>
-        <!-- TODO: +btn пока-в-таблице -->
-        <div>
-          <label for="statisticFacts">Статистические факты</label>
-          <div class="addition-list-controls">
-            <input id="statisticFacts">
-            <button id="statisticFactsBtn">+</button>
+        </fieldset>
+        <fieldset>
+          <legend>Факты</legend>
+          <!-- TODO: показ не перелистыванием, а перепроявлением opacity -->
+          <div>
+            <label for="interestFacts">Интресные факты</label>
+            <div class="addition-list-controls">
+              <textarea rows="4" id="interestFacts"></textarea>
+              <button id="interestFactsBtn">+</button>
+            </div>
+            <div class="addition-list"></div>
           </div>
-          <div class="addition-list"></div>
-        </div>
-        <div>
-          <label for="similarSpecies">Схожести видов</label>
-          <div class="addition-list-controls">
-            <input id="similarSpecies">
-            <button id="similarSpeciesBtn">+</button>
+          <!-- TODO: +btn пока-в-таблице -->
+          <div>
+            <label for="statisticFacts">Статистические факты</label>
+            <div class="addition-list-controls">
+              <textarea rows="4"
+                id="statisticFacts">В полевых условиях самцы и самки практически не отличимы.</textarea>
+              <button id="statisticFactsBtn">+</button>
+            </div>
+            <div class="addition-list"></div>
           </div>
-          <div class="addition-list"></div>
-        </div>
-      </fieldset>
-      <button>Проверить карточку</button>
-    </form>
+          <div>
+            <label for="similarSpecies">Схожести видов</label>
+            <div class="addition-list-controls">
+              <textarea rows="4"
+                id="similarSpecies">Более других видов синиц склонна к оседлому образу жизни</textarea>
+              <button id="similarSpeciesBtn">+</button>
+            </div>
+            <div class="addition-list"></div>
+          </div>
+        </fieldset>
+        <button>Проверить карточку</button>
+      </form>
+    </main>
   </body>
 </html>
