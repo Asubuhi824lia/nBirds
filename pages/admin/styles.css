@@ -1,0 +1,12 @@
+form,
+fieldset {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Выделить в компонент */
+.addition-list-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

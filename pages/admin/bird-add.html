@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Bird</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <!-- TODO: цветовое оформление деталей формы полей — может задать юзер по палитре с картинки -->
+    <form>
+      <div>
+        <label for="photoUrl">Загрузить фото (или ссылку)</label>
+        <div class="addition-list-controls">
+          <input id="photoUrl" placeholder="URL фото" type="url">
+          <button id="photoUrlBtn">+</button>
+        </div>
+        <input type="file">
+        <div class="addition-list"></div>
+      </div>
+
+      <fieldset>
+        <legend>Названия птицы</legend>
+        <div>
+          <!-- TODO: +подкрепление источниками, почему именно это -->
+          <!-- TODO: +сортировка по типу дачи названия -->
+          <label for="nameMain">Название (основное)</label>
+          <input id="nameMain">
+        </div>
+
+        <div>
+          <!-- TODO: как связать с основным названием? -->
+          <label for="nameAlternative">Альтернативные названия</label>
+          <div class="addition-list-controls">
+            <input id="nameAlternative">
+            <button id="nameAlternativeBtn">+</button>
+          </div>
+          <div class="addition-list"></div>
+        </div>
+        <div>
+          <label for="nameEtymology">Этимология названий</label>
+          <div class="addition-list-controls">
+            <input id="nameEtymology">
+            <button id="nameEtymologyBtn">+</button>
+          </div>
+          <div class="addition-list"></div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Факты</legend>
+        <!-- TODO: показ не перелистыванием, а перепроявлением opacity -->
+        <div>
+          <label for="interestFacts">Интресные факты</label>
+          <div class="addition-list-controls">
+            <input id="interestFacts">
+            <button id="interestFactsBtn">+</button>
+          </div>
+          <div class="addition-list"></div>
+        </div>
+        <!-- TODO: +btn пока-в-таблице -->
+        <div>
+          <label for="statisticFacts">Статистические факты</label>
+          <div class="addition-list-controls">
+            <input id="statisticFacts">
+            <button id="statisticFactsBtn">+</button>
+          </div>
+          <div class="addition-list"></div>
+        </div>
+        <div>
+          <label for="similarSpecies">Схожести видов</label>
+          <div class="addition-list-controls">
+            <input id="similarSpecies">
+            <button id="similarSpeciesBtn">+</button>
+          </div>
+          <div class="addition-list"></div>
+        </div>
+      </fieldset>
+      <button>Проверить карточку</button>
+    </form>
+  </body>
+</html>
