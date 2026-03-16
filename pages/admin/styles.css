@@ -1,5 +1,11 @@
+legend {
+  color: brown;
+  display: inline-table;
+}
+
 form,
-fieldset {
+fieldset,
+.field-block {
   display: flex;
   flex-direction: column;
 }
@@ -16,14 +22,13 @@ main {
 
 form {
   width: 400px;
-  background-color: antiquewhite;
+  background: linear-gradient(bisque, peru);
   padding: 25px 30px;
-  border-radius: 3%;
+  border-radius: 15px;
   gap: 20px;
 }
 
-input,
-textarea {
+form :is(input, textarea) {
   width: 100%;
 }
 
@@ -32,17 +37,58 @@ fieldset {
   flex-direction: column;
   gap: 20px;
   padding-block: 20px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: brown;
+  border-radius: 15px;
+}
+
+input:not([type=file]),
+textarea {
+  box-sizing: border-box;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+}
+
+button {
+  box-sizing: border-box;
 }
 
 /* Выделить в компонент */
 .addition-list-controls {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 4px;
 }
 
-.addition-list {}
+.addition-list-controls button {
+  width: 32px;
+}
 
-.btn-add {}
+.field-block {
+  gap: 10px;
+}
 
-.btn-input {}
+.field-block button {
+  padding: 6px;
+  border-color: none;
+  outline: none;
+}
+
+.form-block {
+  padding: 20px;
+  border-radius: 5%;
+}
+
+button[type=submit] {
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+}
+
+.form-block,
+button[type=submit] {
+  background-color: antiquewhite;
+  border: none;
+}
