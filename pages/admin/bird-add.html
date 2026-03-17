@@ -10,15 +10,22 @@
     <main>
       <!-- TODO: цветовое оформление деталей формы полей — может задать юзер по палитре с картинки -->
       <form>
-        <div class="field-block">
-          <label for="photoUrl">Загрузить фото (или ссылку)</label>
-          <div class="addition-list-controls">
-            <input id="photoUrl" placeholder="URL фото" type="url"
-              value="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Lophophanes_cristatus_-_01.jpg/500px-Lophophanes_cristatus_-_01.jpg">
-            <button id="photoUrlBtn">+</button>
-          </div>
-          <input type="file">
-          <div class="addition-list"></div>
+        <h3
+          style="text-align: center; margin: 8px 0 0; font-weight: 500;">Внесите
+          данные о
+          птице</h3>
+
+        <div class="form-block field-block">
+          <fieldset>
+            <label for="photoUrl">Загрузить фото (или ссылку)</label>
+            <div class="addition-list-controls">
+              <input id="photoUrl" placeholder="URL фото" type="url"
+                value="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Lophophanes_cristatus_-_01.jpg/500px-Lophophanes_cristatus_-_01.jpg">
+              <button id="photoUrlBtn">+</button>
+            </div>
+            <input type="file">
+            <div class="addition-list"></div>
+          </fieldset>
         </div>
 
         <div class="form-block">

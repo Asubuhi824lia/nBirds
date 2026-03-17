@@ -10,6 +10,10 @@ fieldset,
   flex-direction: column;
 }
 
+button {
+  box-sizing: border-box;
+}
+
 body {
   background-color: cornflowerblue;
 }
@@ -22,7 +26,7 @@ main {
 
 form {
   width: 400px;
-  background: linear-gradient(bisque, peru);
+  background-image: linear-gradient(bisque, peru);
   padding: 25px 30px;
   border-radius: 15px;
   gap: 20px;
@@ -51,8 +55,10 @@ textarea {
   border-radius: 6px;
 }
 
-button {
-  box-sizing: border-box;
+input:not([type=file]),
+textarea,
+.addition-list-controls button {
+  border-radius: 6px;
 }
 
 /* Выделить в компонент */
@@ -64,31 +70,39 @@ button {
 
 .addition-list-controls button {
   width: 32px;
+  padding: 6px;
+  background-color: moccasin;
+  border-style: none;
+  color: peru;
+  font-size: 18px;
+}
+
+/* TODO: вертикальное выравнивание с учетом интерлиньяжа текста */
+
+.addition-list-controls button:hover {
+  color: brown;
+  background-color: navajowhite;
+}
+
+.addition-list-controls button:active {
+  background-color: sandybrown;
 }
 
 .field-block {
   gap: 10px;
 }
 
-.field-block button {
-  padding: 6px;
-  border-color: none;
-  outline: none;
-}
-
 .form-block {
   padding: 20px;
   border-radius: 5%;
+  background-color: antiquewhite;
+  border: none;
 }
 
 button[type=submit] {
   height: 36px;
   border: none;
   border-radius: 8px;
-}
-
-.form-block,
-button[type=submit] {
   background-color: antiquewhite;
   border: none;
 }
