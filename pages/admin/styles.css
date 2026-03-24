@@ -12,6 +12,7 @@ fieldset,
 
 button {
   box-sizing: border-box;
+  cursor: pointer;
 }
 
 body {
@@ -34,6 +35,12 @@ form {
 
 form :is(input, textarea) {
   width: 100%;
+}
+
+form h3 {
+  text-align: center;
+  margin: 8px 0 0;
+  font-weight: 500;
 }
 
 fieldset {

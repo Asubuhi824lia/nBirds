@@ -10,10 +10,7 @@
     <main>
       <!-- TODO: цветовое оформление деталей формы полей — может задать юзер по палитре с картинки -->
       <form>
-        <h3
-          style="text-align: center; margin: 8px 0 0; font-weight: 500;">Внесите
-          данные о
-          птице</h3>
+        <h3>Внесите данные о птице</h3>
 
         <div class="form-block field-block">
           <fieldset>
@@ -23,7 +20,7 @@
                 value="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Lophophanes_cristatus_-_01.jpg/500px-Lophophanes_cristatus_-_01.jpg">
               <button id="photoUrlBtn">+</button>
             </div>
-            <input type="file">
+            <input type="file" multiple>
             <div class="addition-list"></div>
           </fieldset>
         </div>
@@ -94,5 +91,9 @@
         <button type="submit">Проверить карточку</button>
       </form>
     </main>
+
+    <script src="./utils/index.js"></script>
+    <script src="./handlers/index.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>
