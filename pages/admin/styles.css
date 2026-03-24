@@ -95,6 +95,19 @@ textarea,
   background-color: sandybrown;
 }
 
+.addition-list-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.addition-list-item menu {
+  display: flex;
+  gap: 4px;
+  height: fit-content;
+  margin: 0;
+  list-style-type: none;
+}
+
 .field-block {
   gap: 10px;
 }

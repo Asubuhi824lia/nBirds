@@ -5,9 +5,6 @@
 // (список данных/карточек/названий)
 // Оптимизация. Манипулирование узлами без перерисовки страницы (reflow)
 
-// TODO: createAttribute() — кнопкам "Удалить" / "Отредактировать" значения поля
-// name="N-action" value="N-delete"("edit")
-
 // TODO: replaceChildren() — заменить текст на текстовое поле редактирования (edit)
 
 // TODO: startViewTransition() — в добавлении данных в форме
@@ -23,6 +20,59 @@
 
 // TODO: new FormData() — передача файла
 
+const listClassNames = {
+  _name: 'addition-list-item',
+  item: {
+    info: 'item-info',
+    menu: 'item-actions'
+  }
+}
+
+
+// START Btn Group 
+const addBtnAttributes = (btn, type) => {
+  const name = document.createAttribute('name');
+  name.value = "action";
+  const value = document.createAttribute('value');
+  value.value = type;
+  btn.setAttributeNode(name);
+  btn.setAttributeNode(value);
+}
+
+const createBtnGroup = () => {
+  const editBtn = document.createElement('button');
+  editBtn.innerText = "edit";
+  addBtnAttributes(editBtn, "edit");
+  const delBtn = document.createElement('button');
+  delBtn.innerText = "delete";
+  addBtnAttributes(delBtn, "delete");
+
+  const editLi = document.createElement('li');
+  editLi.appendChild(editBtn)
+  const delLi = document.createElement('li');
+  delLi.appendChild(delBtn)
+
+  const menu = document.createElement('menu');
+  menu.append(editLi, delLi);
+  return menu;
+}
+// END
+
+const createFormCardNode = function (text, index) {
+  // createTextNode — escape HTML characters (convert into text)
+  const newText = document.createTextNode(text);
+  const info = document.createElement('span');
+  info.appendChild(newText);
+
+  const actions = createBtnGroup();
+
+  const container = document.createElement('div');
+  container.appendChild(info).classList.add(listClassNames.item.info);
+  container.appendChild(actions).classList.add(listClassNames.item.menu);
+  container.classList.add(listClassNames._name);
+  container.setAttribute('key', `${listClassNames._name}-${index}`)
+  return container;
+}
 
 function addListItem(listId) {
   const field = document.getElementById(listId)
@@ -39,17 +89,9 @@ function addListItem(listId) {
 
   if (!text) null;
   else {
-    const div = document.createElement('div');
-    div.classList.add(`addition-list-item`);
-
-    const span = document.createElement('span');
-    // createTextNode — escape HTML characters
-    const newText = document.createTextNode(text);
-    span.appendChild(newText);
-    div.append(span);
-
     const list = document.querySelector(`.field-block:has(#${listId}) .addition-list`);
-    list.append(div);
+    const div = createFormCardNode(text, list.childElementCount);
+    list.prepend(div);
   }
 }
 
