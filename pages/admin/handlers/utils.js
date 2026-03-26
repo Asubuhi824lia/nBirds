@@ -1,0 +1,132 @@
+// TODO: createRange() | importNode() 
+// — отображение группы полей в модалке добавления
+
+// TODO: createDocumentFragment() — в контейнер для множества элементов (фрагмент не виден) 
+// (список данных/карточек/названий)
+// Оптимизация. Манипулирование узлами без перерисовки страницы (reflow)
+
+// TODO: replaceChildren() — удаление элементов после генерации в JSON?
+// TODO: replaceWith() — заменить текст на текстовое поле редактирования (edit)
+
+// TODO: startViewTransition() — в добавлении данных в форме
+
+
+// TODO: createComment() — новая отладка! якорь вставки :0
+
+
+// TODO: URLSearchParams() — поисковые параметны к fetch-допросу до useQuery
+
+// TODO: window.matchMedia — это эффективная альтернатива событию resize
+
+
+// TODO: new FormData() — передача файла
+
+
+// TODO: document.hasFocus() — показывает, находится ли документ или любой элемент внутри него в фокусе
+
+// TODO: document.getAnimations() — получить все анимации, действующие на данный момент
+// 1.остановить анимации, когда юзер ушел со страницы?
+
+// TODO: document.activeElement;
+// при фокусе на поле ввода — addEventListener() на добавление по Enter
+// при потере фокуса — removeEventListener() в .addEventListener('blur',...)
+
+// TODO: .elementsFromPoint(x, y) — Drag-and-Drop 
+
+// TODO: .createNodeIterator() — обработка узлов В ПРОЦЕССЕ итерации
+// Фильтр узлов-имён таксона
+
+// TODO: .adoptNode() — перенос узла для переноса фактов между группами
+
+const listClassNames = {
+  _name: 'addition-list-item',
+  item: {
+    info: 'item-info',
+    menu: 'item-actions'
+  }
+}
+
+
+// Btn Group 
+const addBtnAttributes = (btn, type) => {
+  const name = document.createAttribute('name');
+  name.value = "action";
+  const value = document.createAttribute('value');
+  value.value = type;
+  btn.setAttributeNode(name);
+  btn.setAttributeNode(value);
+}
+
+const createBtnGroup = (container, info, editInfo) => {
+  const editBtn = document.createElement('button');
+  editBtn.innerText = "edit";
+  addBtnAttributes(editBtn, "edit");
+  const saveBtn = document.createElement('button');
+  saveBtn.innerText = "save";
+  addBtnAttributes(saveBtn, "save");
+  const delBtn = document.createElement('button');
+  delBtn.innerText = "delete";
+  addBtnAttributes(delBtn, "delete");
+
+  editBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.target.replaceWith(saveBtn);
+
+    const textNode = document.createTextNode(info.innerText);
+    editInfo.replaceChildren(textNode);
+    info.replaceWith(editInfo);
+  })
+  saveBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.target.replaceWith(editBtn);
+
+    const textNode = document.createTextNode(editInfo.value);
+    info.replaceChildren(textNode);
+    editInfo.replaceWith(info);
+  })
+  delBtn.addEventListener('click', () => container.remove());
+
+  // для семантического стандарта HTML
+  const editLi = document.createElement('li');
+  editLi.appendChild(editBtn)
+  const delLi = document.createElement('li');
+  delLi.appendChild(delBtn)
+
+  const menu = document.createElement('menu');
+  menu.append(editLi, delLi);
+  return menu;
+}
+
+const createFormCardNode = function (text, index) {
+  // createTextNode — escape HTML characters (convert into text)
+  const newText = document.createTextNode(text);
+  const info = document.createElement('span');
+  info.appendChild(newText);
+
+  const editInfo = document.createElement('textarea');
+  editInfo.setAttribute("rows", 5);
+
+  const container = document.createElement('div');
+  const actions = createBtnGroup(container, info, editInfo);
+
+  container.appendChild(info).classList.add(listClassNames.item.info);
+  container.appendChild(actions).classList.add(listClassNames.item.menu);
+  container.classList.add(listClassNames._name);
+  container.setAttribute('key', `${listClassNames._name}-${index}`)
+
+  return container;
+}
+
+// JSON
+function generateListJSON(fieldNames) {
+  const json = new Object();
+
+  fieldNames.forEach((fieldId) => {
+    const list = document.querySelector(`.field-block:has(#${fieldId}) .addition-list`);
+    const answers = Array.from(list.getElementsByTagName('div'))
+
+    json[fieldId] = answers
+  })
+
+  return json;
+}
