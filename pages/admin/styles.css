@@ -68,6 +68,10 @@ textarea,
   border-radius: 6px;
 }
 
+:is(input, textarea):invalid {
+  outline: 2px solid red;
+}
+
 /* Выделить в компонент */
 .addition-list-controls {
   display: flex;

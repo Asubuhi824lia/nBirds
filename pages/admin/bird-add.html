@@ -12,7 +12,7 @@
       <form>
         <h3>Внесите данные о птице</h3>
 
-        <div class="form-block field-block">
+        <div class="form-block field-block" id="blockImages">
           <fieldset>
             <label for="photoUrl">Загрузить фото (или ссылку)</label>
             <div class="addition-list-controls">
@@ -25,14 +25,14 @@
           </fieldset>
         </div>
 
-        <div class="form-block">
+        <div class="form-block" id="blockNames">
           <fieldset>
             <legend>Названия птицы</legend>
             <div class="field-block">
               <!-- TODO: +подкрепление источниками, почему именно это -->
               <!-- TODO: +сортировка по типу дачи названия -->
               <label for="nameMain">Название (основное)</label>
-              <input id="nameMain" value="Хохлатая синица">
+              <input id="nameMain" value="Хохлатая синица" required>
             </div>
 
             <div class="field-block">
@@ -55,7 +55,7 @@
             </div>
           </fieldset>
         </div>
-        <div class="form-block">
+        <div class="form-block" id="blockFacts">
           <fieldset>
             <legend>Факты</legend>
             <!-- TODO: показ не перелистыванием, а перепроявлением opacity -->

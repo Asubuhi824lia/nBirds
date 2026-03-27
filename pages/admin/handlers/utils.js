@@ -5,9 +5,6 @@
 // (список данных/карточек/названий)
 // Оптимизация. Манипулирование узлами без перерисовки страницы (reflow)
 
-// TODO: replaceChildren() — удаление элементов после генерации в JSON?
-// TODO: replaceWith() — заменить текст на текстовое поле редактирования (edit)
-
 // TODO: startViewTransition() — в добавлении данных в форме
 
 
@@ -115,6 +112,34 @@ const createFormCardNode = function (text, index) {
   container.setAttribute('key', `${listClassNames._name}-${index}`)
 
   return container;
+}
+
+const errors = {
+  FIELD_NOT_EMPTY: "Поле заполнено, но значение не добавлено",
+  EDITING: "Завершите редактирование перед отправкой"
+}
+
+// validate
+function validateForm(listIds) {
+  let isValid = true;
+
+  for (const fieldId of listIds) {
+    const field = document.getElementById(fieldId);
+    const text = field.value || field.textContent;
+    if (text.trim().length > 0 && isValid) {
+      field.setCustomValidity(errors.FIELD_NOT_EMPTY);
+
+      // скролл в начало блока поля
+      field.closest(".field-block").scrollIntoView({ behavior: 'instant' });
+      isValid = false;
+      break;
+    }
+    else {
+      // очищаем ошибку предыдущего шага, если была
+      field.setCustomValidity("");
+    }
+  }
+  return isValid;
 }
 
 // JSON
