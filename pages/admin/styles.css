@@ -72,6 +72,12 @@ textarea {
   outline: 2px solid red;
 }
 
+.addition-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
 /* Выделить в компонент */
 .addition-list-controls {
   display: flex;
