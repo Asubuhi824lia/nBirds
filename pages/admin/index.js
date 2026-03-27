@@ -19,6 +19,15 @@ listIds.forEach((fieldId) => {
     e.preventDefault();
     addListItem(fieldId);
   });
+
+  // регулирование валидации
+  const field = document.getElementById(fieldId);
+  field.addEventListener('input', () => {
+    const text = field.value || field.textContent;
+    if (!field.checkValidity() && !text.trim()) {
+      field.setCustomValidity("");
+    }
+  })
 })
 // установить добавление по Enter из поля в фокусе
 document.addEventListener('keydown', (e) => {

@@ -158,8 +158,6 @@ const validateEditingState = function (field) {
       const scrollElem = delLi.closest(".addition-list-item");
       scrollToOffsetElement(scrollElem);
 
-      field.setCustomValidity(errors.EDITING_STATE);
-
       const editField = scrollElem.querySelector("textarea")
       editField.setCustomValidity(errors.EDITING_STATE);
       break;
