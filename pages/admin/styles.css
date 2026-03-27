@@ -54,6 +54,10 @@ fieldset {
   border-radius: 15px;
 }
 
+textarea {
+  resize: vertical;
+}
+
 input:not([type=file]),
 textarea {
   box-sizing: border-box;
