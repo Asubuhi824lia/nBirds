@@ -1,17 +1,11 @@
 function addListItem(listId) {
   const field = document.getElementById(listId)
 
-  let text = "";
-  if (isTagNameInput(field)) {
-    text = field.value;
-    field.value = null;
-  }
-  else if (isTagNameTextarea(field)) {
-    text = field.textContent
-    field.textContent = null
-  }
+  let text = field.textContent || field.value;
+  field.textContent = null;
+  field.value = null;
 
-  if (!text) null;
+  if (!text || !text.trim()) null;
   else {
     const list = document.querySelector(`.field-block:has(#${listId}) .addition-list`);
     const div = createFormCardNode(text, list.childElementCount);

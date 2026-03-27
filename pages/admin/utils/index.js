@@ -2,9 +2,6 @@
 
 // TODO: document.designMode = "on" — делает всю веб-страницу редактируемой
 
-const isTagNameInput = (elem) => String(elem.tagName).toLowerCase() === "INPUT".toLowerCase();
-const isTagNameTextarea = (elem) => String(elem.tagName).toLowerCase() === "TEXTAREA".toLowerCase();
-
 // TODO: document.referrer — сымитировать хлебные крошки
 // возвращает URI страницы, с которой пользователь перешел на текущую страницу.
 
