@@ -70,6 +70,7 @@ const createBtnGroup = (container, info, editInfo) => {
     e.target.replaceWith(saveBtn);
 
     const textNode = document.createTextNode(info.innerText);
+    editInfo.setCustomValidity("");
     editInfo.replaceChildren(textNode);
     info.replaceWith(editInfo);
   })
@@ -116,7 +117,59 @@ const createFormCardNode = function (text, index) {
 
 const errors = {
   FIELD_NOT_EMPTY: "Поле заполнено, но значение не добавлено",
-  EDITING: "Завершите редактирование перед отправкой"
+  EDITING_STATE: "Завершите редактирование перед отправкой"
+}
+
+const validateIncompleteItem = function (field, text) {
+  let isValid = true;
+  if (text.trim().length > 0 && isValid) {
+    const previousNodeName = field.closest('.field-block').previousElementSibling.nodeName;
+    if (previousNodeName != 'DIV') {
+      // в начало блока формы
+      field.closest(".form-block").scrollIntoView();
+    }
+    else {
+      // в начало блока поля
+      field.closest(".field-block").scrollIntoView();
+    }
+
+    field.setCustomValidity(errors.FIELD_NOT_EMPTY);
+    isValid = false;
+  }
+  else {
+    // очищаем ошибку предыдущего шага, если была
+    field.setCustomValidity("");
+  }
+  return isValid;
+}
+
+const validateEditingState = function (field) {
+  let isValid = true;
+
+  const blockField = field.closest(".field-block");
+  const list = blockField.lastElementChild;
+
+  // поиск относительно постоянной кнопки
+  for (const delLi of list.querySelectorAll(`li:has([value="delete"])`)) {
+    const btnValue = delLi.previousElementSibling.firstElementChild;
+    if (btnValue.value === "save") {
+      isValid = false;
+
+      const scrollElem = delLi.closest(".addition-list-item");
+      scrollToOffsetElement(scrollElem);
+
+      field.setCustomValidity(errors.EDITING_STATE);
+
+      const editField = scrollElem.querySelector("textarea")
+      editField.setCustomValidity(errors.EDITING_STATE);
+      break;
+    }
+    else {
+      // очищаем ошибку предыдущего шага, если была
+      field.setCustomValidity("");
+    }
+  }
+  return isValid;
 }
 
 // validate
@@ -126,26 +179,11 @@ function validateForm(listIds) {
   for (const fieldId of listIds) {
     const field = document.getElementById(fieldId);
     const text = field.value || field.textContent;
-    if (text.trim().length > 0 && isValid) {
-      field.setCustomValidity(errors.FIELD_NOT_EMPTY);
 
-      const previousNodeName = field.closest('.field-block').previousElementSibling.nodeName;
-      if (previousNodeName != 'DIV') {
-        // в начало блока формы
-        field.closest(".form-block").scrollIntoView();
-      }
-      else {
-        // в начало блока поля
-        field.closest(".field-block").scrollIntoView();
-      }
-
-      isValid = false;
-      break;
-    }
-    else {
-      // очищаем ошибку предыдущего шага, если была
-      field.setCustomValidity("");
-    }
+    isValid =
+      validateIncompleteItem(field, text)
+      && validateEditingState(field)
+      && isValid; // учет предыдущих проверок
   }
   return isValid;
 }

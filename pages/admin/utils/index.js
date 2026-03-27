@@ -14,6 +14,17 @@
 // TODO: "securitypolicyviolation" — фиксирование нарушений (на сервер)
 
 
+const scrollToOffsetElement = (element, offset = 150) => {
+  const elemPos = element.getBoundingClientRect().top;
+  const offsetPos = elemPos + window.scrollY - offset;
+
+  window.scrollTo({
+    top: offsetPos,
+    behavior: 'smooth'
+  })
+}
+
+
 // ************************************************************
 // TODO: lifecycle
 // "readystatechange" document.readyState === "interactive"

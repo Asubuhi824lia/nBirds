@@ -32,7 +32,7 @@ document.addEventListener('keydown', (e) => {
 
 const submit = document.querySelector("button[type=submit]")
 submit.addEventListener('click', (e) => {
-  // e.preventDefault();
+  e.preventDefault();
   // валидация
   if (validateForm(listIds)) {
     // сгенерировать JSON
