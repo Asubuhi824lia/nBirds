@@ -129,8 +129,16 @@ function validateForm(listIds) {
     if (text.trim().length > 0 && isValid) {
       field.setCustomValidity(errors.FIELD_NOT_EMPTY);
 
-      // скролл в начало блока поля
-      field.closest(".field-block").scrollIntoView({ behavior: 'instant' });
+      const previousNodeName = field.closest('.field-block').previousElementSibling.nodeName;
+      if (previousNodeName != 'DIV') {
+        // в начало блока формы
+        field.closest(".form-block").scrollIntoView();
+      }
+      else {
+        // в начало блока поля
+        field.closest(".field-block").scrollIntoView();
+      }
+
       isValid = false;
       break;
     }
