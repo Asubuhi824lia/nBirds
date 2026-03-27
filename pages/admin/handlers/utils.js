@@ -172,6 +172,11 @@ const validateEditingState = function (field) {
   return isValid;
 }
 
+const validateRequired = function () {
+  const field = document.getElementById("nameMain");
+  return field.checkValidity();
+}
+
 // validate
 function validateForm(listIds) {
   let isValid = true;
@@ -181,7 +186,8 @@ function validateForm(listIds) {
     const text = field.value || field.textContent;
 
     isValid =
-      validateIncompleteItem(field, text)
+      validateRequired()
+      && validateIncompleteItem(field, text)
       && validateEditingState(field)
       && isValid; // учет предыдущих проверок
   }
