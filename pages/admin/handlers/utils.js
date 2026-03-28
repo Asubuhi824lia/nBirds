@@ -209,3 +209,17 @@ function generateListJSON(fieldNames) {
 
   return json;
 }
+
+
+function clearFormFields() {
+  // все основные поля чисты после валидации
+  // очистить специфические поля
+  document.querySelector("#blockImages [type=file]").value = null;
+  document.getElementById("nameMain").value = null;
+  // очистить addition lists
+  Array.from(document.getElementsByClassName("addition-list")).forEach((value) => {
+    if (value.hasChildNodes()) {
+      value.innerHTML = null;
+    }
+  })
+}
