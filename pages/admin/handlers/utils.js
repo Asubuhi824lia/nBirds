@@ -115,12 +115,14 @@ const createFormCardNode = function (text, index) {
   return container;
 }
 
+
+// validate
 const errors = {
-  FIELD_NOT_EMPTY: "Поле заполнено, но значение не добавлено",
+  INCOMPLETE_ITEM: "Поле заполнено, но значение не добавлено",
   EDITING_STATE: "Завершите редактирование перед отправкой"
 }
 
-const validateIncompleteItem = function (field, text) {
+const validIncompleteItem = function (field, text) {
   let isValid = true;
   if (text.trim().length > 0 && isValid) {
     const previousNodeName = field.closest('.field-block').previousElementSibling.nodeName;
@@ -133,7 +135,7 @@ const validateIncompleteItem = function (field, text) {
       field.closest(".field-block").scrollIntoView();
     }
 
-    field.setCustomValidity(errors.FIELD_NOT_EMPTY);
+    field.setCustomValidity(errors.INCOMPLETE_ITEM);
     isValid = false;
   }
   else {
@@ -143,7 +145,7 @@ const validateIncompleteItem = function (field, text) {
   return isValid;
 }
 
-const validateEditingState = function (field) {
+const validEditingState = function (field) {
   let isValid = true;
 
   const blockField = field.closest(".field-block");
@@ -170,12 +172,11 @@ const validateEditingState = function (field) {
   return isValid;
 }
 
-const validateRequired = function () {
+const validBuiltIn = function () {
   const field = document.getElementById("nameMain");
   return field.checkValidity();
 }
 
-// validate
 function validateForm(listIds) {
   let isValid = true;
 
@@ -184,13 +185,14 @@ function validateForm(listIds) {
     const text = field.value || field.textContent;
 
     isValid =
-      validateRequired()
-      && validateIncompleteItem(field, text)
-      && validateEditingState(field)
+      validBuiltIn()
+      && validIncompleteItem(field, text)
+      && validEditingState(field)
       && isValid; // учет предыдущих проверок
   }
   return isValid;
 }
+
 
 // JSON
 function generateListJSON(fieldNames) {

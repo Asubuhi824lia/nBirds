@@ -23,9 +23,16 @@ listIds.forEach((fieldId) => {
   // регулирование валидации
   const field = document.getElementById(fieldId);
   field.addEventListener('input', () => {
+    if (field.checkValidity() === true) return;
+
     const text = field.value || field.textContent;
-    if (!field.checkValidity() && !text.trim()) {
-      field.setCustomValidity("");
+    if (!text.trim()) field.setCustomValidity("");
+  })
+  // показ сообщения ошибки 
+  // при фиксации не ставшего валидным значения
+  field.addEventListener('change', () => {
+    if (!field.checkValidity()) {
+      field.reportValidity();
     }
   })
 })
