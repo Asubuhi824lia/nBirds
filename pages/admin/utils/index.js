@@ -24,6 +24,13 @@ const scrollToOffsetElement = (element, offset = 150) => {
   })
 }
 
+const showIsNotValid = (field) => {
+  if (!field.checkValidity()) {
+    field.reportValidity();
+  }
+}
+const showIsNotValidHandler = (event) => showIsNotValid(event.target);
+
 
 // ************************************************************
 // TODO: lifecycle

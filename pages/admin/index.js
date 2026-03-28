@@ -35,11 +35,7 @@ listIds.forEach((fieldId) => {
   })
   // показ сообщения ошибки 
   // при фиксации не ставшего валидным значения
-  field.addEventListener('change', () => {
-    if (!field.checkValidity()) {
-      field.reportValidity();
-    }
-  })
+  field.addEventListener('blur', () => showIsNotValid(field))
 })
 
 // установить добавление по Enter из поля в фокусе
@@ -56,10 +52,10 @@ const submit = document.querySelector("button[type=submit]")
 submit.addEventListener('click', (e) => {
   // валидация
   if (validateForm(listIds)) {
-    e.preventDefault();
     // сгенерировать JSON
     const json = generateJSON(listIds);
     console.log(json);
+    e.preventDefault();
   }
 })
 

@@ -24,10 +24,6 @@
 // TODO: document.getAnimations() — получить все анимации, действующие на данный момент
 // 1.остановить анимации, когда юзер ушел со страницы?
 
-// TODO: document.activeElement;
-// при фокусе на поле ввода — addEventListener() на добавление по Enter
-// при потере фокуса — removeEventListener() в .addEventListener('blur',...)
-
 // TODO: .elementsFromPoint(x, y) — Drag-and-Drop 
 
 // TODO: .createNodeIterator() — обработка узлов В ПРОЦЕССЕ итерации
@@ -65,12 +61,14 @@ const createBtnGroup = (container, info, editInfo) => {
   delBtn.innerText = "delete";
   addBtnAttributes(delBtn, "delete");
 
+  const handleEvent = "blur";
   editBtn.addEventListener('click', (e) => {
     e.preventDefault();
     e.target.replaceWith(saveBtn);
 
+    editInfo.addEventListener(handleEvent, showIsNotValidHandler);
+
     const textNode = document.createTextNode(info.innerText);
-    editInfo.setCustomValidity("");
     editInfo.replaceChildren(textNode);
     info.replaceWith(editInfo);
   })
@@ -78,11 +76,17 @@ const createBtnGroup = (container, info, editInfo) => {
     e.preventDefault();
     e.target.replaceWith(editBtn);
 
+    editInfo.removeEventListener(handleEvent, showIsNotValidHandler);
+
     const textNode = document.createTextNode(editInfo.value);
+    editInfo.setCustomValidity("");
     info.replaceChildren(textNode);
     editInfo.replaceWith(info);
   })
-  delBtn.addEventListener('click', () => container.remove());
+  delBtn.addEventListener('click', () => {
+    editInfo.removeEventListener(handleEvent, showIsNotValidHandler);
+    container.remove();
+  });
 
   // для семантического стандарта HTML
   const editLi = document.createElement('li');
@@ -157,16 +161,12 @@ const validEditingState = function (field) {
     if (btnValue.value === "save") {
       isValid = false;
 
-      const scrollElem = delLi.closest(".addition-list-item");
-      scrollToOffsetElement(scrollElem);
+      const item = delLi.closest(".addition-list-item");
+      scrollToOffsetElement(item);
 
-      const editField = scrollElem.querySelector("textarea")
+      const editField = item.querySelector("textarea");
       editField.setCustomValidity(errors.EDITING_STATE);
       break;
-    }
-    else {
-      // очищаем ошибку предыдущего шага, если была
-      field.setCustomValidity("");
     }
   }
   return isValid;
@@ -174,6 +174,7 @@ const validEditingState = function (field) {
 
 const validBuiltIn = function () {
   const field = document.getElementById("nameMain");
+  field.addEventListener("blur", showIsNotValidHandler);
   return field.checkValidity();
 }
 
@@ -187,8 +188,9 @@ function validateForm(listIds) {
     isValid =
       validBuiltIn()
       && validIncompleteItem(field, text)
-      && validEditingState(field)
-      && isValid; // учет предыдущих проверок
+      && validEditingState(field);
+
+    if (!isValid) break;
   }
   return isValid;
 }
