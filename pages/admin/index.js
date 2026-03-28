@@ -14,14 +14,19 @@ const listIds = [...inputIds, ...textareaIds];
 
 // установить добавление по кнопке
 listIds.forEach((fieldId) => {
+  const field = document.getElementById(fieldId);
+
   const btn = document.getElementById(`${fieldId}Btn`);
   btn.addEventListener('click', (e) => {
     e.preventDefault();
     addListItem(fieldId);
+
+    if (!field.checkValidity() && field.validationMessage === errors.INCOMPLETE_ITEM) {
+      field.setCustomValidity("");
+    }
   });
 
   // регулирование валидации
-  const field = document.getElementById(fieldId);
   field.addEventListener('input', () => {
     if (field.checkValidity() === true) return;
 
@@ -36,12 +41,13 @@ listIds.forEach((fieldId) => {
     }
   })
 })
+
 // установить добавление по Enter из поля в фокусе
 document.addEventListener('keydown', (e) => {
   if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault(); // Запрещает перенос по Enter
     if (listIds.includes(document.activeElement.id)) {
       addListItem(document.activeElement.id);
+      e.preventDefault(); // Запрещает перенос по Enter
     }
   }
 })
