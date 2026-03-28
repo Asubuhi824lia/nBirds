@@ -14,13 +14,13 @@
 
         <div class="form-block" id="blockImages">
           <fieldset class="field-block">
-            <label for="photoUrl">Загрузить фото (или ссылку)</label>
+            <label for="photoUrls">Загрузить фото (или ссылку)</label>
             <div class="addition-list-controls">
-              <input id="photoUrl" placeholder="URL фото" type="url"
+              <input id="photoUrls" placeholder="URL фото" type="url"
                 value="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Lophophanes_cristatus_-_01.jpg/500px-Lophophanes_cristatus_-_01.jpg">
-              <button id="photoUrlBtn">+</button>
+              <button id="photoUrlsBtn">+</button>
             </div>
-            <input type="file" multiple>
+            <input id="photoFiles" type="file" multiple>
             <div class="addition-list"></div>
           </fieldset>
         </div>
@@ -37,19 +37,19 @@
 
             <div class="field-block">
               <!-- TODO: как связать с основным названием? -->
-              <label for="nameAlternative">Альтернативные названия</label>
+              <label for="nameAlternatives">Альтернативные названия</label>
               <div class="addition-list-controls">
-                <input id="nameAlternative" value="Гренадерка">
-                <button id="nameAlternativeBtn">+</button>
+                <input id="nameAlternatives" value="Гренадерка">
+                <button id="nameAlternativesBtn">+</button>
               </div>
               <div class="addition-list"></div>
             </div>
             <div class="field-block">
-              <label for="nameEtymology">Этимология названий</label>
+              <label for="nameEtymologies">Этимология названий</label>
               <div class="addition-list-controls">
                 <textarea
-                  id="nameEtymology">Своё название — гренадер — получила благодаря хорошо заметному коническому хохолку, похожему на шапки гренадеров — элитных пехотинцев XVII—XVIII веков.</textarea>
-                <button id="nameEtymologyBtn">+</button>
+                  id="nameEtymologies">Своё название — гренадер — получила благодаря хорошо заметному коническому хохолку, похожему на шапки гренадеров — элитных пехотинцев XVII—XVIII веков.</textarea>
+                <button id="nameEtymologiesBtn">+</button>
               </div>
               <div class="addition-list"></div>
             </div>

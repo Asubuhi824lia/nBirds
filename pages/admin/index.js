@@ -1,10 +1,10 @@
 const inputIds = [
-  "photoUrl",
-  "nameAlternative",
+  "photoUrls",
+  "nameAlternatives",
 ]
 
 const textareaIds = [
-  "nameEtymology",
+  "nameEtymologies",
   "interestFacts",
   "statisticFacts",
   "similarSpecies"

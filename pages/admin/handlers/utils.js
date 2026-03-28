@@ -204,10 +204,22 @@ function generateListJSON(fieldNames) {
     const list = document.querySelector(`.field-block:has(#${fieldId}) .addition-list`);
     const answers = Array.from(list.getElementsByTagName('div'))
 
-    json[fieldId] = answers
+    json[fieldId] = answers;
   })
 
+  json["nameMain"] = document.getElementById("nameMain");
+  json["photoFiles"] = getImagesData();
+
   return json;
+}
+
+function getImagesData() {
+  const fileList = document.querySelector("#blockImages [type=file]").files;
+  const formData = new FormData();
+  Array.from(fileList).forEach((file) => {
+    formData.append("images", file);
+  })
+  return formData;
 }
 
 
