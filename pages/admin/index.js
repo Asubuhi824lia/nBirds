@@ -54,8 +54,9 @@ submit.addEventListener('click', (e) => {
   if (validateForm(listIds)) {
     e.preventDefault();
     // сгенерировать JSON
-    const json = generateJSON(listIds);
+    const json = generateJSON();
     console.log(json);
+    const files = generateListImageFiles();
 
     clearFormFields();
     window.scrollTo({ top, behavior: "smooth" });

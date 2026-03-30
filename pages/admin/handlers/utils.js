@@ -173,7 +173,7 @@ const validEditingState = function (field) {
 }
 
 const validBuiltIn = function () {
-  const field = document.getElementById("nameMain");
+  const field = document.getElementById("title");
   field.addEventListener("blur", showIsNotValidHandler);
   return field.checkValidity();
 }
@@ -197,23 +197,49 @@ function validateForm(listIds) {
 
 
 // JSON
-function generateListJSON(fieldNames) {
+const nameIds = [
+  "nameAlternatives",
+  "nameEtymologies",
+  "nameLatin",
+  "title"
+]
+const factIds = [
+  "interestFacts",
+  "statisticFacts",
+  "similarSpecies"
+]
+
+const getListValues = function (fieldId) {
+  const list = document.querySelector(`.field-block:has(#${fieldId}) .addition-list`);
+  const items = Array.from(list.getElementsByClassName('item-info'));
+  return items.length ? items.map((el) => el.innerText) : [];
+}
+
+const getInputValue = function (fieldId) {
+  return document.getElementById(fieldId).value;
+}
+
+function generateListJSON() {
   const json = new Object();
 
-  fieldNames.forEach((fieldId) => {
-    const list = document.querySelector(`.field-block:has(#${fieldId}) .addition-list`);
-    const answers = Array.from(list.getElementsByTagName('div'))
-
-    json[fieldId] = answers;
+  json.names = new Object();
+  nameIds.forEach((id) => {
+    if (["nameLatin", "title"].includes(id)) {
+      json.names[id] = getInputValue("title");
+    } else {
+      const arr = getListValues(id);
+      json.names[id] = arr;
+    }
   })
-
-  json["nameMain"] = document.getElementById("nameMain");
-  json["photoFiles"] = getImagesData();
+  json.facts = new Object();
+  factIds.forEach((id) => {
+    json.facts[id] = getListValues(id);
+  })
 
   return json;
 }
 
-function getImagesData() {
+function generateListImageFiles() {
   const fileList = document.querySelector("#blockImages [type=file]").files;
   const formData = new FormData();
   Array.from(fileList).forEach((file) => {
@@ -227,7 +253,8 @@ function clearFormFields() {
   // все основные поля чисты после валидации
   // очистить специфические поля
   document.querySelector("#blockImages [type=file]").value = null;
-  document.getElementById("nameMain").value = null;
+  document.getElementById("nameLatin").value = null;
+  document.getElementById("title").value = null;
   // очистить addition lists
   Array.from(document.getElementsByClassName("addition-list")).forEach((value) => {
     if (value.hasChildNodes()) {

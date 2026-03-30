@@ -13,11 +13,9 @@ function addListItem(listId) {
   }
 }
 
-function generateJSON(fieldNames) {
-  const nameMain = document.getElementById("nameMain")
-
+function generateJSON() {
   return ({
-    ...generateListJSON(fieldNames),
-    nameMain: nameMain.value
+    ...generateListJSON(),
+    photoUrls: getListValues("photoUrls")
   })
 }
