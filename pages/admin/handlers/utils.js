@@ -19,7 +19,9 @@
 // TODO: new FormData() — передача файла
 
 
-// TODO: document.hasFocus() — показывает, находится ли документ или любой элемент внутри него в фокусе
+// TODO: document.hasFocus() 
+// | "visibilitychange" [Page Visibility API]
+// — показывает, находится ли документ или любой элемент внутри него в фокусе
 
 // TODO: document.getAnimations() — получить все анимации, действующие на данный момент
 // 1.остановить анимации, когда юзер ушел со страницы?
@@ -30,6 +32,9 @@
 // Фильтр узлов-имён таксона
 
 // TODO: .adoptNode() — перенос узла для переноса фактов между группами
+
+// TODO: FileReader: readAsDataURL() | URL.createObjectURL(object)
+// - отображать фото птицы при загрузки с компа
 
 const listClassNames = {
   _name: 'addition-list-item',

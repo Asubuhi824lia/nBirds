@@ -1,13 +1,17 @@
 const base = "";
 
+const headersJSON = new Headers({
+  'Content-Type': 'application/json;charset=utf-8'
+})
+
 const addBird = async (data) => {
-  let response = await fetch("/api/admin/bird", {
+  const req = new Request("/api/admin/bird", {
     method: "POST",
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8'
-    },
+    headers: headersJSON,
     body: JSON.stringify(data)
   })
+
+  let response = await fetch(req);
 }
 
 const addBirdPhotoFiles = async (formData, birdId) => {
