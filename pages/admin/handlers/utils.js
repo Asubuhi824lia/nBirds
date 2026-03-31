@@ -225,7 +225,7 @@ function generateListJSON() {
   json.names = new Object();
   nameIds.forEach((id) => {
     if (["nameLatin", "title"].includes(id)) {
-      json.names[id] = getInputValue("title");
+      json.names[id] = getInputValue(id);
     } else {
       const arr = getListValues(id);
       json.names[id] = arr;
