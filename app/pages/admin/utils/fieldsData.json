@@ -1,0 +1,73 @@
+{
+  "blockImages": {
+    "name": "Загрузить фото (или ссылку)",
+    "blocks": [
+      {
+        "id": "photoUrls",
+        "label": "",
+        "isMultilines": false,
+        "isAdditionList": false,
+        "defaultValue": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Lophophanes_cristatus_-_01.jpg/500px-Lophophanes_cristatus_-_01.jpg"
+      }
+    ]
+  },
+  "blockNames": {
+    "name": "Названия птицы",
+    "blocks": [
+      {
+        "id": "title",
+        "label": "Название (основное)",
+        "isMultilines": false,
+        "isAdditionList": false,
+        "defaultValue": "Хохлатая синица"
+      },
+      {
+        "id": "nameLatin",
+        "label": "Название (лат.)",
+        "isMultilines": false,
+        "isAdditionList": false,
+        "defaultValue": "Lophophanes cristatus"
+      },
+      {
+        "id": "nameAlternatives",
+        "label": "Альтернативные названия",
+        "isMultilines": false,
+        "isAdditionList": true,
+        "defaultValue": "Гренадерка"
+      },
+      {
+        "id": "nameEtymologies",
+        "label": "Этимология названий",
+        "isMultilines": true,
+        "isAdditionList": true,
+        "defaultValue": "Своё название — гренадер — получила благодаря хорошо заметному коническому хохолку, похожему на шапки гренадеров — элитных пехотинцев XVII—XVIII веков."
+      }
+    ]
+  },
+  "blockFacts": {
+    "name": "Факты",
+    "blocks": [
+      {
+        "id": "interestFacts",
+        "label": "Интресные факты",
+        "isMultilines": true,
+        "isAdditionList": true,
+        "defaultValue": ""
+      },
+      {
+        "id": "statisticFacts",
+        "label": "Статистические факты",
+        "isMultilines": true,
+        "isAdditionList": true,
+        "defaultValue": "В полевых условиях самцы и самки практически не отличимы."
+      },
+      {
+        "id": "similarSpecies",
+        "label": "Схожести видов",
+        "isMultilines": true,
+        "isAdditionList": true,
+        "defaultValue": "Более других видов синиц склонна к оседлому образу жизни."
+      }
+    ]
+  }
+}
