@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import type { FieldBlockType } from "../types";
 
 // TODO: добавить хэндлер как в интерфейс
@@ -17,6 +17,8 @@ export const FieldBlockControls = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const [text, setText] = useState<string>(defaultValue || "");
+
   interface specInputPropsType {
     [key: string]: React.InputHTMLAttributes<HTMLInputElement>
   }
@@ -28,34 +30,17 @@ export const FieldBlockControls = ({
 
   const addItemHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
-    // TODO: добавление элементов через пополнение общего массива списка
-    // TODO: (textareaRef.current || inputRef.current)?.value
-    const newText =
-      isMultilines
-        ? textareaRef.current?.value || textareaRef.current?.innerText
-        : inputRef.current?.value;
-    if (!newText || !newText.trim()) return;
 
-    console.log(isMultilines, inputRef.current?.value, !inputRef.current)
-
-    if (isMultilines) {
-      if (!textareaRef.current) return;
-      textareaRef.current.textContent = null;
-      textareaRef.current.value = "";
-    } else {
-      if (!inputRef.current) return;
-      inputRef.current.value = "";
-    }
-
-    if (newText) addList(newText);
+    setText("");
+    if (text?.trim()) addList(text);
   }
 
   return (
     <div className="addition-list-controls">
       {isMultilines ? (
-        <textarea ref={textareaRef} id={id}>{defaultValue}</textarea>
+        <textarea ref={textareaRef} id={id} onChange={(e) => setText(e.target.value)}>{text}</textarea>
       ) : (
-        <input ref={inputRef} id={id} value={defaultValue} {...specInputProps[id]} />
+        <input ref={inputRef} id={id} value={text} onChange={(e) => setText(e.target.value)} {...specInputProps[id]} />
       )}
       {isAdditionList && (<button id={`${id}Btn`} onClick={addItemHandler}>+</button>)}
     </div>
