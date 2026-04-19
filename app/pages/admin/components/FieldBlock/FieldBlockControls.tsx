@@ -1,9 +1,9 @@
 import { useRef, useState } from "react";
-import type { FieldBlockType } from "../types";
+import type { FieldDataType } from "../types";
 
 // TODO: добавить хэндлер как в интерфейс
 
-type FieldBlockControlsType = FieldBlockType & {
+type FieldBlockControlsType = FieldDataType & {
   addList: (newItem: string) => void;
 }
 
@@ -31,8 +31,8 @@ export const FieldBlockControls = ({
   const addItemHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
-    setText("");
     if (text?.trim()) addList(text);
+    setText("");
   }
 
   return (

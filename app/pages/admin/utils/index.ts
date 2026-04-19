@@ -24,13 +24,51 @@ const scrollToOffsetElement = (element, offset = 150) => {
   })
 }
 
-const showIsNotValid = (field) => {
-  if (!field.checkValidity()) {
-    field.reportValidity();
+export interface FormAddBird {
+  photoUrls?: string | null,
+  names: {
+    nameMain?: string | null,
+    nameLatin: string,
+    nameAlternatives?: string[] | null,
+    nameEtymologies?: string[] | null
+  },
+  facts: {
+    interestFacts?: string[] | null,
+    statisticFacts?: string[] | null,
+    similarSpecies?: string[] | null
   }
 }
-const showIsNotValidHandler = (event) => showIsNotValid(event.target);
 
+export const defaultFormObject: FormAddBird = {
+  photoUrls: "",
+  names: {
+    nameMain: "",
+    nameLatin: "",
+    nameAlternatives: [],
+    nameEtymologies: []
+  },
+  facts: {
+    interestFacts: [],
+    statisticFacts: [],
+    similarSpecies: []
+  }
+}
+
+export type FormBlocksKeys = keyof FormAddBird; //TODO
+export type BlockNames = typeof defaultFormObject.names;
+export type BlockPhotoKeys = keyof Pick<FormAddBird, "photoUrls">;
+export type BlockNamesKeys = keyof typeof defaultFormObject.names;
+export type BlockFactsKeys = keyof typeof defaultFormObject.facts;
+export type FormFieldsKeys = BlockNamesKeys | BlockFactsKeys | "photoUrls";
+
+export type FieldsDataIds = {
+  blockImages: BlockPhotoKeys,
+  blockNames: BlockNamesKeys,
+  blockFacts: BlockFactsKeys
+}
+export type FieldsDataIdsKeys = keyof FieldsDataIds;
+// NEW: Indexed Access Type
+export type FieldsDataBlocksIdsKeys = FieldsDataIds["blockImages"] | FieldsDataIds["blockNames"] | FieldsDataIds["blockFacts"];
 
 // ************************************************************
 // TODO: lifecycle

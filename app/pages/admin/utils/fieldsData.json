@@ -15,7 +15,7 @@
     "name": "Названия птицы",
     "blocks": [
       {
-        "id": "title",
+        "id": "nameMain",
         "label": "Название (основное)",
         "isMultilines": false,
         "isAdditionList": false,

@@ -45,7 +45,8 @@ const errors = {
 const validIncompleteItem = function (field, text) {
   let isValid = true;
   if (text.trim().length > 0 && isValid) {
-    const previousNodeName = field.closest('.field-block').previousElementSibling.nodeName;
+    const previousNodeName = 
+      field.closest('.field-block').previousElementSibling.nodeName;
     if (previousNodeName != 'DIV') {
       // в начало блока формы
       field.closest(".form-block").scrollIntoView();
