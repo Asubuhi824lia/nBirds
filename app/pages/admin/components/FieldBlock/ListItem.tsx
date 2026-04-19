@@ -18,13 +18,11 @@ export const ListItem = ({ printedText }: ListItemProps) => {
   }
 
   // removeEventListener || addEventListener — не заменить в React?
-  const toEditHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
+  const toEditHandler = () => {
     editFieldRef.current?.addEventListener(handleEvent, showIsNotValid)
     setIsEditMode(true);
   }
-  const saveEditedHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
+  const saveEditedHandler = () => {
     editFieldRef.current?.removeEventListener(handleEvent, showIsNotValid)
 
     if (editFieldRef.current?.value) setText(editFieldRef.current?.value);
@@ -33,8 +31,7 @@ export const ListItem = ({ printedText }: ListItemProps) => {
     editFieldRef.current?.setCustomValidity("");
     setIsEditMode(false);
   }
-  const deleteHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
+  const deleteHandler = () => {
     editFieldRef.current?.removeEventListener(handleEvent, showIsNotValid)
     itemRef.current?.remove();
   }

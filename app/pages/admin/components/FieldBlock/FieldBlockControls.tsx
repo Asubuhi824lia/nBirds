@@ -17,7 +17,7 @@ export const FieldBlockControls = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [text, setText] = useState<string>(defaultValue || "");
+  const [text, setText] = useState<string>(defaultValue);
 
   interface specInputPropsType {
     [key: string]: React.InputHTMLAttributes<HTMLInputElement>
@@ -28,19 +28,33 @@ export const FieldBlockControls = ({
     nameLatin: { lang: "la", pattern: "[a-z A-Z]+", required: true }
   }
 
-  const addItemHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-
+  const addItemHandler = () => {
     if (text?.trim()) addList(text);
     setText("");
+  }
+
+  const handleChangeInput = (value: string) => {
+    setText(value);
+    if (!isAdditionList) addList(text);
   }
 
   return (
     <div className="addition-list-controls">
       {isMultilines ? (
-        <textarea ref={textareaRef} id={id} onChange={(e) => setText(e.target.value)}>{text}</textarea>
+        <textarea
+          ref={textareaRef}
+          id={id}
+          onChange={(e) => setText(e.target.value)}
+          value={text}
+        ></textarea>
       ) : (
-        <input ref={inputRef} id={id} value={text} onChange={(e) => setText(e.target.value)} {...specInputProps[id]} />
+        <input
+          ref={inputRef}
+          id={id}
+          onChange={(e) => handleChangeInput(e.target.value)}
+          value={text}
+          {...specInputProps[id]}
+        />
       )}
       {isAdditionList && (<button id={`${id}Btn`} onClick={addItemHandler}>+</button>)}
     </div>

@@ -15,7 +15,7 @@ export const FormBirdAdd = () => {
   // const [photoFiles, setPhotoFiles] = useState(new FormData());
 
   const generateJSON = () => {
-    return ({
+    console.log({
       photoUrls: birdData.photoUrls,
       names: { ...birdData.names },
       facts: { ...birdData.facts }
@@ -24,7 +24,7 @@ export const FormBirdAdd = () => {
 
   return (
     // TODO: цветовое оформление деталей формы полей — может задать юзер по палитре с картинки
-    <form>
+    <form onSubmit={e => e.preventDefault()}>
       <h3>Внесите данные о птице</h3>
 
       {(Object.entries(fieldsData) as [FieldBlocksKeys, FieldBlocksType][])
