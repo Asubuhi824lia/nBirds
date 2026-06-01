@@ -1,6 +1,8 @@
 import { useRef, useState } from "react";
 import type { FieldDataType } from "../types";
 import { useForm } from "react-hook-form";
+import { IconButton } from "@mui/material";
+import { Add as AddIcon } from '@mui/icons-material';
 import type { AddBirdForm } from "../../utils";
 interface specInputPropsType {
   [key: string]: React.InputHTMLAttributes<HTMLInputElement>
@@ -61,10 +63,14 @@ export const FieldBlockControls = ({
           onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))}
           value={text}
           {...specInputProps[id]}
-          // {...register(id)}
+        // {...register(id)}
         />
       )}
-      {isAdditionList && (<button id={`${id}Btn`} onClick={addItemHandler}>+</button>)}
+      {isAdditionList && (
+        <IconButton id={`${id}Btn`} name="action" value="delete" onClick={addItemHandler}>
+          <AddIcon color="secondary" fontSize="small" />
+        </IconButton>
+      )}
     </div>
   );
 }
