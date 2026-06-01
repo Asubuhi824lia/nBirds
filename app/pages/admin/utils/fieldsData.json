@@ -6,8 +6,7 @@
         "id": "photoUrls",
         "label": "",
         "isMultilines": false,
-        "isAdditionList": false,
-        "defaultValue": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Lophophanes_cristatus_-_01.jpg/500px-Lophophanes_cristatus_-_01.jpg"
+        "isAdditionList": false
       }
     ]
   },
@@ -18,29 +17,25 @@
         "id": "nameMain",
         "label": "Название (основное)",
         "isMultilines": false,
-        "isAdditionList": false,
-        "defaultValue": "Хохлатая синица"
+        "isAdditionList": false
       },
       {
         "id": "nameLatin",
         "label": "Название (лат.)",
         "isMultilines": false,
-        "isAdditionList": false,
-        "defaultValue": "Lophophanes cristatus"
+        "isAdditionList": false
       },
       {
         "id": "nameAlternatives",
         "label": "Альтернативные названия",
         "isMultilines": false,
-        "isAdditionList": true,
-        "defaultValue": "Гренадерка"
+        "isAdditionList": true
       },
       {
         "id": "nameEtymologies",
         "label": "Этимология названий",
         "isMultilines": true,
-        "isAdditionList": true,
-        "defaultValue": "Своё название — гренадер — получила благодаря хорошо заметному коническому хохолку, похожему на шапки гренадеров — элитных пехотинцев XVII—XVIII веков."
+        "isAdditionList": true
       }
     ]
   },
@@ -51,22 +46,19 @@
         "id": "interestFacts",
         "label": "Интресные факты",
         "isMultilines": true,
-        "isAdditionList": true,
-        "defaultValue": ""
+        "isAdditionList": true
       },
       {
         "id": "statisticFacts",
         "label": "Статистические факты",
         "isMultilines": true,
-        "isAdditionList": true,
-        "defaultValue": "В полевых условиях самцы и самки практически не отличимы."
+        "isAdditionList": true
       },
       {
         "id": "similarSpecies",
         "label": "Схожести видов",
         "isMultilines": true,
-        "isAdditionList": true,
-        "defaultValue": "Более других видов синиц склонна к оседлому образу жизни."
+        "isAdditionList": true
       }
     ]
   }

@@ -11,11 +11,17 @@
     "clear": "rm -rf node_modules/.vite node_modules/.eslintcache"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@fontsource/roboto": "^5.2.10",
+    "@mui/icons-material": "^9.0.1",
+    "@mui/material": "^9.0.1",
     "@react-router/node": "7.13.2",
     "@react-router/serve": "7.13.2",
     "isbot": "^5.1.36",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-hook-form": "^7.73.1",
     "react-router": "7.13.2"
   },
   "devDependencies": {

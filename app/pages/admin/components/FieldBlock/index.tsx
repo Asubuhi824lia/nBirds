@@ -4,26 +4,34 @@ import { FieldBlockControls } from "./FieldBlockControls";
 import { ListItem } from "./ListItem";
 import type { FieldsDataIds } from "../../utils";
 
-type SingleValueFieldKey = "photoUrls" | "nameMain" | "nameLatin";
+type HandleAddDataProps<T> =
+  | { key: T; data?: null | string[] }
+  | { key: T; data?: null | string };
+
 // TODO: FieldsDataIdsKeys и FieldBlocksKeys одинаковы, пересмотреть
-interface FieldBlockProps {
+interface FieldBlockProps<
+  T extends FieldsDataIds[FieldBlocksKeys],
+  K extends boolean
+> {
   blockId: FieldBlocksKeys;
-  block: Omit<FieldDataType, "id"> & { id: FieldsDataIds[FieldBlocksKeys] };
-  handleAddData: <T extends FieldsDataIds[FieldBlocksKeys]>({ key, data }: {
-    key: T,
-    data?: null | (T extends SingleValueFieldKey ? string : string[])
-  }) => void;
+  block: Omit<FieldDataType, "id" | "isAdditionList"> & { id: T, isAdditionList: K };
+  defaultValue?: null | (K extends true ? string[] : string);
+  handleAddData: ({ key, data }: HandleAddDataProps<T>) => void;
 }
 
-export const FieldBlock = ({ blockId, block, handleAddData }: FieldBlockProps) => {
-  const [list, setList] = useState<string[]>([]);
+export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends boolean>({ blockId, block, defaultValue, handleAddData }: FieldBlockProps<T, K>) => {
+  const [list, setList] = useState<string[]>(Array.isArray(defaultValue) ? [...defaultValue] : []);
 
   const { id, label, isAdditionList } = block;
 
   const addListHandler = (newItem: string) => {
-    const newList = [...list, newItem];
-    setList(newList);
-    handleAddData({ key: id, data: newList });
+    if (isAdditionList) {
+      const newList = [newItem, ...list];
+      setList(newList);
+      handleAddData({ key: id, data: newList });
+    } else {
+      handleAddData({ key: id, data: newItem });
+    }
   }
 
   return (
@@ -39,7 +47,8 @@ export const FieldBlock = ({ blockId, block, handleAddData }: FieldBlockProps) =
         {list.map((text, index) => (
           // TODO: проверить как правильно задавать key компоненту
           <ListItem key={`${id}-${index}`} printedText={text} />
-        ))}
+        )
+        )}
       </div>)}
     </>
   );

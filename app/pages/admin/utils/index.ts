@@ -14,7 +14,7 @@
 // TODO: "securitypolicyviolation" — фиксирование нарушений (на сервер)
 
 
-const scrollToOffsetElement = (element, offset = 150) => {
+const scrollToOffsetElement = (element: any, offset = 150) => {
   const elemPos = element.getBoundingClientRect().top;
   const offsetPos = elemPos + window.scrollY - offset;
 
@@ -69,6 +69,19 @@ export type FieldsDataIds = {
 export type FieldsDataIdsKeys = keyof FieldsDataIds;
 // NEW: Indexed Access Type
 export type FieldsDataBlocksIdsKeys = FieldsDataIds["blockImages"] | FieldsDataIds["blockNames"] | FieldsDataIds["blockFacts"];
+
+export type SingleValueFieldKey = "photoUrls" | "nameMain" | "nameLatin";
+
+export type AddBirdForm = {
+  photoUrls?: string | null,
+  nameMain?: string | null,
+  nameLatin: string,
+  nameAlternatives?: string[] | null,
+  nameEtymologies?: string[] | null,
+  interestFacts?: string[] | null,
+  statisticFacts?: string[] | null,
+  similarSpecies?: string[] | null
+}
 
 // ************************************************************
 // TODO: lifecycle

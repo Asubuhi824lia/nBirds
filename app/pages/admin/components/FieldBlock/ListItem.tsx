@@ -1,3 +1,5 @@
+import { Button, Icon, IconButton } from "@mui/material";
+import { Edit as EditIcon, Save as SaveIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { useRef, useState } from "react";
 
 type ListItemProps = {
@@ -35,7 +37,7 @@ export const ListItem = ({ printedText }: ListItemProps) => {
     editFieldRef.current?.removeEventListener(handleEvent, showIsNotValid)
     itemRef.current?.remove();
   }
-
+  // TODO: иконки — отдельный компонент (единообразить стили), передавать только название
   return (
     <div ref={itemRef} className="addition-list-item">
       {/* TODO: отдельный элемент с общим children */}
@@ -47,13 +49,20 @@ export const ListItem = ({ printedText }: ListItemProps) => {
       <menu className="item-actions">
         <li>
           {isEditMode ? (
-            <button name="action" value="save" onClick={saveEditedHandler}>save</button>
+            // TODO: add Icon, Loadre on saveClk
+            <IconButton name="action" value="save" onClick={saveEditedHandler}>
+              <SaveIcon color="secondary" fontSize="small" />
+            </IconButton>
           ) : (
-            <button name="action" value="edit" onClick={toEditHandler}>edit</button>
+            <IconButton name="action" value="edit" onClick={toEditHandler}>
+              <EditIcon color="secondary" fontSize="small" />
+            </IconButton>
           )}
         </li>
         <li>
-          <button name="action" value="delete" onClick={deleteHandler}>delete</button>
+          <IconButton name="action" value="delete" onClick={deleteHandler}>
+            <DeleteIcon color="secondary" fontSize="small" />
+          </IconButton>
         </li>
       </menu>
     </div>

@@ -1,9 +1,15 @@
 import { useRef, useState } from "react";
 import type { FieldDataType } from "../types";
+import { useForm } from "react-hook-form";
+import type { AddBirdForm } from "../../utils";
+interface specInputPropsType {
+  [key: string]: React.InputHTMLAttributes<HTMLInputElement>
+}
 
 // TODO: добавить хэндлер как в интерфейс
 
 type FieldBlockControlsType = FieldDataType & {
+  defaultValue?: string;
   addList: (newItem: string) => void;
 }
 
@@ -11,17 +17,17 @@ export const FieldBlockControls = ({
   id,
   isMultilines,
   isAdditionList,
-  defaultValue,
+  defaultValue = "",
   addList
 }: FieldBlockControlsType) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // defaultValue — string | string[]
   const [text, setText] = useState<string>(defaultValue);
 
-  interface specInputPropsType {
-    [key: string]: React.InputHTMLAttributes<HTMLInputElement>
-  }
+  const { register } = useForm<AddBirdForm>();
+
   const specInputProps: specInputPropsType = {
     photoUrls: { type: "url" },
     photoFiles: { type: "file", multiple: true },
@@ -35,7 +41,7 @@ export const FieldBlockControls = ({
 
   const handleChangeInput = (value: string) => {
     setText(value);
-    if (!isAdditionList) addList(text);
+    if (text && !isAdditionList) addList(text);
   }
 
   return (
@@ -52,8 +58,10 @@ export const FieldBlockControls = ({
           ref={inputRef}
           id={id}
           onChange={(e) => handleChangeInput(e.target.value)}
+          onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))}
           value={text}
           {...specInputProps[id]}
+          // {...register(id)}
         />
       )}
       {isAdditionList && (<button id={`${id}Btn`} onClick={addItemHandler}>+</button>)}
