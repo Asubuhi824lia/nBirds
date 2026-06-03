@@ -1,4 +1,4 @@
-import { IconButton } from "@mui/material";
+import { Button, ButtonGroup } from "@mui/material";
 import { Edit as EditIcon, Save as SaveIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { useRef, useState } from "react";
 
@@ -46,25 +46,21 @@ export const ListItem = ({ printedText }: ListItemProps) => {
       ) : (
         <span className="item-info">{text}</span>
       )}
-      <menu className="item-actions">
-        <li>
-          {isEditMode ? (
-            // TODO: add Icon, Loadre on saveClk
-            <IconButton name="action" value="save" onClick={saveEditedHandler}>
-              <SaveIcon color="secondary" fontSize="small" />
-            </IconButton>
-          ) : (
-            <IconButton name="action" value="edit" onClick={toEditHandler}>
-              <EditIcon color="secondary" fontSize="small" />
-            </IconButton>
-          )}
-        </li>
-        <li>
-          <IconButton name="action" value="delete" onClick={deleteHandler}>
-            <DeleteIcon color="secondary" fontSize="small" />
-          </IconButton>
-        </li>
-      </menu>
+      <ButtonGroup variant="outlined" color="secondary"size="small" orientation="horizontal">
+        {isEditMode ? (
+          // TODO: add Icon, Loadre on saveClk
+          <Button name="action" value="save" onClick={saveEditedHandler}>
+            <SaveIcon fontSize="small" />
+          </Button>
+        ) : (
+          <Button name="action" value="edit" onClick={toEditHandler}>
+            <EditIcon fontSize="small" />
+          </Button>
+        )}
+        <Button name="action" value="delete" onClick={deleteHandler}>
+          <DeleteIcon fontSize="small" />
+        </Button>
+      </ButtonGroup>
     </div>
   );
 }
