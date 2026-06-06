@@ -1,11 +1,15 @@
 import { useRef, useState } from "react";
 import type { FieldDataType } from "../types";
-import { useForm } from "react-hook-form";
-import { IconButton } from "@mui/material";
+import { IconButton, TextField } from "@mui/material";
 import { Add as AddIcon } from '@mui/icons-material';
-import type { AddBirdForm } from "../../utils";
 interface specInputPropsType {
-  [key: string]: React.InputHTMLAttributes<HTMLInputElement>
+  [key: string]: Pick<React.InputHTMLAttributes<HTMLInputElement>,
+    "type" |
+    "multiple" |
+    "lang" |
+    "pattern" |
+    "required"
+  >
 }
 
 // TODO: добавить хэндлер как в интерфейс
@@ -22,13 +26,11 @@ export const FieldBlockControls = ({
   defaultValue = "",
   addList
 }: FieldBlockControlsType) => {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  // const textareaRef = useRef<HTMLTextAreaElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // defaultValue — string | string[]
   const [text, setText] = useState<string>(defaultValue);
-
-  const { register } = useForm<AddBirdForm>();
 
   const specInputProps: specInputPropsType = {
     photoUrls: { type: "url" },
@@ -49,22 +51,37 @@ export const FieldBlockControls = ({
   return (
     <div className="addition-list-controls">
       {isMultilines ? (
-        <textarea
-          ref={textareaRef}
+        <TextField
           id={id}
-          onChange={(e) => setText(e.target.value)}
-          value={text}
-        ></textarea>
-      ) : (
-        <input
-          ref={inputRef}
-          id={id}
-          onChange={(e) => handleChangeInput(e.target.value)}
-          onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))}
-          value={text}
-          {...specInputProps[id]}
-        // {...register(id)}
+          // ref={inputRef}
+          // onChange={(e) => handleChangeInput(e.target.value)}
+          // onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))}
+          // value={text}
+          // multiline
+          // minRows={3}
+          // size="small"
+          variant="outlined"
+        // color="secondary"
+        // sx={{ border: "1px solid gray", backgroundColor: 'darkgray' }}
         />
+        // <textarea
+        //   ref={textareaRef}
+        //   id={id}
+        //   onChange={(e) => setText(e.target.value)}
+        //   value={text}
+        // ></textarea>
+      ) : (
+        // TODO: сделать чтобы при вводе пропсе уже на «=» автокомплит скобок
+        // <input
+        //   ref={inputRef}
+        //   id={id}
+        //   onChange={(e) => handleChangeInput(e.target.value)}
+        //   onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))}
+        //   value={text}
+        //   {...specInputProps[id]}
+        <TextField id="standard-basic" variant="standard" {...specInputProps[id]} />
+        // {...register(id)}
+        // />
       )}
       {isAdditionList && (
         <IconButton id={`${id}Btn`} name="action" value="delete" onClick={addItemHandler}>
