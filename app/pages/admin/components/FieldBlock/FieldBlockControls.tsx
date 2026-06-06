@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import React, { useState } from "react";
 import type { FieldDataType } from "../types";
 import { IconButton, TextField } from "@mui/material";
 import { Add as AddIcon } from '@mui/icons-material';
@@ -27,8 +27,6 @@ export const FieldBlockControls = ({
   defaultValue = "",
   addList
 }: FieldBlockControlsType) => {
-  // const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   // defaultValue — string | string[]
   const [text, setText] = useState<string>(defaultValue);
@@ -49,48 +47,29 @@ export const FieldBlockControls = ({
     if (text && !isAdditionList) addList(text);
   }
 
+  // TODO: сделать чтобы при вводе пропсе уже на «=» автокомплит скобок
+  // TODO: полю "Название (лат.)" паттерн что только 2 слова
   return (
     <div className="addition-list-controls">
-      {isMultilines ? (
-        <TextField
-          id={id}
-          // ref={inputRef}
-          onChange={(e) => handleChangeInput(e.target.value)}
-          onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))}
-          value={text}
-          multiline
-          minRows={3}
-          size="medium"
-          label={label}
-          variant="outlined"
-          color="secondary"
-          slotProps={{ inputLabel: { shrink: true } }}
-        />
-        // <textarea
-        //   ref={textareaRef}
-        //   id={id}
-        //   onChange={(e) => setText(e.target.value)}
-        //   value={text}
-        // ></textarea>
-      ) : (
-        // TODO: сделать чтобы при вводе пропсе уже на «=» автокомплит скобок
-        // <input
-        //   ref={inputRef}
-        //   id={id}
-        //   onChange={(e) => handleChangeInput(e.target.value)}
-        //   onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))}
-        //   value={text}
-        //   {...specInputProps[id]}
-        <TextField
-          id="standard-basic"
-          label={label}
-          variant="standard"
-          slotProps={{ inputLabel: { shrink: true } }}
-          {...specInputProps[id]}
-        />
-        // {...register(id)}
-        // />
-      )}
+      <TextField
+        id={id}
+        label={label}
+        value={text}
+        onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))} // TODO: to check
+        color="secondary"
+        variant="outlined"
+        slotProps={{ inputLabel: { shrink: true } }}
+        {...specInputProps[id]}
+        {...{
+          multiline: isMultilines,
+          minRows: isMultilines ? 3 : undefined,
+          onChange: (e) =>
+            isMultilines
+              ? setText(e.target.value)
+              : handleChangeInput(e.target.value),
+          size: isMultilines ? "medium" : "small",
+        }}
+      />
       {isAdditionList && (
         <IconButton id={`${id}Btn`} name="action" value="delete" onClick={addItemHandler}>
           <AddIcon color="secondary" fontSize="small" />
