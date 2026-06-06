@@ -21,6 +21,7 @@ type FieldBlockControlsType = FieldDataType & {
 
 export const FieldBlockControls = ({
   id,
+  label,
   isMultilines,
   isAdditionList,
   defaultValue = "",
@@ -54,15 +55,16 @@ export const FieldBlockControls = ({
         <TextField
           id={id}
           // ref={inputRef}
-          // onChange={(e) => handleChangeInput(e.target.value)}
-          // onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))}
-          // value={text}
-          // multiline
-          // minRows={3}
-          // size="small"
+          onChange={(e) => handleChangeInput(e.target.value)}
+          onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))}
+          value={text}
+          multiline
+          minRows={3}
+          size="medium"
+          label={label}
           variant="outlined"
-        // color="secondary"
-        // sx={{ border: "1px solid gray", backgroundColor: 'darkgray' }}
+          color="secondary"
+          slotProps={{ inputLabel: { shrink: true } }}
         />
         // <textarea
         //   ref={textareaRef}
@@ -79,7 +81,13 @@ export const FieldBlockControls = ({
         //   onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))}
         //   value={text}
         //   {...specInputProps[id]}
-        <TextField id="standard-basic" variant="standard" {...specInputProps[id]} />
+        <TextField
+          id="standard-basic"
+          label={label}
+          variant="standard"
+          slotProps={{ inputLabel: { shrink: true } }}
+          {...specInputProps[id]}
+        />
         // {...register(id)}
         // />
       )}

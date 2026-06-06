@@ -22,7 +22,7 @@ interface FieldBlockProps<
 export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends boolean>({ blockId, block, defaultValue, handleAddData }: FieldBlockProps<T, K>) => {
   const [list, setList] = useState<string[]>(Array.isArray(defaultValue) ? [...defaultValue] : []);
 
-  const { id, label, isAdditionList } = block;
+  const { id, isAdditionList } = block;
 
   const addListHandler = (newItem: string) => {
     if (isAdditionList) {
@@ -33,14 +33,14 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
       handleAddData({ key: id, data: newItem });
     }
   }
+  // TODO: каждый файл называть именем компонента, доб. отдельный index.tsx
 
   return (
     <>
       {/* TODO: +подкрепление источниками, почему именно это */}
       {/* TODO: +сортировка по типу дачи названия */}
-
+      {/* TODO: плейсхолдер для фото */}
       {/* TODO: как связать с основным названием? */}
-      {label && (<label htmlFor={label}>{label}</label>)}
       <FieldBlockControls {...block} addList={addListHandler} />
       {blockId === "blockImages" && (<input id="photoFiles" type="file" multiple />)}
       {isAdditionList && (<div className="addition-list">
