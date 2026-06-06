@@ -6,3 +6,7 @@ id — camelCase
   Пример: 
     validateForm, 
     validEditingState
+
+
+| fieldsData.json
+| —> <FormBirdAdd/> —> <FieldBlock/> —> <FieldBlockControls/>
