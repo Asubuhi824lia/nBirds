@@ -4,6 +4,7 @@ import { FieldBlockControls } from "./FieldBlockControls";
 import { ListItem } from "./ListItem";
 import type { FieldsDataIds } from "../../utils";
 import { TextField } from "@mui/material";
+import { textFieldBaseStyles } from "../../utils/textFieldProps";
 
 type HandleAddDataProps<T> =
   | { key: T; data?: null | string[] }
@@ -65,14 +66,11 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
       />
       {blockId === "blockImages" && (
         <TextField
-          color="secondary"
-          fullWidth
           id="photoFiles"
-          margin="dense"
-          size="small"
           type="file"
-          variant="outlined"
+          size="small"
           slotProps={{ htmlInput: { multiple: true } }}
+          {...textFieldBaseStyles}
         />
       )}
       {isAdditionList && (

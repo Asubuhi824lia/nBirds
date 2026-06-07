@@ -5,6 +5,7 @@ import { type AddBirdForm, type FieldsDataIds, type FormAddBird } from "./utils"
 import type { FieldBlocksKeys, FieldBlocksType } from "./components/types";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { TextField } from "@mui/material";
+import { textFieldBaseStyles } from "./utils/textFieldProps";
 // TODO: при 1-м рендеринге — заполнение данных со "структуры данных" в "структуру полей"
 const defaultBirdData: FormAddBird = {
   photoUrls: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Lophophanes_cristatus_-_01.jpg/500px-Lophophanes_cristatus_-_01.jpg",
@@ -101,7 +102,12 @@ export const FormBirdAdd = () => {
       }
 
       {/* TODO: <button type="submit" onClick={generateJSON}>Проверить карточку</button> */}
-      <TextField color="secondary" fullWidth margin="normal" size="small" type="submit" variant="outlined" />
+      <TextField
+        margin="normal"
+        size="small"
+        type="submit"
+        {...textFieldBaseStyles}
+      />
     </form>
   );
 }
