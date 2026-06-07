@@ -3,6 +3,7 @@ import type { FieldBlocksKeys, FieldDataType } from "../types";
 import { FieldBlockControls } from "./FieldBlockControls";
 import { ListItem } from "./ListItem";
 import type { FieldsDataIds } from "../../utils";
+import { TextField } from "@mui/material";
 
 type HandleAddDataProps<T> =
   | { key: T; data?: null | string[] }
@@ -19,7 +20,12 @@ interface FieldBlockProps<
   handleAddData: ({ key, data }: HandleAddDataProps<T>) => void;
 }
 
-export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends boolean>({ blockId, block, defaultValue, handleAddData }: FieldBlockProps<T, K>) => {
+export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends boolean>({
+  blockId,
+  block,
+  defaultValue,
+  handleAddData
+}: FieldBlockProps<T, K>) => {
   const [list, setList] = useState<string[]>(Array.isArray(defaultValue) ? [...defaultValue] : []);
 
   const { id, isAdditionList } = block;
@@ -33,23 +39,50 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
       handleAddData({ key: id, data: newItem });
     }
   }
-  // TODO: каждый файл называть именем компонента, доб. отдельный index.tsx
 
+  // TODO: каждый файл называть именем компонента, доб. отдельный index.tsx
   return (
     <>
       {/* TODO: +подкрепление источниками, почему именно это */}
       {/* TODO: +сортировка по типу дачи названия */}
       {/* TODO: плейсхолдер для фото */}
       {/* TODO: как связать с основным названием? */}
-      <FieldBlockControls {...block} addList={addListHandler} />
-      {blockId === "blockImages" && (<input id="photoFiles" type="file" multiple />)}
-      {isAdditionList && (<div className="addition-list">
-        {list.map((text, index) => (
-          // TODO: проверить как правильно задавать key компоненту
-          <ListItem key={`${id}-${index}`} printedText={text} />
-        )
-        )}
-      </div>)}
+      <FieldBlockControls
+        {...block}
+        addList={addListHandler}
+      /**
+       * TODO: прописать ПОСЛЕ подключения формы
+       * nameAlternatives: { 
+       *   disabled: !nameMain.value,
+       *   helperText: !nameMain.value && "Сперва укажите основное название"
+       * }
+       * nameEtymologies: { 
+       *   disabled: !nameMain.value || !nameLatin.value || !nameAlternatives.length,
+       *   helperText: "Разбор значений названий!" 
+       * }
+       */
+      // specInputDynamicProps={{}}
+      />
+      {blockId === "blockImages" && (
+        <TextField
+          color="secondary"
+          fullWidth
+          id="photoFiles"
+          margin="dense"
+          size="small"
+          type="file"
+          variant="outlined"
+          slotProps={{ htmlInput: { multiple: true } }}
+        />
+      )}
+      {isAdditionList && (
+        <div className="addition-list">
+          {list.map((text, index) => (
+            // TODO: проверить как правильно задавать key компоненту
+            <ListItem key={`${id}-${index}`} printedText={text} />
+          ))}
+        </div>
+      )}
     </>
   );
 }

@@ -4,8 +4,7 @@ import { default as fieldsDescription } from "./utils/fieldsData.json";
 import { type AddBirdForm, type FieldsDataIds, type FormAddBird } from "./utils";
 import type { FieldBlocksKeys, FieldBlocksType } from "./components/types";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { Edit as EditIcon } from '@mui/icons-material';
-import { IconButton } from "@mui/material";
+import { TextField } from "@mui/material";
 // TODO: при 1-м рендеринге — заполнение данных со "структуры данных" в "структуру полей"
 const defaultBirdData: FormAddBird = {
   photoUrls: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Lophophanes_cristatus_-_01.jpg/500px-Lophophanes_cristatus_-_01.jpg",
@@ -21,12 +20,16 @@ const defaultBirdData: FormAddBird = {
   }
 }
 
+/**
+ * TODO: добавить ReadOnly-поле с названием рода, взятым из поля nameLatin
+ *    мб добавить подгруз данных - дерева с более полной классификацией
+ */
 // TODO: дефолтное значение лучше получать из стейта "birdData" или напрямую "defaultBirdData"?
 export const FormBirdAdd = () => {
   // TODO: change to use-react-hook
-  const [birdData, setBirdData] = useState<FormAddBird>();
+  const [birdData, setBirdData] = useState<FormAddBird>(defaultBirdData);
   // const [photoFiles, setPhotoFiles] = useState(new FormData());
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<AddBirdForm>();
+  const { handleSubmit } = useForm<AddBirdForm>();
 
   const onSubmit: SubmitHandler<AddBirdForm> = () => {
     // console.log({
@@ -36,9 +39,10 @@ export const FormBirdAdd = () => {
     // })
   }
 
+
   return (
     // TODO: цветовое оформление деталей формы полей — может задать юзер по палитре с картинки
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ width: 350 }}>
       <h3>Внесите данные о птице</h3>
 
       {(Object.entries(fieldsDescription) as [FieldBlocksKeys, FieldBlocksType][])
@@ -97,7 +101,7 @@ export const FormBirdAdd = () => {
       }
 
       {/* TODO: <button type="submit" onClick={generateJSON}>Проверить карточку</button> */}
-      <input type="submit" />
+      <TextField color="secondary" fullWidth margin="normal" size="small" type="submit" variant="outlined" />
     </form>
   );
 }

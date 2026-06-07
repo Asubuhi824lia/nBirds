@@ -2,20 +2,28 @@ import React, { useState } from "react";
 import type { FieldDataType } from "../types";
 import { IconButton, TextField } from "@mui/material";
 import { Add as AddIcon } from '@mui/icons-material';
-interface specInputPropsType {
+// TODO: переписать в отдельный файл тип
+export interface specInputPropsType {
   [key: string]: Pick<React.InputHTMLAttributes<HTMLInputElement>,
     "type" |
     "multiple" |
     "lang" |
     "pattern" |
-    "required"
+    "required" |
+    "disabled"
   >
+}
+const specInputStaticProps: specInputPropsType = {
+  photoUrls: { type: "url" },
+  photoFiles: { type: "file", multiple: true },
+  nameLatin: { lang: "la", pattern: "[a-z A-Z]+", required: true }
 }
 
 // TODO: добавить хэндлер как в интерфейс
 
 type FieldBlockControlsType = FieldDataType & {
   defaultValue?: string;
+  specInputDynamicProps?: specInputPropsType;
   addList: (newItem: string) => void;
 }
 
@@ -25,17 +33,14 @@ export const FieldBlockControls = ({
   isMultilines,
   isAdditionList,
   defaultValue = "",
+  specInputDynamicProps,  // зависит от других полей
   addList
 }: FieldBlockControlsType) => {
 
   // defaultValue — string | string[]
   const [text, setText] = useState<string>(defaultValue);
 
-  const specInputProps: specInputPropsType = {
-    photoUrls: { type: "url" },
-    photoFiles: { type: "file", multiple: true },
-    nameLatin: { lang: "la", pattern: "[a-z A-Z]+", required: true }
-  }
+  const specInputProps = { ...specInputStaticProps, ...specInputDynamicProps };
 
   const addItemHandler = () => {
     if (text?.trim()) addList(text);
@@ -58,6 +63,9 @@ export const FieldBlockControls = ({
         onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))} // TODO: to check
         color="secondary"
         variant="outlined"
+        margin="normal"
+        // ограничить ширину контейнеру
+        fullWidth
         slotProps={{ inputLabel: { shrink: true } }}
         {...specInputProps[id]}
         {...{
