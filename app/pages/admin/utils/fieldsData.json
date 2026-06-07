@@ -4,7 +4,7 @@
     "blocks": [
       {
         "id": "photoUrls",
-        "label": "",
+        "label": "URL фото",
         "isMultilines": false,
         "isAdditionList": false
       }
