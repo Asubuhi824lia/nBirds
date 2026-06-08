@@ -4,7 +4,7 @@ import { default as fieldsDescription } from "./utils/fieldsData.json";
 import { type AddBirdForm, type FieldsDataIds, type FormAddBird } from "./utils";
 import type { FieldBlocksKeys, FieldBlocksType } from "./components/types";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { Stack, TextField, Typography } from "@mui/material";
+import { Paper, Stack, TextField, Typography } from "@mui/material";
 import { textFieldBaseStyles } from "./utils/textFieldProps";
 // TODO: при 1-м рендеринге — заполнение данных со "структуры данных" в "структуру полей"
 const defaultBirdData: FormAddBird = {
@@ -43,15 +43,15 @@ export const FormBirdAdd = () => {
 
   return (
     // TODO: цветовое оформление деталей формы полей — может задать юзер по палитре с картинки
-    <form onSubmit={handleSubmit(onSubmit)} style={{ width: 400 }}>
-      <Stack spacing={3}>
-        <Typography variant="h5">Внесите данные о птице</Typography>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ width: 400, display: 'flex', flexDirection: "column", gap: 24 }}>
+      <Typography variant="h5" align="center">Внесите данные о птице</Typography>
 
-        <Stack spacing={1} direction="column">
-          {(Object.entries(fieldsDescription) as [FieldBlocksKeys, FieldBlocksType][])
-            .map(([blockId, value]) => (
-              <div className="form-block" id={blockId} key={blockId}>
-                <fieldset>
+      <Stack direction="column" spacing={2}>
+        {(Object.entries(fieldsDescription) as [FieldBlocksKeys, FieldBlocksType][])
+          .map(([blockId, value]) => (
+            <div className="form-block" id={blockId} key={blockId}>
+              <Paper elevation={3} square={false} variant="elevation" sx={{ py: 2, px: 3, backgroundColor: "#fff0d9" }}>
+                <Stack component="fieldset" spacing={1}>
                   <Typography variant="h6" component="legend">{value.name}</Typography>
                   {/* TODO: показ не перелистыванием, а перепроявлением opacity */}
                   {value.blocks.map(({ id, ...block }) => {
@@ -97,20 +97,20 @@ export const FormBirdAdd = () => {
                       </div>
                     )
                   })}
-                </fieldset>
-              </div>
-            ))
-          }
-        </Stack>
-
-        {/* TODO: <button type="submit" onClick={generateJSON}>Проверить карточку</button> */}
-        <TextField
-          margin="normal"
-          size="small"
-          type="submit"
-          {...textFieldBaseStyles}
-        />
+                </Stack>
+              </Paper>
+            </div>
+          ))
+        }
       </Stack>
+
+      {/* TODO: <button type="submit" onClick={generateJSON}>Проверить карточку</button> */}
+      <TextField
+        margin="normal"
+        size="small"
+        type="submit"
+        {...textFieldBaseStyles}
+      />
     </form >
   );
 }

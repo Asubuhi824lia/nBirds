@@ -42,7 +42,7 @@ export const FieldListItem = ({ isMultilines, printedText }: ListItemProps) => {
   // TODO: иконки — отдельный компонент (единообразить стили), передавать только название
   return (
     <div ref={itemRef}>
-      <ListItem alignItems="flex-start" disableGutters>
+      <ListItem alignItems="flex-start" dense disableGutters>
         {/* TODO: отдельный элемент с общим children */}
         {isEditMode ? (
           <TextField
@@ -56,20 +56,20 @@ export const FieldListItem = ({ isMultilines, printedText }: ListItemProps) => {
             }}
           />
         ) : (
-          <ListItemText sx={{ pl: 1.6 }}>{text}</ListItemText>
+          <ListItemText>{text}</ListItemText>
         )}
         <ButtonGroup variant="outlined" color="secondary" size="small" orientation="horizontal" sx={{ ml: 1 }}>
           {isEditMode ? (
             // TODO: add Icon, Loadre on saveClk
-            <Button name="action" value="save" onClick={saveEditedHandler}>
+            <Button name="action" value="save" onClick={saveEditedHandler} sx={{ minWidth: 'auto', px: 0.8 }}>
               <SaveIcon fontSize="small" />
             </Button>
           ) : (
-            <Button name="action" value="edit" onClick={toEditHandler}>
+            <Button name="action" value="edit" onClick={toEditHandler} sx={{ minWidth: 'auto', px: 0.8 }}>
               <EditIcon fontSize="small" />
             </Button>
           )}
-          <Button name="action" value="delete" onClick={deleteHandler}>
+          <Button name="action" value="delete" onClick={deleteHandler} sx={{ minWidth: 'auto', px: 0.8 }}>
             <DeleteIcon fontSize="small" />
           </Button>
         </ButtonGroup>

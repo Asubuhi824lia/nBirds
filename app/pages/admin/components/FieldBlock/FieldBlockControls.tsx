@@ -49,7 +49,7 @@ export const FieldBlockControls = ({
             label={label}
             value={text}
             onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))} // TODO: to check
-            margin="normal"
+            margin="dense"
             slotProps={{ inputLabel: { shrink: true } }}
             // общее.
             {...textFieldBaseStyles}
@@ -68,7 +68,7 @@ export const FieldBlockControls = ({
           />
         </Grid>
         {isAdditionList && (
-          <Grid size="auto" direction="row" sx={{ display: "flex", alignItems: "center", pt: 2, pb: 1 }} >
+          <Grid size="auto" direction="row" sx={{ display: "flex", alignItems: "center", pt: 1, pb: 0.5 }} >
             <Button
               id={`${id}Btn`}
               name="action"
