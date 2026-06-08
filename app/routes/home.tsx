@@ -11,5 +11,9 @@ export function meta({ location }: Route.MetaArgs) {
 
 export default function Home() {
   // return <Welcome />;
-  return <FormBirdAdd />
+  return (
+    <section style={{ display: "flex", justifyContent: "center" }}>
+      <FormBirdAdd />
+    </section>
+  )
 }

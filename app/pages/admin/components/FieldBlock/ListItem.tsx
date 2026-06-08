@@ -1,11 +1,13 @@
-import { Button, ButtonGroup } from "@mui/material";
+import { Button, ButtonGroup, ListItemText, ListItem, TextField } from "@mui/material";
 import { Edit as EditIcon, Save as SaveIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { useRef, useState } from "react";
+import { textFieldBaseStyles } from "../../utils/textFieldProps";
 
 type ListItemProps = {
+  isMultilines?: boolean;
   printedText: string;
 }
-export const ListItem = ({ printedText }: ListItemProps) => {
+export const FieldListItem = ({ isMultilines, printedText }: ListItemProps) => {
   const itemRef = useRef<HTMLDivElement>(null);
   const editFieldRef = useRef<HTMLTextAreaElement>(null);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -39,28 +41,39 @@ export const ListItem = ({ printedText }: ListItemProps) => {
   }
   // TODO: иконки — отдельный компонент (единообразить стили), передавать только название
   return (
-    <div ref={itemRef} className="addition-list-item">
-      {/* TODO: отдельный элемент с общим children */}
-      {isEditMode ? (
-        <textarea ref={editFieldRef} rows={5}>{text}</textarea>
-      ) : (
-        <span className="item-info">{text}</span>
-      )}
-      <ButtonGroup variant="outlined" color="secondary"size="small" orientation="horizontal">
+    <div ref={itemRef}>
+      <ListItem alignItems="flex-start" disableGutters>
+        {/* TODO: отдельный элемент с общим children */}
         {isEditMode ? (
-          // TODO: add Icon, Loadre on saveClk
-          <Button name="action" value="save" onClick={saveEditedHandler}>
-            <SaveIcon fontSize="small" />
-          </Button>
+          <TextField
+            inputRef={editFieldRef}
+            defaultValue={text}
+            size="small"
+            {...textFieldBaseStyles}
+            {...{
+              multiline: isMultilines,
+              minRows: isMultilines ? 5 : 1,
+            }}
+          />
         ) : (
-          <Button name="action" value="edit" onClick={toEditHandler}>
-            <EditIcon fontSize="small" />
-          </Button>
+          <ListItemText sx={{ pl: 1.6 }}>{text}</ListItemText>
         )}
-        <Button name="action" value="delete" onClick={deleteHandler}>
-          <DeleteIcon fontSize="small" />
-        </Button>
-      </ButtonGroup>
+        <ButtonGroup variant="outlined" color="secondary" size="small" orientation="horizontal" sx={{ ml: 1 }}>
+          {isEditMode ? (
+            // TODO: add Icon, Loadre on saveClk
+            <Button name="action" value="save" onClick={saveEditedHandler}>
+              <SaveIcon fontSize="small" />
+            </Button>
+          ) : (
+            <Button name="action" value="edit" onClick={toEditHandler}>
+              <EditIcon fontSize="small" />
+            </Button>
+          )}
+          <Button name="action" value="delete" onClick={deleteHandler}>
+            <DeleteIcon fontSize="small" />
+          </Button>
+        </ButtonGroup>
+      </ListItem>
     </div>
   );
 }

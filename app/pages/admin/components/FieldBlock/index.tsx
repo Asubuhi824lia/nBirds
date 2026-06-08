@@ -1,9 +1,9 @@
 import { useState } from "react";
 import type { FieldBlocksKeys, FieldDataType } from "../types";
 import { FieldBlockControls } from "./FieldBlockControls";
-import { ListItem } from "./ListItem";
+import { FieldListItem } from "./ListItem";
 import type { FieldsDataIds } from "../../utils";
-import { TextField } from "@mui/material";
+import { List, TextField } from "@mui/material";
 import { textFieldBaseStyles } from "../../utils/textFieldProps";
 
 type HandleAddDataProps<T> =
@@ -16,6 +16,7 @@ interface FieldBlockProps<
   K extends boolean
 > {
   blockId: FieldBlocksKeys;
+  // TODO: проверить с чем сочитается block с таким
   block: Omit<FieldDataType, "id" | "isAdditionList"> & { id: T, isAdditionList: K };
   defaultValue?: null | (K extends true ? string[] : string);
   handleAddData: ({ key, data }: HandleAddDataProps<T>) => void;
@@ -29,7 +30,7 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
 }: FieldBlockProps<T, K>) => {
   const [list, setList] = useState<string[]>(Array.isArray(defaultValue) ? [...defaultValue] : []);
 
-  const { id, isAdditionList } = block;
+  const { id, isAdditionList, isMultilines } = block;
 
   const addListHandler = (newItem: string) => {
     if (isAdditionList) {
@@ -74,12 +75,12 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
         />
       )}
       {isAdditionList && (
-        <div className="addition-list">
+        <List>
           {list.map((text, index) => (
             // TODO: проверить как правильно задавать key компоненту
-            <ListItem key={`${id}-${index}`} printedText={text} />
+            <FieldListItem key={`${id}-${index}`} printedText={text} isMultilines={isMultilines} />
           ))}
-        </div>
+        </List>
       )}
     </>
   );

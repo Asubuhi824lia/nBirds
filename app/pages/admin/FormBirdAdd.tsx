@@ -43,7 +43,7 @@ export const FormBirdAdd = () => {
 
   return (
     // TODO: цветовое оформление деталей формы полей — может задать юзер по палитре с картинки
-    <form onSubmit={handleSubmit(onSubmit)} style={{ width: 350 }}>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ width: 400 }}>
       <h3>Внесите данные о птице</h3>
 
       {(Object.entries(fieldsDescription) as [FieldBlocksKeys, FieldBlocksType][])
