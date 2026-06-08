@@ -1,8 +1,9 @@
 import { useState } from "react";
-import type { FieldDataType } from "../types";
 import { Button, Grid, TextField } from "@mui/material";
 import { Add as AddIcon } from '@mui/icons-material';
+import type { FieldDataType } from "../types";
 import { specInputStaticProps, textFieldBaseStyles, type SpecInputPropsType } from "../../utils/textFieldProps";
+import { Field } from "formik";
 
 // TODO: добавить хэндлер как в интерфейс
 
@@ -44,12 +45,14 @@ export const FieldBlockControls = ({
     <div className="addition-list-controls">
       <Grid container spacing={isAdditionList ? 0.5 : 0}>
         <Grid size="grow">
-          <TextField
-            id={id}
+          <Field
+            name={id}
             label={label}
             value={text}
-            onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))} // TODO: to check
+            // onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))} // TODO: to check
             margin="dense"
+            component={TextField}
+            // InputProps={{ notched: true }}
             slotProps={{ inputLabel: { shrink: true } }}
             // общее.
             {...textFieldBaseStyles}
@@ -59,10 +62,10 @@ export const FieldBlockControls = ({
             {...{
               multiline: isMultilines,
               minRows: isMultilines ? 3 : undefined,
-              onChange: (e) =>
-                isMultilines
-                  ? setText(e.target.value)
-                  : handleChangeInput(e.target.value),
+              // onChange: (e) =>
+              //   isMultilines
+              //     ? setText(e.target.value)
+              //     : handleChangeInput(e.target.value),
               size: isMultilines ? "medium" : "small",
             }}
           />

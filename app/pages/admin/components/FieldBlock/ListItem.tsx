@@ -61,15 +61,15 @@ export const FieldListItem = ({ isMultilines, printedText }: ListItemProps) => {
         <ButtonGroup variant="outlined" color="secondary" size="small" orientation="horizontal" sx={{ ml: 1 }}>
           {isEditMode ? (
             // TODO: add Icon, Loadre on saveClk
-            <Button name="action" value="save" onClick={saveEditedHandler} sx={{ minWidth: 'auto', px: 0.8 }}>
+            <Button name="action" value="save" onClick={saveEditedHandler} sx={{ minWidth: 'min-content !important', px: 0.75 }}>
               <SaveIcon fontSize="small" />
             </Button>
           ) : (
-            <Button name="action" value="edit" onClick={toEditHandler} sx={{ minWidth: 'auto', px: 0.8 }}>
+            <Button name="action" value="edit" onClick={toEditHandler} sx={{ minWidth: 'min-content !important', px: 0.75 }}>
               <EditIcon fontSize="small" />
             </Button>
           )}
-          <Button name="action" value="delete" onClick={deleteHandler} sx={{ minWidth: 'auto', px: 0.8 }}>
+          <Button name="action" value="delete" onClick={deleteHandler} sx={{ minWidth: 'min-content !important', px: 0.75 }}>
             <DeleteIcon fontSize="small" />
           </Button>
         </ButtonGroup>

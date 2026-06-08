@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { List, TextField } from "@mui/material";
 import type { FieldBlocksKeys, FieldDataType } from "../types";
 import { FieldBlockControls } from "./FieldBlockControls";
 import { FieldListItem } from "./ListItem";
 import type { FieldsDataIds } from "../../utils";
-import { List, TextField } from "@mui/material";
 import { textFieldBaseStyles } from "../../utils/textFieldProps";
+import { Field } from "formik";
 
 type HandleAddDataProps<T> =
   | { key: T; data?: null | string[] }
@@ -66,14 +67,17 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
       // specInputDynamicProps={{}}
       />
       {blockId === "blockImages" && (
-        <TextField
-          id="photoFiles"
+        <Field
+          name="photoFiles"
           type="file"
           size="small"
+          component={TextField}
+          // InputProps={{ notched: true }}
           slotProps={{ htmlInput: { multiple: true } }}
           {...textFieldBaseStyles}
         />
       )}
+
       {isAdditionList && !!list.length && (
         <List dense sx={{ pl: 1.5 }}>
           {list.map((text, index) => (
