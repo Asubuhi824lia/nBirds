@@ -75,7 +75,7 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
         />
       )}
       {isAdditionList && (
-        <List>
+        <List dense>
           {list.map((text, index) => (
             // TODO: проверить как правильно задавать key компоненту
             <FieldListItem key={`${id}-${index}`} printedText={text} isMultilines={isMultilines} />
