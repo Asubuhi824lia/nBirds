@@ -5,4 +5,8 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
+  ssr: {
+    // Укажите здесь пакеты, которые нужно обрабатывать через сборку Vite, а не оставлять в виде исходных Node.js модулей
+    noExternal: ['@mui/material', 'react-transition-group'],
+  },
 });

@@ -1,9 +1,7 @@
-import { useState } from "react";
 import { FieldBlock } from "./components/FieldBlock";
 import { default as fieldsDescription } from "./utils/fieldsData.json";
-import { type AddBirdForm, type FieldsDataIds, type FormAddBird } from "./utils";
+import { type FieldsDataIds, type FormAddBird } from "./utils";
 import type { FieldBlocksKeys, FieldBlocksType } from "./components/types";
-import { useForm, type SubmitHandler } from "react-hook-form";
 import { Form, Formik } from 'formik';
 import { Button, Paper, Stack, Typography } from "@mui/material";
 // TODO: при 1-м рендеринге — заполнение данных со "структуры данных" в "структуру полей"
@@ -61,7 +59,7 @@ export const FormBirdAdd = () => {
         console.log(values)
       }}
     >
-      {({ submitForm, values }) => (
+      {({ submitForm, handleChange }) => (
         // <form onSubmit={handleSubmit(onSubmit)} style={{ width: 400, display: 'flex', flexDirection: "column", gap: 24 }}>
         <Form style={{ width: 400, display: 'flex', flexDirection: "column", gap: 24 }}>
           <Typography variant="h5" align="center">Внесите данные о птице</Typography>
@@ -91,28 +89,7 @@ export const FormBirdAdd = () => {
                               blockId={blockId}
                               block={{ ...block, id }}
                               defaultValue={defaultValue}
-                              handleAddData={({ key, data }) => {
-                                switch (blockId) {
-                                  // TODO: Immer 
-                                  case "blockImages":
-                                    setBirdData(prev => ({ ...prev, [key]: data }));
-                                    break;
-                                  case "blockNames":
-                                    setBirdData({
-                                      photoUrls: birdData.photoUrls,
-                                      names: { ...birdData.names, [key]: data },
-                                      facts: { ...birdData.facts }
-                                    });
-                                    break;
-                                  case "blockFacts":
-                                    setBirdData({
-                                      photoUrls: birdData.photoUrls,
-                                      names: { ...birdData.names },
-                                      facts: { ...birdData.facts, [key]: data }
-                                    });
-                                    break;
-                                }
-                              }}
+                              handleAddData={handleChange}
                             />
                           </div>
                         )
@@ -125,14 +102,6 @@ export const FormBirdAdd = () => {
           </Stack>
 
           {/* TODO: <button type="submit" onClick={generateJSON}>Проверить карточку</button> */}
-          {/* <TextField
-            margin="normal"
-            size="small"
-            type="submit"
-            disabled={isSubmitting}
-            onClick={handleSubmit}
-            {...textFieldBaseStyles}
-          /> */}
           <Button
             variant="contained"
             color="secondary"
