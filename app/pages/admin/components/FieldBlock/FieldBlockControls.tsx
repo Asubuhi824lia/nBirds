@@ -1,19 +1,19 @@
 import { useState } from "react";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 import { Add as AddIcon } from '@mui/icons-material';
 import type { FieldDataType } from "../types";
 import {
   specInputStaticProps,
   type SpecInputPropsType
 } from "../../utils/textFieldProps";
-import { FormikTextField } from "../ui";
+import { textFieldBaseStyles } from "../ui/FormikTextField";
 
 // TODO: добавить хэндлер как в интерфейс
 
 type FieldBlockControlsType = FieldDataType & {
   defaultValue?: string;
+  addList?: (obj: string) => void;
   specInputDynamicProps?: SpecInputPropsType;
-  addList: (e: string | React.ChangeEvent<any>) => void;
 }
 
 export const FieldBlockControls = ({
@@ -26,15 +26,9 @@ export const FieldBlockControls = ({
   addList
 }: FieldBlockControlsType) => {
 
-  // defaultValue — string | string[]
   const [text, setText] = useState<string>(defaultValue);
 
   const specInputProps = { ...specInputStaticProps, ...specInputDynamicProps };
-
-  const addItemHandler = () => {
-    if (text?.trim()) addList(text);
-    setText("");
-  }
 
   // TODO: сделать чтобы при вводе пропсе уже на «=» автокомплит скобок
   // TODO: полю "Название (лат.)" паттерн что только 2 слова
@@ -43,11 +37,15 @@ export const FieldBlockControls = ({
     <div className="addition-list-controls">
       <Grid container spacing={isAdditionList ? 0.5 : 0}>
         <Grid size="grow">
-          <FormikTextField
-            name={id}
+          <TextField
+            id={`${id}-textfield`}
             label={label}
+            value={text}
+            onChange={e => setText(e.target.value)}
             margin="dense"
             slotProps={{ htmlInput: { multiple: true }, inputLabel: { shrink: true } }}
+            // дефолтные стили
+            {...textFieldBaseStyles}
             // зависимость от id
             {...specInputProps[id]}
             // зависимость от isMultilines
@@ -67,7 +65,7 @@ export const FieldBlockControls = ({
               size="small"
               variant="outlined"
               color="secondary"
-              onClick={addItemHandler}
+              onClick={() => (addList?.(text), console.log(`${id}Btn`, text))}
               sx={{ height: "100%", minWidth: "fit-content" }}
             >
               <AddIcon color="secondary" fontSize="medium" />

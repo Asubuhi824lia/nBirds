@@ -1,19 +1,29 @@
-import { Button, ButtonGroup, ListItemText, ListItem } from "@mui/material";
+import { Button, ButtonGroup, ListItemText, ListItem, type ListItemProps, TextField } from "@mui/material";
 import { Edit as EditIcon, Save as SaveIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { useRef, useState } from "react";
-// TODO: сделать алиас на абсолютный путь до /ui
-import { FormikTextField } from "../ui";
 
-type ListItemProps = {
+const btnBaseStyles = {
+  px: 0.75,
+  minWidth: 'min-content !important'
+}
+
+interface FieldListItemProps extends ListItemProps {
   isMultilines?: boolean;
   printedText: string;
-}
-export const FieldListItem = ({ isMultilines, printedText }: ListItemProps) => {
-  const itemRef = useRef<HTMLDivElement>(null);
+  onDelete: () => void;
+  onEdit: (value: string) => void;
+};
+
+export const FieldListItem = ({
+  id,
+  isMultilines,
+  printedText,
+  onDelete,
+  onEdit
+}: FieldListItemProps) => {
   const editFieldRef = useRef<HTMLTextAreaElement>(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [text, setText] = useState(printedText);
-
 
   const handleEvent = "blur";
   const showIsNotValid = () => {
@@ -30,25 +40,24 @@ export const FieldListItem = ({ isMultilines, printedText }: ListItemProps) => {
   const saveEditedHandler = () => {
     editFieldRef.current?.removeEventListener(handleEvent, showIsNotValid)
 
-    if (editFieldRef.current?.value) setText(editFieldRef.current?.value);
+    if (editFieldRef.current?.value) {
+      setText(editFieldRef.current?.value);
+      onEdit(editFieldRef.current?.value);
+    }
     else console.log("Ошибка получения текста поля ввода", editFieldRef.current);
 
     editFieldRef.current?.setCustomValidity("");
     setIsEditMode(false);
   }
-  const deleteHandler = () => {
-    editFieldRef.current?.removeEventListener(handleEvent, showIsNotValid)
-    itemRef.current?.remove();
-  }
   // TODO: иконки — отдельный компонент (единообразить стили), передавать только название
   return (
-    <div ref={itemRef}>
+    <div key={id}>
       <ListItem alignItems="flex-start" dense disableGutters>
         {/* TODO: отдельный элемент с общим children */}
         {isEditMode ? (
           // TODO:  вот вроде форма значение отсюда не берет, 
           //        но ошибку если такое поле открыто выдаёт
-          <FormikTextField
+          <TextField
             inputRef={editFieldRef}
             defaultValue={text}
             size="small"
@@ -63,15 +72,15 @@ export const FieldListItem = ({ isMultilines, printedText }: ListItemProps) => {
         <ButtonGroup variant="outlined" color="secondary" size="small" orientation="horizontal" sx={{ ml: 1 }}>
           {isEditMode ? (
             // TODO: add Icon, Loadre on saveClk
-            <Button name="action" value="save" onClick={saveEditedHandler} sx={{ minWidth: 'min-content !important', px: 0.75 }}>
+            <Button name="action" value="save" onClick={saveEditedHandler} sx={btnBaseStyles}>
               <SaveIcon fontSize="small" />
             </Button>
           ) : (
-            <Button name="action" value="edit" onClick={toEditHandler} sx={{ minWidth: 'min-content !important', px: 0.75 }}>
+            <Button name="action" value="edit" onClick={toEditHandler} sx={btnBaseStyles}>
               <EditIcon fontSize="small" />
             </Button>
           )}
-          <Button name="action" value="delete" onClick={deleteHandler} sx={{ minWidth: 'min-content !important', px: 0.75 }}>
+          <Button name="action" value="delete" onClick={onDelete} sx={btnBaseStyles}>
             <DeleteIcon fontSize="small" />
           </Button>
         </ButtonGroup>

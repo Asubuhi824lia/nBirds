@@ -6,7 +6,7 @@
         "id": "photoUrls",
         "label": "URL фото",
         "isMultilines": false,
-        "isAdditionList": false
+        "isAdditionList": true
       }
     ]
   },

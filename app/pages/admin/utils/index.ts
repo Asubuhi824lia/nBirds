@@ -14,7 +14,7 @@
 // TODO: "securitypolicyviolation" — фиксирование нарушений (на сервер)
 
 
-const scrollToOffsetElement = (element: any, offset = 150) => {
+export const scrollToOffsetElement = (element: any, offset = 150) => {
   const elemPos = element.getBoundingClientRect().top;
   const offsetPos = elemPos + window.scrollY - offset;
 
@@ -24,8 +24,9 @@ const scrollToOffsetElement = (element: any, offset = 150) => {
   })
 }
 
+// TODO: remove?
 export interface FormAddBird {
-  photoUrls?: string | null,
+  photoUrls?: string[] | null,
   names: {
     nameMain?: string | null,
     nameLatin: string,
@@ -40,7 +41,7 @@ export interface FormAddBird {
 }
 
 export const defaultFormObject: FormAddBird = {
-  photoUrls: "",
+  photoUrls: [],
   names: {
     nameMain: "",
     nameLatin: "",
