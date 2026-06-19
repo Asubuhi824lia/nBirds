@@ -1,7 +1,8 @@
-import { Button, ButtonGroup, ListItemText, ListItem, TextField } from "@mui/material";
+import { Button, ButtonGroup, ListItemText, ListItem } from "@mui/material";
 import { Edit as EditIcon, Save as SaveIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { useRef, useState } from "react";
-import { textFieldBaseStyles } from "../../utils/textFieldProps";
+// TODO: сделать алиас на абсолютный путь до /ui
+import { FormikTextField } from "../ui";
 
 type ListItemProps = {
   isMultilines?: boolean;
@@ -45,11 +46,12 @@ export const FieldListItem = ({ isMultilines, printedText }: ListItemProps) => {
       <ListItem alignItems="flex-start" dense disableGutters>
         {/* TODO: отдельный элемент с общим children */}
         {isEditMode ? (
-          <TextField
+          // TODO:  вот вроде форма значение отсюда не берет, 
+          //        но ошибку если такое поле открыто выдаёт
+          <FormikTextField
             inputRef={editFieldRef}
             defaultValue={text}
             size="small"
-            {...textFieldBaseStyles}
             {...{
               multiline: isMultilines,
               minRows: isMultilines ? 5 : 1,

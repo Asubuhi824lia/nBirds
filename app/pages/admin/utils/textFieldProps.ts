@@ -1,11 +1,3 @@
-import type { TextFieldProps, TextFieldVariants } from "@mui/material"
-
-export const textFieldBaseStyles = {
-  fullWidth: true,
-  color: "secondary" as TextFieldProps["color"],
-  variant: "outlined" as TextFieldVariants
-}
-
 // Только для FieldBlockControls
 export interface SpecInputPropsType {
   [key: string]: Pick<React.InputHTMLAttributes<HTMLInputElement>,

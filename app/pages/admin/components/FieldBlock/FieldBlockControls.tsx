@@ -1,16 +1,19 @@
 import { useState } from "react";
-import { Button, Grid, TextField } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { Add as AddIcon } from '@mui/icons-material';
 import type { FieldDataType } from "../types";
-import { specInputStaticProps, textFieldBaseStyles, type SpecInputPropsType } from "../../utils/textFieldProps";
-import { Field } from "formik";
+import {
+  specInputStaticProps,
+  type SpecInputPropsType
+} from "../../utils/textFieldProps";
+import { FormikTextField } from "../ui";
 
 // TODO: добавить хэндлер как в интерфейс
 
 type FieldBlockControlsType = FieldDataType & {
   defaultValue?: string;
   specInputDynamicProps?: SpecInputPropsType;
-  addList: (newItem: string) => void;
+  addList: (e: string | React.ChangeEvent<any>) => void;
 }
 
 export const FieldBlockControls = ({
@@ -33,11 +36,6 @@ export const FieldBlockControls = ({
     setText("");
   }
 
-  const handleChangeInput = (value: string) => {
-    setText(value);
-    if (text && !isAdditionList) addList(text);
-  }
-
   // TODO: сделать чтобы при вводе пропсе уже на «=» автокомплит скобок
   // TODO: полю "Название (лат.)" паттерн что только 2 слова
   return (
@@ -45,27 +43,17 @@ export const FieldBlockControls = ({
     <div className="addition-list-controls">
       <Grid container spacing={isAdditionList ? 0.5 : 0}>
         <Grid size="grow">
-          <Field
+          <FormikTextField
             name={id}
             label={label}
-            value={text}
-            // onPaste={(e) => handleChangeInput(e.clipboardData.getData('text'))} // TODO: to check
             margin="dense"
-            component={TextField}
-            // InputProps={{ notched: true }}
-            slotProps={{ inputLabel: { shrink: true } }}
-            // общее.
-            {...textFieldBaseStyles}
+            slotProps={{ htmlInput: { multiple: true }, inputLabel: { shrink: true } }}
             // зависимость от id
             {...specInputProps[id]}
             // зависимость от isMultilines
             {...{
               multiline: isMultilines,
               minRows: isMultilines ? 3 : undefined,
-              // onChange: (e) =>
-              //   isMultilines
-              //     ? setText(e.target.value)
-              //     : handleChangeInput(e.target.value),
               size: isMultilines ? "medium" : "small",
             }}
           />

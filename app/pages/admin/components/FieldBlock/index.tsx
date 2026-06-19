@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { List, TextField } from "@mui/material";
+import { List } from "@mui/material";
 import type { FieldBlocksKeys, FieldDataType } from "../types";
 import { FieldBlockControls } from "./FieldBlockControls";
-import { FieldListItem } from "./ListItem";
+import { FieldListItem } from "./FieldListItem";
 import type { FieldsDataIds } from "../../utils";
-import { textFieldBaseStyles } from "../../utils/textFieldProps";
-import { Field } from "formik";
+import { FormikTextField } from "../ui";
 
 type HandleAddDataProps<T> =
   | { key: T; data?: null | string[] }
@@ -20,7 +19,7 @@ interface FieldBlockProps<
   // TODO: проверить с чем сочитается block с таким
   block: Omit<FieldDataType, "id" | "isAdditionList"> & { id: T, isAdditionList: K };
   defaultValue?: null | (K extends true ? string[] : string);
-  handleAddData: ({ key, data }: HandleAddDataProps<T>) => void;
+  handleAddData: (e: string | React.ChangeEvent<any>) => void;
 }
 
 export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends boolean>({
@@ -33,15 +32,15 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
 
   const { id, isAdditionList, isMultilines } = block;
 
-  const addListHandler = (newItem: string) => {
-    if (isAdditionList) {
-      const newList = [newItem, ...list];
-      setList(newList);
-      handleAddData({ key: id, data: newList });
-    } else {
-      handleAddData({ key: id, data: newItem });
-    }
-  }
+  // const addListHandler = (newItem: string) => {
+  //   if (isAdditionList) {
+  //     const newList = [newItem, ...list];
+  //     setList(newList);
+  //     handleAddData({ key: id, data: newList });
+  //   } else {
+  //     handleAddData({ key: id, data: newItem });
+  //   }
+  // }
 
   // TODO: каждый файл называть именем компонента, доб. отдельный index.tsx
   return (
@@ -52,7 +51,7 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
       {/* TODO: как связать с основным названием? */}
       <FieldBlockControls
         {...block}
-        addList={addListHandler}
+        addList={handleAddData}
       /**
        * TODO: прописать ПОСЛЕ подключения формы
        * nameAlternatives: { 
@@ -67,14 +66,11 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
       // specInputDynamicProps={{}}
       />
       {blockId === "blockImages" && (
-        <Field
+        <FormikTextField
           name="photoFiles"
           type="file"
           size="small"
-          component={TextField}
-          // InputProps={{ notched: true }}
           slotProps={{ htmlInput: { multiple: true } }}
-          {...textFieldBaseStyles}
         />
       )}
 
