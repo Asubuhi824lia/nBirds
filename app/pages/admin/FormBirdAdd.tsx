@@ -7,20 +7,18 @@ import { FieldBlockWrapper } from "./components/FieldBlock/FieldBlockWrapper";
 import { defaultBirdData } from "./defaultData";
 
 export interface FormValues {
-  photoUrls: Array<string>,
-  photoFiles: FileList | null,
+  photoUrls?: Array<string>,
+  photoFiles?: FileList,
 
-  nameMain: string,
-  nameLatin: string,
-  nameAlternatives: Array<string>,
-  nameEtymologies: Array<string>,
+  nameMain?: string,
+  nameLatin?: string,
+  nameAlternatives?: Array<string>,
+  nameEtymologies?: Array<string>,
 
-  interestFacts: Array<string>,
-  statisticFacts: Array<string>,
-  similarSpecies: Array<string>
+  interestFacts?: Array<string>,
+  statisticFacts?: Array<string>,
+  similarSpecies?: Array<string>
 }
-
-
 /**
  * TODO: добавить ReadOnly-поле с названием рода, взятым из поля nameLatin
  *    мб добавить подгруз данных - дерева с более полной классификацией

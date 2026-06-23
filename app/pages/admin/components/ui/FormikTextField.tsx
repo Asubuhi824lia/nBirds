@@ -1,5 +1,6 @@
 import { useField } from 'formik';
 import { TextField, type TextFieldProps, type TextFieldVariants } from '@mui/material';
+import type { FormValues } from '../../FormBirdAdd';
 
 export const textFieldBaseStyles = {
   fullWidth: true,
@@ -7,8 +8,14 @@ export const textFieldBaseStyles = {
   variant: "outlined" as TextFieldVariants
 }
 
-export function FormikTextField({ name, label, ...props }: TextFieldProps) {
-  const [field, meta] = useField(name || "");
+type FormValuesKey = keyof FormValues;
+
+type FormValuesFieldTypes = {
+  [K in keyof FormValues]: FormValues[K];
+};
+
+export function FormikTextField({ name, label, ...props }: TextFieldProps & { name: FormValuesKey }) {
+  const [field, meta] = useField<FormValuesFieldTypes[typeof name]>(name || "");
 
   return (
     <TextField

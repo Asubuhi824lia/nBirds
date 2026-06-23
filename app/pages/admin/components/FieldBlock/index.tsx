@@ -27,11 +27,11 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
   // TODO: каждый файл называть именем компонента, доб. отдельный index.tsx
 
   const [field] = useField<FormValues[typeof id]>(id);
-  // console.log(field.value, field.value.length && field.value?.map((el) => 'id=' + el))
 
 
   if (!isAdditionList) {
     return (
+      // TODO: сравненить практики spread или явное указание полей
       <FieldBlockControls {...block} />
     )
   }

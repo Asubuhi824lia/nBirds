@@ -3,7 +3,7 @@ import type { FormValues } from "./FormBirdAdd"
 // TODO: при 1-м рендеринге — заполнение данных со "структуры данных" в "структуру полей"
 export const defaultBirdData: FormValues = {
   photoUrls: ["https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Lophophanes_cristatus_-_01.jpg/500px-Lophophanes_cristatus_-_01.jpg"],
-  photoFiles: null,
+  photoFiles: undefined,
 
   nameLatin: "Lophophanes cristatus",
   nameMain: "Хохлатая синица",
@@ -18,7 +18,7 @@ export const defaultBirdData: FormValues = {
 
 export const emptyBirdData: FormValues = {
   photoUrls: [],
-  photoFiles: null,
+  photoFiles: undefined,
 
   nameMain: '',
   nameLatin: '',
