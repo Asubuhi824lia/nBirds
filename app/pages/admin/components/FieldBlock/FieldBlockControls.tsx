@@ -6,7 +6,6 @@ import { type FieldDataType } from "../types";
 import { type SpecInputPropsType } from "../../utils/textFieldProps";
 
 // TODO: добавить хэндлер как в интерфейс
-
 type FieldBlockControlsType = FieldDataType & {
   defaultValue?: string;
   addList?: (obj: string) => void;
@@ -29,7 +28,6 @@ export const FieldBlockControls = ({
     addList?.(text);
     setText('');
   }
-
 
   // TODO: сделать чтобы при вводе пропсе уже на «=» автокомплит скобок
   // TODO: полю "Название (лат.)" паттерн что только 2 слова

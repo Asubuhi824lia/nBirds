@@ -19,7 +19,7 @@ interface FieldBlockProps<
 
 export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends boolean>({
   blockId,
-  // почему запись «{ block: {...} }» не то же что запись { {...} } ?
+  // TODO: почему запись «{ block: {...} }» не то же что запись { {...} } ?
   block
 }: FieldBlockProps<T, K>) => {
   const { id, isAdditionList, isMultilines } = block;
@@ -81,7 +81,7 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
                     key={`${id}.${index}`}
                     printedText={text}
                     isMultilines={isMultilines}
-                    onDelete={() => remove(index)}
+                    onDelete={() => remove(index) }
                     onEdit={(value) => replace(index, value)}
                   />
                 ))}

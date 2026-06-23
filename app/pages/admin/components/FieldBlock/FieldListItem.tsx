@@ -67,7 +67,7 @@ export const FieldListItem = ({
             }}
           />
         ) : (
-          <ListItemText>{text}</ListItemText>
+          <ListItemText sx={{ wordBreak: 'break-word' }}>{text}</ListItemText>
         )}
         <ButtonGroup variant="outlined" color="secondary" size="small" orientation="horizontal" sx={{ ml: 1 }}>
           {isEditMode ? (

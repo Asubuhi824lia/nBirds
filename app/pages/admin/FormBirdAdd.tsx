@@ -28,7 +28,7 @@ export const FormBirdAdd = () => {
 
   return (
     // TODO: цветовое оформление деталей формы полей — может задать юзер по палитре с картинки
-    <Formik<FormValues>
+    <Formik<FormValues> // TODO: <FormValues> — на что влияет? В чем проявляется?
       initialValues={defaultBirdData}
       onSubmit={(values) => {
         console.log(values)
