@@ -21,10 +21,14 @@ export const FieldBlockControls = ({
   specInputDynamicProps,  // зависит от других полей
   addList
 }: FieldBlockControlsType) => {
-
+  
   const [text, setText] = useState<string>(defaultValue);
 
   const addItemHandler = () => {
+    // Перед отправкой
+    if (!text.trim()) return;
+
+    // Стандартная обработка
     addList?.(text);
     setText('');
   }
@@ -40,7 +44,7 @@ export const FieldBlockControls = ({
             id={id}
             label={label}
             value={text}
-            onChange={e => setText(e.target.value)}
+            onChange={setText}
             isMultilines={isMultilines}
             specInputDynamicProps={specInputDynamicProps}
           />

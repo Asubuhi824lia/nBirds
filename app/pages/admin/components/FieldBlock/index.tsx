@@ -28,7 +28,6 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
 
   const [field] = useField<FormValues[typeof id]>(id);
 
-
   if (!isAdditionList) {
     return (
       // TODO: сравненить практики spread или явное указание полей
@@ -54,7 +53,7 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
          */}
       {/* specInputDynamicProps={{}} */}
       <FieldArray name={id}>
-        {({ remove, replace, unshift }) => (
+        {({ remove, replace, push }) => (
           <div>
             <div>
               {blockId === "blockImages" && (
@@ -68,7 +67,7 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
               )}
               <FieldBlockControls
                 {...block}
-                addList={unshift}
+                addList={push}
               />
             </div>
             {/* TODO: возможен рассинхрон м/у isAdditionList и типом field.value => прописать текст ошибки */}
@@ -81,7 +80,7 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
                     key={`${id}.${index}`}
                     printedText={text}
                     isMultilines={isMultilines}
-                    onDelete={() => remove(index) }
+                    onDelete={() => remove(index)}
                     onEdit={(value) => replace(index, value)}
                   />
                 ))}
