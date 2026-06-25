@@ -1,5 +1,5 @@
-import type { FieldsDataBlocksIdsKeys } from "../utils";
-import fieldsData from "../utils/fieldsData.json";
+import type { FieldsDataBlocksIdsKeys } from "../utils/types";
+import fieldsData from "../utils/data/fieldsData.json";
 // вынести в useContext()
 
 export type FieldBlocksKeys = keyof typeof fieldsData;

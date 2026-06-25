@@ -1,11 +1,10 @@
 import { List } from "@mui/material";
-import type { FieldBlocksKeys, FieldDataType } from "../types";
 import { FieldBlockControls } from "./FieldBlockControls";
 import { FieldListItem } from "./FieldListItem";
-import type { FieldsDataIds } from "../../utils";
+import type { AddBirdForm, FieldsDataIds } from "../../utils/types";
 import { FormikTextField } from "../ui";
 import { FieldArray, useField } from "formik";
-import type { FormValues } from "../../FormBirdAdd";
+import type { FieldBlocksKeys, FieldDataType } from "../types";
 
 // TODO: FieldsDataIdsKeys и FieldBlocksKeys одинаковы, пересмотреть
 interface FieldBlockProps<
@@ -26,7 +25,7 @@ export const FieldBlock = <T extends FieldsDataIds[FieldBlocksKeys], K extends b
 
   // TODO: каждый файл называть именем компонента, доб. отдельный index.tsx
 
-  const [field] = useField<FormValues[typeof id]>(id);
+  const [field] = useField<AddBirdForm[typeof id]>(id);
 
   if (!isAdditionList) {
     return (

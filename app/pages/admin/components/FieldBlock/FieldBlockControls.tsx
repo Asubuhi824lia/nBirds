@@ -3,7 +3,7 @@ import { Button, Grid } from "@mui/material";
 import { Add as AddIcon } from '@mui/icons-material';
 import { ControlsTextField } from "./ControlsTextField";
 import { type FieldDataType } from "../types";
-import { type SpecInputPropsType } from "../../utils/textFieldProps";
+import { type SpecInputPropsType } from "../../utils/data/textFieldProps";
 
 // TODO: добавить хэндлер как в интерфейс
 type FieldBlockControlsType = FieldDataType & {

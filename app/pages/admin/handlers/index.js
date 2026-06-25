@@ -1,3 +1,19 @@
+// Служебное !
+
+// TODO: document.designMode = "on" — делает всю веб-страницу редактируемой
+
+// TODO: document.referrer — сымитировать хлебные крошки
+// возвращает URI страницы, с которой пользователь перешел на текущую страницу.
+
+// TODO: .defaultView — получить window родителя или фрейма кода внутри другого документа
+
+// TODO: .adoptedStyleSheets = [sheet]
+// добавление группы "общих" стилей к DOM-/shadow-элементу
+
+
+// TODO: "securitypolicyviolation" — фиксирование нарушений (на сервер)
+
+
 const inputIds = [
   "photoUrls",
   "nameAlternatives",
@@ -11,6 +27,18 @@ const textareaIds = [
 ]
 
 const listIds = [...inputIds, ...textareaIds];
+
+
+export const scrollToOffsetElement = (element: any, offset = 150) => {
+  const elemPos = element.getBoundingClientRect().top;
+  const offsetPos = elemPos + window.scrollY - offset;
+
+  window.scrollTo({
+    top: offsetPos,
+    behavior: 'smooth'
+  })
+}
+
 
 // установить добавление по кнопке
 listIds.forEach((fieldId) => {
@@ -36,16 +64,6 @@ listIds.forEach((fieldId) => {
   // показ сообщения ошибки 
   // при фиксации не ставшего валидным значения
   field.addEventListener('blur', () => showIsNotValid(field))
-})
-
-// установить добавление по Enter из поля в фокусе
-document.addEventListener('keydown', (e) => {
-  if (e.key === "Enter" && !e.shiftKey) {
-    if (listIds.includes(document.activeElement.id)) {
-      addListItem(document.activeElement.id);
-      e.preventDefault(); // Запрещает перенос по Enter
-    }
-  }
 })
 
 const submit = document.querySelector("button[type=submit]")

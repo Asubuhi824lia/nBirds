@@ -4,7 +4,7 @@ import { Close as CloseIcon } from "@mui/icons-material";
 import {
   specInputStaticProps,
   type SpecInputPropsType
-} from "../../utils/textFieldProps";
+} from "../../utils/data/textFieldProps";
 import { textFieldBaseStyles } from "../ui/FormikTextField";
 import type { FieldDataType } from "../types";
 
