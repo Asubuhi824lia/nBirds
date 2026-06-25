@@ -21,7 +21,7 @@ export const FieldBlockControls = ({
   specInputDynamicProps,  // зависит от других полей
   addList
 }: FieldBlockControlsType) => {
-  
+
   const [text, setText] = useState<string>(defaultValue);
 
   const addItemHandler = () => {
@@ -44,9 +44,11 @@ export const FieldBlockControls = ({
             id={id}
             label={label}
             value={text}
-            onChange={setText}
+            isAdditionList={isAdditionList}
             isMultilines={isMultilines}
             specInputDynamicProps={specInputDynamicProps}
+            onChange={setText}
+            addItemHandler={addItemHandler}
           />
         </Grid>
         {isAdditionList && (

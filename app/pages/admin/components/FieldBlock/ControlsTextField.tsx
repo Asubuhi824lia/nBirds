@@ -10,17 +10,21 @@ import type { FieldDataType } from "../types";
 
 type ControlsTextFieldType = Omit<FieldDataType, "isAdditionList"> & {
   value: string;
-  onChange: React.Dispatch<React.SetStateAction<string>>;
   specInputDynamicProps?: SpecInputPropsType;
+  isAdditionList: boolean;
+  onChange: React.Dispatch<React.SetStateAction<string>>;
+  addItemHandler: () => void;
 }
 
 export const ControlsTextField = ({
   id,
   label,
   value,
-  onChange,
-  isMultilines,
   specInputDynamicProps,  // зависит от других полей
+  isAdditionList,
+  isMultilines,
+  onChange,
+  addItemHandler,
 }: ControlsTextFieldType) => {
   const specInputProps = { ...specInputStaticProps, ...specInputDynamicProps };
   const [isFocused, setIsFocused] = useState(false);
@@ -57,15 +61,16 @@ export const ControlsTextField = ({
       label={label}
       value={value}
       onChange={changeHandler}
-      onFocus={() => {
-        // TODO:  change color of <IconButton> to secondary
-        //        or — if text exist
-        setIsFocused(true);
+      onKeyDown={(e) => {
+        if (!isAdditionList) return;
+
+        if (e.key === "Enter" && !e.shiftKey) {
+          addItemHandler();
+          e.preventDefault(); // Запрещает перенос по Enter
+        }
       }}
-      onBlur={() => {
-        // TODO: change color of <IconButton> to action
-        setIsFocused(false);
-      }}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       margin="dense"
       slotProps={{
         htmlInput: { multiple: true },
