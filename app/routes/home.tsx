@@ -1,4 +1,4 @@
-import { FormBirdAdd } from "~/pages/admin/FormBirdAdd";
+import { FormBirdAdd } from "~/pages/admin/widgets/FormBirdAdd/FormBirdAdd";
 
 export default function Home() {
   return (

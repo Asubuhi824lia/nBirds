@@ -27,7 +27,7 @@ export const ControlsTextField = ({
   addItemHandler,
 }: ControlsTextFieldType) => {
 
-  const [field, meta] = useField({ name: id });
+  const [field] = useField({ name: id });
 
 
   const specInputProps = { ...specInputStaticProps, ...specInputDynamicProps };
