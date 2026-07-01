@@ -4,7 +4,7 @@ import type { FieldBlocksKeys, FieldBlocksType } from "./components/types";
 import { Form, Formik } from 'formik';
 import { Button, Stack, Typography } from "@mui/material";
 import { FieldBlockWrapper } from "./components/FieldBlock/FieldBlockWrapper";
-import { defaultBirdData } from "./utils/data/defaultData";
+import { defaultBirdData, emptyBirdData } from "./utils/data/defaultData";
 import type { AddBirdForm } from "./utils/types";
 
 
@@ -19,8 +19,11 @@ export const FormBirdAdd = () => {
     // TODO: цветовое оформление деталей формы полей — может задать юзер по палитре с картинки
     <Formik<AddBirdForm> // TODO: <FormValues> / <AddBirdForm> — на что влияет? В чем проявляется?
       initialValues={defaultBirdData}
-      onSubmit={(values) => {
-        console.log(values)
+      onSubmit={(values, { resetForm }) => {
+        console.log(values);
+
+        resetForm({ values: emptyBirdData });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }}
     >
       {({ submitForm }) => (

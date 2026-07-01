@@ -16,12 +16,13 @@ export const defaultBirdData: AddBirdForm = {
 
 }
 
+// TODO: или везде undefined?
 export const emptyBirdData: AddBirdForm = {
   photoUrls: [],
   photoFiles: undefined,
 
   nameMain: "",
-  nameLatin: "",
+  nameLatin: "",  // TODO: для default подволить undefined, но не для отправки
   nameAlternatives: [],
   nameEtymologies: [],
 

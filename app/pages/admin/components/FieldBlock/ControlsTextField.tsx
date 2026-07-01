@@ -7,11 +7,11 @@ import {
 } from "../../utils/data/textFieldProps";
 import { textFieldBaseStyles } from "../ui/FormikTextField";
 import type { FieldDataType } from "../types";
+import { useField } from "formik";
 
-type ControlsTextFieldType = Omit<FieldDataType, "isAdditionList"> & {
+type ControlsTextFieldType = FieldDataType & {
   value: string;
   specInputDynamicProps?: SpecInputPropsType;
-  isAdditionList: boolean;
   onChange: React.Dispatch<React.SetStateAction<string>>;
   addItemHandler: () => void;
 }
@@ -26,10 +26,30 @@ export const ControlsTextField = ({
   onChange,
   addItemHandler,
 }: ControlsTextFieldType) => {
+
+  const [field, meta] = useField({ name: id });
+
+
   const specInputProps = { ...specInputStaticProps, ...specInputDynamicProps };
   const [isFocused, setIsFocused] = useState(false);
 
 
+  const changeHandler = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement, Element>
+  ) => {
+    const text = e.target.value;
+
+    if (text[0]?.match(/\s/g)) {
+      return;
+    } else {
+      onChange(text);
+    }
+  };
+
+  const clearHandler = () => onChange('');
+
+
+  // 
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -39,21 +59,6 @@ export const ControlsTextField = ({
   if (!isMounted) {
     return null; // или skeleton/placeholder
   }
-
-
-  const changeHandler = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement, Element>
-  ) => {
-    const text = e.target.value;
-
-    if (text[0]?.match(/\s/g))
-      return;
-    else
-      onChange(text);
-  };
-
-  const clearHandler = () => onChange('');
-
 
   return (
     <TextField
@@ -70,7 +75,7 @@ export const ControlsTextField = ({
         }
       }}
       onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
+      onBlur={(e) => (field.onBlur(e), setIsFocused(false))} // TODO: add показ ошибки после submit
       margin="dense"
       slotProps={{
         htmlInput: { multiple: true },
