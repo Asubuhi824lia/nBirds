@@ -1,5 +1,7 @@
-import { Button, ButtonGroup, Stack, Typography } from "@mui/material";
+import { Button, ButtonGroup, Paper, Typography } from "@mui/material";
 import { useState } from "react"
+import { NumCard } from "./NumCard";
+import { order } from "./utils/data/order/order";
 
 /** Шаг 1
  * 
@@ -34,20 +36,30 @@ export const CounterSpecies = () => {
   const [count, setCount] = useState(0);
 
   const curGoal = 1; //
-  const highestDigitStep = (count - curGoal) < 10
-    ? 1
-    : calcHighestDigitPlace(count, curGoal);
 
+  // TODO: дописать, иначе Error
+  // const highestDigitStep = (count - curGoal) < 10
+  //   ? 1
+  //   : calcHighestDigitPlace(count, curGoal);
+
+  const familiesCalculated =
+    order.families.filter(({ species_length }) => species_length === count);
 
   return (
     <>
-      <Stack spacing={2} sx={{ width: 200 }}>
+      {count !== 0 && familiesCalculated.length > 0 && (
+        <NumCard
+          speciesNum={count}
+          families={familiesCalculated}
+        />
+      )}
+      <Paper elevation={5} sx={{ width: 200, p: 2 }}>
         <Typography variant="h1" component="center">{count}</Typography>
         <ButtonGroup fullWidth size="large" color="primary">
-          {/* <Button onClick={() => setCount(prev => prev - 1)}>-1</Button> */}
+          <Button onClick={() => setCount(prev => prev - 1)}>-1</Button>
           <Button onClick={() => setCount(prev => prev + 1)}>+1</Button>
         </ButtonGroup>
-      </Stack>
+      </Paper>
     </>
   )
 }

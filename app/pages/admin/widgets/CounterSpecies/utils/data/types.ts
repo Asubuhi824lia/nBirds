@@ -9,7 +9,7 @@ interface GeneraStruct extends SpeciesStruct {
   species_length: number;
 }
 
-interface FamilyStruct extends Omit<GeneraStruct, "species"> {
+export interface FamilyStruct extends Omit<GeneraStruct, "species"> {
   genera: Array<GeneraStruct>;
   genera_length: number;
 }
