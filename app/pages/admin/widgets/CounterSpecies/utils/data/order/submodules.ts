@@ -255,13 +255,6 @@ export const families_low = [
     alternative_names: ["мухоловки-феи"],
   },
   {
-    name: "Очковые сорокопуты",
-    latin_name: "Prionopidae",
-    species_length: 8,
-    genera: [],
-    genera_length: 0,
-  },
-  {
     name: "Ложнопищуховые",
     latin_name: "Climacteridae",
     species_length: 7,

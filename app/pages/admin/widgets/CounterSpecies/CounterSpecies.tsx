@@ -1,7 +1,8 @@
 import { Button, ButtonGroup, Paper, Typography } from "@mui/material";
-import { useState } from "react"
-import { NumCard } from "./NumCard";
+import { useRef, useState } from "react"
 import { order } from "./utils/data/order/order";
+import { NumCardList } from "./NumCardList/NumCardList";
+import type { FamilyStruct } from "./utils/data/types";
 
 /** Шаг 1
  * 
@@ -31,35 +32,53 @@ import { order } from "./utils/data/order/order";
  * — «Многогранность» — тренировка на каждый Акцент за 1 день — для первого дня
  */
 
+export type ListType = {
+  speciesNum: number;
+  families: FamilyStruct[];
+}
+
 export const CounterSpecies = () => {
-  // States
   const [count, setCount] = useState(0);
 
-  const curGoal = 1; //
+  const achivedCountRef = useRef<number>(0); // MAX count value
+
 
   // TODO: дописать, иначе Error
   // const highestDigitStep = (count - curGoal) < 10
   //   ? 1
   //   : calcHighestDigitPlace(count, curGoal);
 
-  const familiesCalculated =
-    order.families.filter(({ species_length }) => species_length === count);
+
+  const [list, setList] = useState<ListType[]>([]);
+
+  const addCountHandler = () => {
+    const newCount = count + 1;
+
+    const familiesCalculated =
+      order.families.filter(({ species_length }) => species_length === newCount);
+
+    setCount(newCount);
+    if (newCount > achivedCountRef.current) {
+      achivedCountRef.current++;
+
+      // prevent extra additions
+      if (familiesCalculated.length)
+        setList(prev => [{ speciesNum: newCount, families: familiesCalculated }, ...prev]);
+    }
+  }
+
 
   return (
     <>
-      {count !== 0 && familiesCalculated.length > 0 && (
-        <NumCard
-          speciesNum={count}
-          families={familiesCalculated}
-        />
-      )}
-      <Paper elevation={5} sx={{ width: 200, p: 2 }}>
+      <NumCardList list={list} curCount={count} />
+      <Paper elevation={5} sx={{ width: 200, p: 2, height: "fit-content" }}>
         <Typography variant="h1" component="center">{count}</Typography>
         <ButtonGroup fullWidth size="large" color="primary">
           <Button onClick={() => setCount(prev => prev - 1)}>-1</Button>
-          <Button onClick={() => setCount(prev => prev + 1)}>+1</Button>
+          <Button onClick={addCountHandler}>+1</Button>
         </ButtonGroup>
       </Paper>
+      <NumCardList list={[]} curCount={count} />
     </>
   )
 }
