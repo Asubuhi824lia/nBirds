@@ -1,9 +1,9 @@
-import { FormBirdAdd } from "~/pages/admin/widgets/FormBirdAdd/FormBirdAdd";
+import { CounterSpecies } from "~/pages/admin/widgets/CounterSpecies/CounterSpecies";
 
 export default function Home() {
   return (
     <section style={{ display: "flex", justifyContent: "center" }}>
-      <FormBirdAdd />
+      <CounterSpecies />
     </section>
   )
 }
