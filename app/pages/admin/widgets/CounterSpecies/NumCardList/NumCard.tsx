@@ -9,8 +9,6 @@ interface NumCardProps {
 
 export const NumCard = ({ curCount, speciesNum, families }: NumCardProps) => {
 
-  console.log(speciesNum, curCount)
-
   return (
     <Card
       raised={speciesNum === curCount}
@@ -18,7 +16,8 @@ export const NumCard = ({ curCount, speciesNum, families }: NumCardProps) => {
         ':first-child': {
           bgcolor: speciesNum === curCount ? "cyan" : "lightcyan"
         },
-        bgcolor: speciesNum === curCount ? "lightsalmon" : "Background"
+        bgcolor: speciesNum === curCount ? "lightsalmon" : "Background",
+        height: "fit-content",
       }}
     >
       {/* TODO: "вида" — вертикальной строкой */}

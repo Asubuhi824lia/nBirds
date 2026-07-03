@@ -32,6 +32,14 @@ import type { FamilyStruct } from "./utils/data/types";
  * — «Многогранность» — тренировка на каждый Акцент за 1 день — для первого дня
  */
 
+const edgePartNum =
+  new Set(
+    order.families
+      .filter(({ species_length }) => species_length < 50)
+      .reduce((acc, value) => [...acc, value.species_length], [] as number[])
+  ).size;
+
+
 export type ListType = {
   speciesNum: number;
   families: FamilyStruct[];
@@ -39,46 +47,65 @@ export type ListType = {
 
 export const CounterSpecies = () => {
   const [count, setCount] = useState(0);
-
   const achivedCountRef = useRef<number>(0); // MAX count value
 
+  const [familiesGone, setFamiliesGone] = useState<number>(0);
+  const [speciesGone, setSpeciesGone] = useState<number>(0);
 
-  // TODO: дописать, иначе Error
-  // const highestDigitStep = (count - curGoal) < 10
-  //   ? 1
-  //   : calcHighestDigitPlace(count, curGoal);
+  const [listRight, setListRight] = useState<ListType[]>([]);
+  const [listLeft, setListLeft] = useState<ListType[]>([]);
 
-
-  const [list, setList] = useState<ListType[]>([]);
 
   const addCountHandler = () => {
     const newCount = count + 1;
+    setCount(newCount);
 
     const familiesCalculated =
       order.families.filter(({ species_length }) => species_length === newCount);
 
-    setCount(newCount);
+
     if (newCount > achivedCountRef.current) {
       achivedCountRef.current++;
 
       // prevent extra additions
-      if (familiesCalculated.length)
-        setList(prev => [{ speciesNum: newCount, families: familiesCalculated }, ...prev]);
+      if (familiesCalculated.length) {
+        const isBilateral = achivedCountRef.current > edgePartNum;
+
+        (!isBilateral ? setListLeft : setListRight)(
+          prev => [{ speciesNum: newCount, families: familiesCalculated }, ...prev]
+        );
+      }
     }
+
+    // Побочное
+    setFamiliesGone(prev => prev + familiesCalculated.length);
+    setSpeciesGone(prev =>
+      familiesCalculated.reduce((acc, { species_length }) => acc + species_length, prev)
+    );
   }
 
-
+  // TODO: сделать как 2 отдельных списка
   return (
     <>
-      <NumCardList list={list} curCount={count} />
+      <NumCardList
+        list={listLeft}
+        curCount={count}
+      />
       <Paper elevation={5} sx={{ width: 200, p: 2, height: "fit-content" }}>
+        <Typography variant="caption">
+          <p>Семейств: {familiesGone}</p>
+          <p>Видов: {speciesGone}</p>
+        </Typography>
         <Typography variant="h1" component="center">{count}</Typography>
         <ButtonGroup fullWidth size="large" color="primary">
           <Button onClick={() => setCount(prev => prev - 1)}>-1</Button>
           <Button onClick={addCountHandler}>+1</Button>
         </ButtonGroup>
       </Paper>
-      <NumCardList list={[]} curCount={count} />
+      <NumCardList
+        list={listRight}
+        curCount={count}
+      />
     </>
   )
 }

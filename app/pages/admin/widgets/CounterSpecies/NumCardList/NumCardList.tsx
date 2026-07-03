@@ -11,7 +11,7 @@ interface NumCardListProps {
 export const NumCardList = ({ list, curCount }: NumCardListProps) => {
 
   return (
-    <Grid container columns={3} spacing={1} sx={{ width: "500px" }}>
+    <Grid container columns={3} spacing={1} sx={{ width: "500px", alignContent: "flex-start" }}>
       {list.map(({ speciesNum, families }, index) => (
         <NumCard
           key={`families-card-${index}`}
