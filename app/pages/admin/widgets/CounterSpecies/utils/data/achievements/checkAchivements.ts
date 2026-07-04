@@ -1,6 +1,9 @@
 import { order } from "../order/order"; // TODO:
-import { achievements } from "./data";
+import { achievements, achievementsSign, achievementsTitle } from "./data";
 import { getCompletedFirstValues, getHalfFamilyIndex, getHalfSpeciesFamilyIndex, getHalfSpeciesLengthIndex } from "./utils";
+
+import { red, orange, amber, green, cyan, blue, purple, brown } from "@mui/material/colors";
+const signColors = [red, orange, amber, green, cyan, blue, purple, brown];
 
 // achivement points
 const HALF_SPECIES_INDEX = getHalfSpeciesFamilyIndex(order);
@@ -9,6 +12,7 @@ const HALF_SPECIES_LENGTH_INDEX = getHalfSpeciesLengthIndex(order);
 
 const {
   NUM_GROUPS,
+  MAX_FAMILIES,
   goneFirstTen,
   goneFirstFifty,
   goneFirstHundren
@@ -18,30 +22,41 @@ const {
 export function checkAchivements(curCount: number) {
   switch (curCount) {
     case goneFirstTen:
-      showAchivement(achievements.COMPLETED_FIRST_TEN);
-      break;
+      return createAchivement("COMPLETED_FIRST_TEN");
     case goneFirstFifty:
-      showAchivement(achievements.COMPLETED_FIRST_FIFTY);
-      break;
+      return createAchivement("COMPLETED_FIRST_FIFTY");
     case goneFirstHundren:
-      showAchivement(achievements.COMPLETED_FIRST_HUNDRED);
-      break;
+      return createAchivement("COMPLETED_FIRST_HUNDRED");
 
     case NUM_GROUPS:
-      showAchivement(achievements.MAX_GROUPS);
-      break;
+      return createAchivement("MAX_GROUPS");
+    case MAX_FAMILIES:
+      return createAchivement("MAX_FAMILIES");
 
     case HALF_FAMILIES_INDEX:
-      showAchivement(achievements.HALF_FAMILIES);
-      break;
+      return createAchivement("HALF_FAMILIES");
     case HALF_SPECIES_INDEX:
-      showAchivement(achievements.HALF_SPECIES);
-      break;
+      return createAchivement("HALF_SPECIES");
     case HALF_SPECIES_LENGTH_INDEX:
-      showAchivement(achievements.HALF_SPECIES_LENGTH);
-      break;
+      return createAchivement("HALF_SPECIES_LENGTH");
   }
 }
 
-// TODO: "string" to msg type!
-function showAchivement(message: string) { }
+// TODO:
+type AchieveTypes = keyof typeof achievements;
+
+export type AchieveCardType = {
+  signSymbol: string;
+  title: string;
+  message: string;
+  signBg: (id: number) => string;
+}
+
+export function createAchivement(CODE: AchieveTypes): AchieveCardType {
+  return ({
+    signSymbol: achievementsSign[CODE],
+    title: achievementsTitle[CODE],
+    message: achievements[CODE],
+    signBg: (id: number) => signColors[id % signColors.length][500],
+  })
+}

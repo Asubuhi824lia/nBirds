@@ -35,6 +35,7 @@ export function getCompletedFirstValues(order: OrderStruct) {
 
   return {
     NUM_GROUPS: groups.size,
+    MAX_FAMILIES: order.families_length,
     goneFirstTen: Array.from(groups).filter((value) => value < 10).length,
     goneFirstFifty: Array.from(groups).filter((value) => value < 50).length,
     goneFirstHundren: Array.from(groups).filter((value) => value < 100).length,

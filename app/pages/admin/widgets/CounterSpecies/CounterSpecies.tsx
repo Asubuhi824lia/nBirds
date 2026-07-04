@@ -1,9 +1,14 @@
-import { Button, ButtonGroup, Paper, Typography } from "@mui/material";
+import { Avatar, Button, ButtonGroup, Card, CardContent, CardHeader, IconButton, Paper, Stack, Typography } from "@mui/material";
 import { useRef, useState } from "react"
 import { order } from "./utils/data/order/order";
 import { NumCardList } from "./NumCardList/NumCardList";
 import type { FamilyStruct } from "./utils/data/types";
 import { getCompletedFirstValues } from "./utils/data/achievements/utils";
+import { red } from "@mui/material/colors";
+import { Info } from "@mui/icons-material";
+import { achievements } from "./utils/data/achievements/data";
+import { checkAchivements, type AchieveCardType } from "./utils/data/achievements/checkAchivements";
+import { AchieveCard } from "./AchieveCard/AchieveCard";
 
 /** Шаг 1
  * 
@@ -56,6 +61,10 @@ export const CounterSpecies = () => {
   const [listLeft, setListLeft] = useState<ListType[]>([]);
 
 
+  const [achives, setAchives] = useState<AchieveCardType[]>([]);
+  const [isAchiveValue, setIsAchiveValue] = useState(false);
+
+
   const addCountHandler = () => {
     const newCount = count + 1;
     setCount(newCount);
@@ -82,6 +91,13 @@ export const CounterSpecies = () => {
     setSpeciesGone(prev =>
       familiesCalculated.reduce((acc, { species_length }) => acc + species_length, prev)
     );
+
+
+    const achieve = checkAchivements(newCount);
+    if (achieve) {
+      setIsAchiveValue(true)
+      setAchives(prev => [...prev, achieve]);
+    }
   }
 
 
@@ -92,30 +108,41 @@ export const CounterSpecies = () => {
         list={listLeft}
         curCount={count}
       />
-      <Paper elevation={5} sx={{ width: 200, p: 2, height: "fit-content" }}>
-        <header>
-          <Typography variant="caption">
-            <p>Семейств: {familiesGone}</p>
-            <p>Видов: {speciesGone}</p>
-          </Typography>
-        </header>
-        <main>
-          <Typography variant="h1" component="center">{count}</Typography>
-          <ButtonGroup fullWidth size="large" color="primary">
-            <Button onClick={() => setCount(prev => prev - 1)} disabled={count === 0}>-1</Button>
-            <Button onClick={addCountHandler} disabled={count === speciesMAX}>+1</Button>
-          </ButtonGroup>
-        </main>
-        <footer>
-          <fieldset>
-            <Typography variant="caption" color="textSecondary">
-              <Typography variant="caption" component="caption">MAX</Typography>
-              <p>Семейств: {order.families_length}</p>
-              <p>Видов: {speciesMAX}</p>
+      <Stack spacing={1} sx={{ alignItems: 'center' }}>
+        <Paper elevation={5} sx={{ width: 200, p: 2, mx: 1.5, height: "fit-content" }}>
+          <header>
+            <Typography variant="caption">
+              <p>Семейств: {familiesGone}</p>
+              <p>Видов: {speciesGone}</p>
             </Typography>
-          </fieldset>
-        </footer>
-      </Paper>
+          </header>
+          <main>
+            <Typography variant="h1" component="center">{count}</Typography>
+            <ButtonGroup fullWidth size="large" color="primary">
+              <Button onClick={() => setCount(prev => prev - 1)} disabled={count === 0}>-1</Button>
+              <Button onClick={addCountHandler} disabled={count === speciesMAX}>+1</Button>
+            </ButtonGroup>
+          </main>
+          <footer>
+            <fieldset>
+              <Typography variant="caption" color="textSecondary">
+                <Typography variant="caption" component="caption">MAX</Typography>
+                <p>Семейств: {order.families_length}</p>
+                <p>Видов: {speciesMAX}</p>
+              </Typography>
+            </fieldset>
+          </footer>
+        </Paper>
+        {!!achives.length && (
+          <Paper elevation={5} sx={{ p: 2, mx: 1.5 }}>
+            <Stack spacing={.5} direction="column-reverse">
+              {achives.map((achive, index) => (
+                <AchieveCard key={`achive-card-${index}`} achive={achive} id={index} />
+              ))}
+            </Stack>
+          </Paper>
+        )}
+      </Stack>
       <NumCardList
         list={listRight}
         curCount={count}
@@ -123,6 +150,8 @@ export const CounterSpecies = () => {
     </>
   )
 }
+
+
 
 // Рассчитать наибольший разряд до искомого значения
 // 1 / 10 / 100 / 1000

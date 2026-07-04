@@ -22,7 +22,6 @@ export const NumCardList = ({ list, curCount }: NumCardListProps) => {
         : [...prev, index]
     )
 
-  console.log(list)
   return (
     <div>
       <div
@@ -38,16 +37,17 @@ export const NumCardList = ({ list, curCount }: NumCardListProps) => {
           Expand All
         </Button>
       </div>
-      <Grid container columns={3} spacing={1} sx={{ width: "500px", alignContent: "flex-start" }}>
+      <Grid container columns={2} spacing={1} sx={{ alignContent: "flex-start", width: (180 + 8) * 2 }}>
         {list.map(({ speciesNum, families }, index) => (
-          <NumCard
-            isTabActive={activeTabs.includes(index)}
-            toggleTabActive={() => toggleTabActive(index)}
-            key={`families-card-${index}`}
-            curCount={curCount}
-            speciesNum={speciesNum}
-            families={families}
-          />
+          <Grid key={`families-card-${index}`} size={1}>
+            <NumCard
+              isTabActive={activeTabs.includes(index)}
+              toggleTabActive={() => toggleTabActive(index)}
+              curCount={curCount}
+              speciesNum={speciesNum}
+              families={families}
+            />
+          </Grid>
         ))}
       </Grid>
     </div>
