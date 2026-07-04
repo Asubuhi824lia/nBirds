@@ -1,14 +1,11 @@
-import { Avatar, Button, ButtonGroup, Card, CardContent, CardHeader, IconButton, Paper, Stack, Typography } from "@mui/material";
+import { Button, ButtonGroup, Paper, Stack, Typography } from "@mui/material";
 import { useRef, useState } from "react"
 import { order } from "./utils/data/order/order";
 import { NumCardList } from "./NumCardList/NumCardList";
 import type { FamilyStruct } from "./utils/data/types";
 import { getCompletedFirstValues } from "./utils/data/achievements/utils";
-import { red } from "@mui/material/colors";
-import { Info } from "@mui/icons-material";
-import { achievements } from "./utils/data/achievements/data";
-import { checkAchivements, type AchieveCardType } from "./utils/data/achievements/checkAchivements";
 import { AchieveCard } from "./AchieveCard/AchieveCard";
+import { checkAchievements, type AchieveCardType } from "./utils/data/achievements/checkAchievements";
 
 /** Шаг 1
  * 
@@ -52,7 +49,7 @@ export type ListType = {
 
 export const CounterSpecies = () => {
   const [count, setCount] = useState<number>(0);
-  const achivedCountRef = useRef<number>(0); // MAX count value
+  const achievedCountRef = useRef<number>(0); // MAX count value
 
   const [familiesGone, setFamiliesGone] = useState<number>(0);
   const [speciesGone, setSpeciesGone] = useState<number>(0);
@@ -61,11 +58,11 @@ export const CounterSpecies = () => {
   const [listLeft, setListLeft] = useState<ListType[]>([]);
 
 
-  const [achives, setAchives] = useState<AchieveCardType[]>([]);
-  const [isAchiveValue, setIsAchiveValue] = useState(false);
+  const [achieves, setAchieves] = useState<AchieveCardType[]>([]);
+  const [isAchieveValue, setIsAchieveValue] = useState<number | false>(false);
 
 
-  const addCountHandler = () => {
+  const plusCountHandler = () => {
     const newCount = count + 1;
     setCount(newCount);
 
@@ -73,12 +70,12 @@ export const CounterSpecies = () => {
       order.families.filter(({ species_length }) => species_length === newCount);
 
 
-    if (newCount > achivedCountRef.current) {
-      achivedCountRef.current++;
+    if (newCount > achievedCountRef.current) {
+      achievedCountRef.current++;
 
       // prevent extra additions
       if (familiesCalculated.length) {
-        const isBilateral = achivedCountRef.current > edgePartNum;
+        const isBilateral = achievedCountRef.current > edgePartNum;
 
         (!isBilateral ? setListLeft : setListRight)(
           prev => [{ speciesNum: newCount, families: familiesCalculated }, ...prev]
@@ -92,11 +89,28 @@ export const CounterSpecies = () => {
       familiesCalculated.reduce((acc, { species_length }) => acc + species_length, prev)
     );
 
+    checkAchieve(newCount);
+  }
 
-    const achieve = checkAchivements(newCount);
+  const minusCountHandler = () => {
+    const newCount = count - 1;
+    setCount(newCount);
+
+    // Побочное
+    checkAchieve(newCount);
+  }
+
+  function checkAchieve(count: number) {
+    const achieve = checkAchievements(count);
     if (achieve) {
-      setIsAchiveValue(true)
-      setAchives(prev => [...prev, achieve]);
+      const curIndex = achieves.findIndex(({ title }) => title === achieve.title);
+      setIsAchieveValue(curIndex === -1 ? achieves.length : curIndex);
+      if (curIndex === -1)
+        setAchieves(prev => [...prev, achieve]);
+
+    }
+    else {
+      setIsAchieveValue(false);
     }
   }
 
@@ -117,10 +131,14 @@ export const CounterSpecies = () => {
             </Typography>
           </header>
           <main>
-            <Typography variant="h1" component="center">{count}</Typography>
+            <Typography
+              variant="h1"
+              component="center"
+              color={count <= 0 ? "textDisabled" : (isAchieveValue ? "secondary" : "textPrimary")}
+            >{count}</Typography>
             <ButtonGroup fullWidth size="large" color="primary">
-              <Button onClick={() => setCount(prev => prev - 1)} disabled={count === 0}>-1</Button>
-              <Button onClick={addCountHandler} disabled={count === speciesMAX}>+1</Button>
+              <Button onClick={minusCountHandler} disabled={count === 0}>-1</Button>
+              <Button onClick={plusCountHandler} disabled={count === speciesMAX}>+1</Button>
             </ButtonGroup>
           </main>
           <footer>
@@ -133,11 +151,11 @@ export const CounterSpecies = () => {
             </fieldset>
           </footer>
         </Paper>
-        {!!achives.length && (
+        {!!achieves.length && (
           <Paper elevation={5} sx={{ p: 2, mx: 1.5 }}>
             <Stack spacing={.5} direction="column-reverse">
-              {achives.map((achive, index) => (
-                <AchieveCard key={`achive-card-${index}`} achive={achive} id={index} />
+              {achieves.map((achieve, index) => (
+                <AchieveCard key={`achieve-card-${index}`} achieve={achieve} id={index} isActive={isAchieveValue === index} />
               ))}
             </Stack>
           </Paper>
