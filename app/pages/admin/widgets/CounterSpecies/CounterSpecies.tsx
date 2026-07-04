@@ -3,7 +3,7 @@ import { useRef, useState } from "react"
 import { order } from "./utils/data/order/order";
 import { NumCardList } from "./NumCardList/NumCardList";
 import type { FamilyStruct } from "./utils/data/types";
-import { getCompletedFirstValues, getHalfFamilyIndex, getHalfSpeciesFamilyIndex, getHalfSpeciesLengthIndex } from "./utils/data/achievements/utils";
+import { getCompletedFirstValues } from "./utils/data/achievements/utils";
 
 /** Шаг 1
  * 
@@ -36,17 +36,8 @@ import { getCompletedFirstValues, getHalfFamilyIndex, getHalfSpeciesFamilyIndex,
 
 const speciesMAX = order.families.at(-1)?.species_length;
 
-// TODO: achivement points
-const HALF_SPECIES_INDEX = getHalfSpeciesFamilyIndex(order);
-const HALF_FAMILIES_INDEX = getHalfFamilyIndex(order);
-const HALF_SPECIES_LENGTH_INDEX = getHalfSpeciesLengthIndex(order);
 
-const {
-  NUM_GROUPS,
-  goneFirstFifty: edgePartNum,
-  goneFirstTen,
-  goneFirstHundren
-} = getCompletedFirstValues(order);
+const { goneFirstFifty: edgePartNum } = getCompletedFirstValues(order)
 
 
 export type ListType = {
@@ -92,6 +83,7 @@ export const CounterSpecies = () => {
       familiesCalculated.reduce((acc, { species_length }) => acc + species_length, prev)
     );
   }
+
 
   // TODO: сделать как 2 отдельных списка
   return (
