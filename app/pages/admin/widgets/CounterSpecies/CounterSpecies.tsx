@@ -36,10 +36,13 @@ import { checkAchievements, type AchieveCardType } from "./utils/data/achievemen
  */
 
 
-const speciesMAX = order.families.at(-1)?.species_length;
+const speciesMAX = order.families[order.families.length - 1].species_length;
 
 
-const { goneFirstFifty: edgePartNum } = getCompletedFirstValues(order)
+const { goneFirstFifty: edgePartNum, groups } = getCompletedFirstValues(order)
+
+
+
 
 
 export type ListType = {
@@ -60,6 +63,9 @@ export const CounterSpecies = () => {
 
   const [achieves, setAchieves] = useState<AchieveCardType[]>([]);
   const [isAchieveValue, setIsAchieveValue] = useState<number | false>(false);
+
+
+  const stepPos = calcHighestDigitPlace(count, Array.from(groups).find((species) => species > count) || speciesMAX);
 
 
   const plusCountHandler = () => {
@@ -100,6 +106,14 @@ export const CounterSpecies = () => {
     checkAchieve(newCount);
   }
 
+  const addStepCountHandler = () => {
+    const newCount = count + stepPos;
+    setCount(newCount);
+
+    // Побочное
+    checkAchieve(newCount);
+  }
+
   function checkAchieve(count: number) {
     const achieve = checkAchievements(count);
     if (achieve) {
@@ -115,7 +129,6 @@ export const CounterSpecies = () => {
   }
 
 
-  // TODO: сделать как 2 отдельных списка
   return (
     <>
       <NumCardList
@@ -134,12 +147,17 @@ export const CounterSpecies = () => {
             <Typography
               variant="h1"
               component="center"
-              color={count <= 0 ? "textDisabled" : (isAchieveValue ? "secondary" : "textPrimary")}
+              color={count <= 0 ? "textDisabled" : (count === speciesMAX ? "success" : (isAchieveValue ? "secondary" : "textPrimary"))}
             >{count}</Typography>
-            <ButtonGroup fullWidth size="large" color="primary">
-              <Button onClick={minusCountHandler} disabled={count === 0}>-1</Button>
-              <Button onClick={plusCountHandler} disabled={count === speciesMAX}>+1</Button>
-            </ButtonGroup>
+            <Stack>
+              <ButtonGroup fullWidth size="large" color="primary">
+                <Button onClick={minusCountHandler} disabled={count === 0}>-1</Button>
+                <Button onClick={plusCountHandler} disabled={count === speciesMAX}>+1</Button>
+              </ButtonGroup>
+              {stepPos > 1 && (
+                <Button fullWidth size="large" color="primary" variant="outlined" onClick={addStepCountHandler}>{stepPos}</Button>
+              )}
+            </Stack>
           </main>
           <footer>
             <fieldset>
