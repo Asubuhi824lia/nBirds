@@ -8,6 +8,7 @@ const families = [
   ...families_middle_low,
   ...families_low,
 ];
+families.sort((a, b) => a.species_length - b.species_length);
 
 export const order: OrderStruct = {
   name: "Воробьинообразные",

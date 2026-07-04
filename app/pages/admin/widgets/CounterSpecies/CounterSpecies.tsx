@@ -3,6 +3,7 @@ import { useRef, useState } from "react"
 import { order } from "./utils/data/order/order";
 import { NumCardList } from "./NumCardList/NumCardList";
 import type { FamilyStruct } from "./utils/data/types";
+import { getCompletedFirstValues, getHalfFamilyIndex, getHalfSpeciesFamilyIndex, getHalfSpeciesLengthIndex } from "./utils/data/achievements/utils";
 
 /** Шаг 1
  * 
@@ -32,12 +33,20 @@ import type { FamilyStruct } from "./utils/data/types";
  * — «Многогранность» — тренировка на каждый Акцент за 1 день — для первого дня
  */
 
-const edgePartNum =
-  new Set(
-    order.families
-      .filter(({ species_length }) => species_length < 50)
-      .reduce((acc, value) => [...acc, value.species_length], [] as number[])
-  ).size;
+
+const speciesMAX = order.families.at(-1)?.species_length;
+
+// TODO: achivement points
+const HALF_SPECIES_INDEX = getHalfSpeciesFamilyIndex(order);
+const HALF_FAMILIES_INDEX = getHalfFamilyIndex(order);
+const HALF_SPECIES_LENGTH_INDEX = getHalfSpeciesLengthIndex(order);
+
+const {
+  NUM_GROUPS,
+  goneFirstFifty: edgePartNum,
+  goneFirstTen,
+  goneFirstHundren
+} = getCompletedFirstValues(order);
 
 
 export type ListType = {
@@ -46,7 +55,7 @@ export type ListType = {
 }
 
 export const CounterSpecies = () => {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState<number>(0);
   const achivedCountRef = useRef<number>(0); // MAX count value
 
   const [familiesGone, setFamiliesGone] = useState<number>(0);
@@ -92,15 +101,28 @@ export const CounterSpecies = () => {
         curCount={count}
       />
       <Paper elevation={5} sx={{ width: 200, p: 2, height: "fit-content" }}>
-        <Typography variant="caption">
-          <p>Семейств: {familiesGone}</p>
-          <p>Видов: {speciesGone}</p>
-        </Typography>
-        <Typography variant="h1" component="center">{count}</Typography>
-        <ButtonGroup fullWidth size="large" color="primary">
-          <Button onClick={() => setCount(prev => prev - 1)}>-1</Button>
-          <Button onClick={addCountHandler}>+1</Button>
-        </ButtonGroup>
+        <header>
+          <Typography variant="caption">
+            <p>Семейств: {familiesGone}</p>
+            <p>Видов: {speciesGone}</p>
+          </Typography>
+        </header>
+        <main>
+          <Typography variant="h1" component="center">{count}</Typography>
+          <ButtonGroup fullWidth size="large" color="primary">
+            <Button onClick={() => setCount(prev => prev - 1)} disabled={count === 0}>-1</Button>
+            <Button onClick={addCountHandler} disabled={count === speciesMAX}>+1</Button>
+          </ButtonGroup>
+        </main>
+        <footer>
+          <fieldset>
+            <Typography variant="caption" color="textSecondary">
+              <Typography variant="caption" component="caption">MAX</Typography>
+              <p>Семейств: {order.families_length}</p>
+              <p>Видов: {speciesMAX}</p>
+            </Typography>
+          </fieldset>
+        </footer>
       </Paper>
       <NumCardList
         list={listRight}
