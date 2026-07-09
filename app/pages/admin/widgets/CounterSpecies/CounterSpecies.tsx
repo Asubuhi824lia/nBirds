@@ -38,12 +38,9 @@ import { achievements } from "./utils/data/achievements/data";
 
 
 const speciesMAX = order.families[order.families.length - 1].species_length;
+const edgePartNum = order.families_length / 2;
 
-
-const { completedFirstFifty: edgePartNum, groups } = getCompletedFirstValues(order)
-
-
-
+const { groups } = getCompletedFirstValues(order)
 
 
 export type ListType = {
@@ -55,30 +52,35 @@ export const CounterSpecies = () => {
   const [count, setCount] = useState<number>(0);
   const achievedCountRef = useRef<number>(0); // MAX count value
 
-  const [familiesGone, setFamiliesGone] = useState<number>(0);
-  const [speciesGone, setSpeciesGone] = useState<number>(0);
-
   const [listRight, setListRight] = useState<ListType[]>([]);
   const [listLeft, setListLeft] = useState<ListType[]>([]);
 
-
-  const [achieves, setAchieves] = useState<AchieveCardType[]>([]);
+  const [achieves, setAchieves] = useState<Array<AchieveCardType & { count: number }>>([]);
   const [isAchieveValue, setIsAchieveValue] = useState<number | false>(false);
 
 
-  const stepPos = calcHighestDigitPlace(count, Array.from(groups).find((species) => species > count) || speciesMAX);
+  const goneFamiliesCalc =
+    order.families
+      .filter(({ species_length }) => species_length <= count).length;
+  const goneSpeciesCalc =
+    order.families
+      .filter(({ species_length }) => species_length <= count)
+      .reduce((acc, { species_length }) => acc + species_length, 0);
+
+  const stepPos = calcHighestDigitPlace(
+    count,
+    Array.from(groups).find((species) => species > count) || speciesMAX
+  );
 
 
-  const plusCountHandler = () => {
-    const newCount = count + 1;
+  function handleAddToList(newCount: number) {
     setCount(newCount);
 
     const familiesCalculated =
       order.families.filter(({ species_length }) => species_length === newCount);
 
-
     if (newCount > achievedCountRef.current) {
-      achievedCountRef.current++;
+      achievedCountRef.current = newCount;
 
       // prevent extra additions
       if (familiesCalculated.length) {
@@ -90,28 +92,6 @@ export const CounterSpecies = () => {
       }
     }
 
-    // Побочное
-    setFamiliesGone(prev => prev + familiesCalculated.length);
-    setSpeciesGone(prev =>
-      familiesCalculated.reduce((acc, { species_length }) => acc + species_length, prev)
-    );
-
-    checkAchieve(newCount);
-  }
-
-  const minusCountHandler = () => {
-    const newCount = count - 1;
-    setCount(newCount);
-
-    // Побочное
-    checkAchieve(newCount);
-  }
-
-  const addStepCountHandler = () => {
-    const newCount = count + stepPos;
-    setCount(newCount);
-
-    // Побочное
     checkAchieve(newCount);
   }
 
@@ -121,11 +101,33 @@ export const CounterSpecies = () => {
       const curIndex = achieves.findIndex(({ title }) => title === achieve.title);
       setIsAchieveValue(curIndex === -1 ? achieves.length : curIndex);
       if (curIndex === -1)
-        setAchieves(prev => [...prev, achieve]);
+        setAchieves(prev => [...prev, { ...achieve, count }]);
     }
     else {
       setIsAchieveValue(false);
     }
+  }
+
+
+  const plusCountHandler = () => {
+    const newCount = count + 1;
+    handleAddToList(newCount);
+  }
+
+  const minusCountHandler = () => {
+    const newCount = count - 1;
+    setCount(newCount);
+    checkAchieve(newCount);
+  }
+
+  const addStepCountHandler = () => {
+    const newCount = count + stepPos;
+    handleAddToList(newCount);
+  }
+
+  const turnToCount = (newCount: number) => {
+    setCount(newCount);
+    checkAchieve(newCount);
   }
 
   return (
@@ -137,10 +139,12 @@ export const CounterSpecies = () => {
       <Stack spacing={1} sx={{ alignItems: 'center' }}>
         <Paper elevation={5} sx={{ width: 200, p: 2, mx: 1.5, height: "fit-content" }}>
           <header>
-            <Typography variant="caption">
+            <Typography variant="body2" color="textSecondary">
               <p>Групп: {listLeft.length + listRight.length}</p>
-              <p>Семейств: {familiesGone}</p>
-              <p>Видов: {speciesGone}</p>
+              <Typography variant="body2" color="textPrimary">
+                <p>Семейств: {goneFamiliesCalc}</p>
+                <p>Видов: {goneSpeciesCalc}</p>
+              </Typography>
             </Typography>
           </header>
           <main>
@@ -162,9 +166,9 @@ export const CounterSpecies = () => {
           <footer>
             <fieldset>
               <Typography variant="caption" color="textSecondary">
-                <Typography variant="caption" component="caption">MAX</Typography>
-                <p>Семейств: {order.families_length}</p>
-                <p>Видов: {speciesMAX}</p>
+                <p>MAX видов: {speciesMAX}</p>
+                <p>Всего «семейств»: {order.families_length}</p>
+                <p>Всего «видов»: {order.species_length}</p>
               </Typography>
             </fieldset>
           </footer>
@@ -174,7 +178,12 @@ export const CounterSpecies = () => {
             <Typography variant="caption">{achieves.length}/{Object.keys(achievements).length}</Typography>
             <Stack spacing={.5} direction="column-reverse">
               {achieves.map((achieve, index) => (
-                <AchieveCard key={`achieve-card-${index}`} achieve={achieve} id={index} isActive={isAchieveValue === index} />
+                <AchieveCard
+                  key={`achieve-card-${index}`}
+                  achieve={achieve}
+                  isActive={isAchieveValue === index}
+                  onClick={() => turnToCount(achieve.count)}
+                />
               ))}
             </Stack>
           </Paper>

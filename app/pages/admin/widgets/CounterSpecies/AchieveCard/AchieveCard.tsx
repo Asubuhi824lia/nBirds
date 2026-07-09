@@ -3,7 +3,15 @@ import type { AchieveCardType } from "../utils/data/achievements/checkAchievemen
 
 
 
-export const AchieveCard = ({ achieve, isActive }: { achieve: AchieveCardType, id: number, isActive: boolean }) => {
+export const AchieveCard = ({
+  achieve,
+  isActive,
+  onClick
+}: {
+  achieve: AchieveCardType,
+  isActive: boolean,
+  onClick: () => void
+}) => {
 
   return (
     // TODO: different bgcolor & red[]
@@ -12,8 +20,10 @@ export const AchieveCard = ({ achieve, isActive }: { achieve: AchieveCardType, i
       sx={{
         border: `2px solid ${achieve.signBg}`,
         bgcolor: isActive ? achieve.accentBg : "transparent",
-        maxWidth: "380px"
+        maxWidth: "380px",
+        cursor: "pointer"
       }}
+      onClick={onClick}
     >
       <CardHeader
         avatar={
