@@ -1,13 +1,13 @@
 import type { OrderStruct } from "../types";
 
-export function getHalfSpeciesFamilyIndex(order: OrderStruct) {
+export function getHalfSpeciesFamilyNum(order: OrderStruct) {
   const HALF_SPECIES_NUM = Math.floor(order.species_length / 2);
   let index = 0;
   for (let count = 0, i = 0; i < order.families.length; i++, index++) {
     count += order.families[i].species_length;
     if (count > HALF_SPECIES_NUM) break;
   }
-  return index;
+  return order.families[index].species_length;
 }
 
 export const getHalfFamilyIndex = (order: OrderStruct) =>

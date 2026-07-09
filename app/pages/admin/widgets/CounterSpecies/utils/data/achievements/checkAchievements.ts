@@ -1,6 +1,6 @@
 import { order } from "../order/order"; // TODO:
 import { achievements, achievementsSign, achievementsTitle } from "./data";
-import { getCompletedFirstValues, getHalfFamilyIndex, getHalfSpeciesFamilyIndex, getHalfSpeciesLengthIndex } from "./utils";
+import { getCompletedFirstValues, getHalfFamilyIndex, getHalfSpeciesFamilyNum, getHalfSpeciesLengthIndex } from "./utils";
 
 import {
   red, orange, amber,
@@ -20,7 +20,7 @@ const signColors = {
 }
 
 // achievement points
-const HALF_SPECIES_INDEX = getHalfSpeciesFamilyIndex(order);
+const HALF_SPECIES_INDEX = getHalfSpeciesFamilyNum(order);
 const HALF_FAMILIES_INDEX = getHalfFamilyIndex(order);
 const HALF_SPECIES_LENGTH_INDEX = getHalfSpeciesLengthIndex(order);
 
