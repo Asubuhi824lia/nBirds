@@ -3,9 +3,8 @@ import { useRef, useState } from "react"
 import { order } from "./utils/data/order/order";
 import { NumCardList } from "./NumCardList/NumCardList";
 import type { FamilyStruct } from "./utils/data/types";
-import { getCompletedFirstValues } from "./utils/data/achievements/utils";
 import { AchieveCard } from "./AchieveCard/AchieveCard";
-import { checkAchievements, type AchieveCardType } from "./utils/data/achievements/checkAchievements";
+import { checkAchievements, isAchieveInRange, type AchieveCardType } from "./utils/data/achievements/checkAchievements";
 import { achievements } from "./utils/data/achievements/data";
 
 /** Шаг 1
@@ -40,7 +39,11 @@ import { achievements } from "./utils/data/achievements/data";
 const speciesMAX = order.families[order.families.length - 1].species_length;
 const edgePartNum = order.families_length / 2;
 
-const { groups } = getCompletedFirstValues(order)
+const groups =
+  new Set(
+    order.families
+      .reduce((acc, value) => [...acc, value.species_length], [] as number[])
+  )
 
 
 export type ListType = {
@@ -67,7 +70,10 @@ export const CounterSpecies = () => {
       .filter(({ species_length }) => species_length <= count)
       .reduce((acc, { species_length }) => acc + species_length, 0);
 
-  const stepPos = calcHighestDigitPlace(
+  const {
+    stepPos,
+    isAchieveInRange
+  } = calcHighestDigitPlace(
     count,
     Array.from(groups).find((species) => species > count) || speciesMAX
   );
@@ -109,6 +115,8 @@ export const CounterSpecies = () => {
   }
 
 
+  // START
+  // Counter btns handlers
   const plusCountHandler = () => {
     const newCount = count + 1;
     handleAddToList(newCount);
@@ -124,6 +132,7 @@ export const CounterSpecies = () => {
     const newCount = count + stepPos;
     handleAddToList(newCount);
   }
+  // END
 
   const turnToCount = (newCount: number) => {
     setCount(newCount);
@@ -159,7 +168,7 @@ export const CounterSpecies = () => {
                 <Button onClick={plusCountHandler} disabled={count === speciesMAX}>+1</Button>
               </ButtonGroup>
               {stepPos > 1 && (
-                <Button fullWidth size="large" color="primary" variant="outlined" onClick={addStepCountHandler}>{stepPos}</Button>
+                <Button fullWidth size="large" color={isAchieveInRange ? "secondary" : "primary"} variant="outlined" onClick={addStepCountHandler}>{stepPos}</Button>
               )}
             </Stack>
           </main>
@@ -207,5 +216,10 @@ function calcHighestDigitPlace(curCount: number, goal: number) {
   }
 
   const digitNum = new String(goal - curCount).length;
-  return 10 ** (digitNum - 1);
+  const stepPos = 10 ** (digitNum - 1);
+
+  return {
+    stepPos,
+    isAchieveInRange: isAchieveInRange(curCount, curCount + stepPos)
+  }
 }

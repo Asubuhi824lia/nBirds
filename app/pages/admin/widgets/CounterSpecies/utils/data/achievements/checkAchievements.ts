@@ -1,6 +1,5 @@
 import { order } from "../order/order"; // TODO:
 import { achievements, achievementsSign, achievementsTitle } from "./data";
-import { getCompletedFirstValues, getHalfFamilyIndex, getHalfSpeciesFamilyNum, getHalfSpeciesLengthIndex } from "./utils";
 
 import {
   red, orange, amber,
@@ -9,32 +8,51 @@ import {
   grey, brown, purple
 } from "@mui/material/colors";
 import type { Color } from "@mui/material/styles";
+import { getAchievementIndexes } from "./utils";
 
 // оттенки характерного цвета — характерной группе ачивок
 // TODO: общий префикс — в 1 источник
 const signColors = {
   MAX: [red, orange, amber],
   COMPLETED: [teal, green, lime],
-  HALF: [cyan, blue], HALF_LENGTH: indigo,
+  HALF: [cyan, blue, indigo],
   WITH: [grey, brown, purple]
 }
 
-// achievement points
-const HALF_SPECIES_INDEX = getHalfSpeciesFamilyNum(order);
-const HALF_FAMILIES_INDEX = getHalfFamilyIndex(order);
-const HALF_SPECIES_LENGTH_INDEX = getHalfSpeciesLengthIndex(order);
-
 const {
-  NUM_GROUPS,
+  MAX_GROUPS,
   MAX_FAMILIES,
   MAX_SPECIES,
   completedFirstTen,
   completedFirstFifty,
   completedFirstHundren,
+  HALF_FAMILIES_INDEX,
+  HALF_SPECIES_INDEX,
+  HALF_SPECIES_LENGTH,
   withFirstTen,
   withFirstFifty,
   withFirstHundren
-} = getCompletedFirstValues(order);
+} = getAchievementIndexes(order);
+
+
+export function isAchieveInRange(startNum: number, endNum: number) {
+  const points = [
+    MAX_GROUPS,
+    MAX_FAMILIES,
+    MAX_SPECIES,
+    completedFirstTen,
+    completedFirstFifty,
+    completedFirstHundren,
+    HALF_FAMILIES_INDEX,
+    HALF_SPECIES_INDEX,
+    HALF_SPECIES_LENGTH,
+    withFirstTen,
+    withFirstFifty,
+    withFirstHundren
+  ];
+
+  return points.findIndex((value) => startNum < value && value < endNum) > -1;
+}
 
 
 export function checkAchievements(curCount: number) {
@@ -53,7 +71,7 @@ export function checkAchievements(curCount: number) {
     case withFirstHundren:
       return createAchievement("WITH_FIRST_HUNDRED", signColors.WITH[2], curCount.toString());
 
-    case NUM_GROUPS:
+    case MAX_GROUPS:
       return createAchievement("MAX_GROUPS", signColors.MAX[0]);
     case MAX_FAMILIES:
       return createAchievement("MAX_FAMILIES", signColors.MAX[1]);
@@ -64,8 +82,8 @@ export function checkAchievements(curCount: number) {
       return createAchievement("HALF_FAMILIES", signColors.HALF[0]);
     case HALF_SPECIES_INDEX:
       return createAchievement("HALF_SPECIES", signColors.HALF[1]);
-    case HALF_SPECIES_LENGTH_INDEX:
-      return createAchievement("HALF_SPECIES_LENGTH", signColors.HALF_LENGTH);
+    case HALF_SPECIES_LENGTH:
+      return createAchievement("HALF_SPECIES_LENGTH", signColors.HALF[2]);
   }
 }
 
@@ -73,7 +91,7 @@ export function checkAchievements(curCount: number) {
 type AchieveTypes = keyof typeof achievements;
 
 export type AchieveCardType = {
-  signSymbol: string;
+  signSymbol: string | null;
   title: string;
   message: string;
   signBg: Color[500];
@@ -81,7 +99,6 @@ export type AchieveCardType = {
 }
 
 export function createAchievement(CODE: AchieveTypes, color: Color, symbol?: string): AchieveCardType {
-
   return ({
     signSymbol: symbol ?? achievementsSign[CODE],
     title: achievementsTitle[CODE],

@@ -45,9 +45,9 @@ export const achievementsSign = {
   COMPLETED_FIRST_FIFTY: "50",
   COMPLETED_FIRST_HUNDRED: "100",
 
-  WITH_FIRST_TEN: "",
-  WITH_FIRST_FIFTY: "",
-  WITH_FIRST_HUNDRED: "",
+  WITH_FIRST_TEN: null,
+  WITH_FIRST_FIFTY: null,
+  WITH_FIRST_HUNDRED: null,
 
   MAX_GROUPS: "G",
   MAX_FAMILIES: "F",
