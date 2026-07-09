@@ -6,6 +6,7 @@ import type { FamilyStruct } from "./utils/data/types";
 import { getCompletedFirstValues } from "./utils/data/achievements/utils";
 import { AchieveCard } from "./AchieveCard/AchieveCard";
 import { checkAchievements, type AchieveCardType } from "./utils/data/achievements/checkAchievements";
+import { achievements } from "./utils/data/achievements/data";
 
 /** Шаг 1
  * 
@@ -39,7 +40,7 @@ import { checkAchievements, type AchieveCardType } from "./utils/data/achievemen
 const speciesMAX = order.families[order.families.length - 1].species_length;
 
 
-const { goneFirstFifty: edgePartNum, groups } = getCompletedFirstValues(order)
+const { completedFirstFifty: edgePartNum, groups } = getCompletedFirstValues(order)
 
 
 
@@ -121,13 +122,11 @@ export const CounterSpecies = () => {
       setIsAchieveValue(curIndex === -1 ? achieves.length : curIndex);
       if (curIndex === -1)
         setAchieves(prev => [...prev, achieve]);
-
     }
     else {
       setIsAchieveValue(false);
     }
   }
-
 
   return (
     <>
@@ -139,6 +138,7 @@ export const CounterSpecies = () => {
         <Paper elevation={5} sx={{ width: 200, p: 2, mx: 1.5, height: "fit-content" }}>
           <header>
             <Typography variant="caption">
+              <p>Групп: {listLeft.length + listRight.length}</p>
               <p>Семейств: {familiesGone}</p>
               <p>Видов: {speciesGone}</p>
             </Typography>
@@ -147,7 +147,7 @@ export const CounterSpecies = () => {
             <Typography
               variant="h1"
               component="center"
-              color={count <= 0 ? "textDisabled" : (count === speciesMAX ? "success" : (isAchieveValue ? "secondary" : "textPrimary"))}
+              color={count <= 0 ? "textDisabled" : (count === speciesMAX ? "success" : (isAchieveValue !== false ? "secondary" : "textPrimary"))}
             >{count}</Typography>
             <Stack>
               <ButtonGroup fullWidth size="large" color="primary">
@@ -171,6 +171,7 @@ export const CounterSpecies = () => {
         </Paper>
         {!!achieves.length && (
           <Paper elevation={5} sx={{ p: 2, mx: 1.5 }}>
+            <Typography variant="caption">{achieves.length}/{Object.keys(achievements).length}</Typography>
             <Stack spacing={.5} direction="column-reverse">
               {achieves.map((achieve, index) => (
                 <AchieveCard key={`achieve-card-${index}`} achieve={achieve} id={index} isActive={isAchieveValue === index} />

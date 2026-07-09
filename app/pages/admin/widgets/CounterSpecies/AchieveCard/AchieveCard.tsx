@@ -3,20 +3,21 @@ import type { AchieveCardType } from "../utils/data/achievements/checkAchievemen
 
 
 
-export const AchieveCard = ({ achieve, id, isActive }: { achieve: AchieveCardType, id: number, isActive: boolean }) => {
+export const AchieveCard = ({ achieve, isActive }: { achieve: AchieveCardType, id: number, isActive: boolean }) => {
 
   return (
     // TODO: different bgcolor & red[]
     <Card
       variant="outlined"
       sx={{
-        border: `2px solid ${achieve.signBg(id)}`,
-        bgcolor: isActive ? achieve.accentBg(id) : "transparent"
+        border: `2px solid ${achieve.signBg}`,
+        bgcolor: isActive ? achieve.accentBg : "transparent",
+        maxWidth: "380px"
       }}
     >
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: achieve.signBg(id) }}>
+          <Avatar sx={{ bgcolor: achieve.signBg }}>
             {achieve.signSymbol}
           </Avatar>
         }
