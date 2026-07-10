@@ -145,7 +145,7 @@ export const CounterSpecies = () => {
         list={listLeft}
         curCount={count}
       />
-      <Stack spacing={1} sx={{ alignItems: 'center' }}>
+      <Stack spacing={1} sx={{ alignItems: 'center', mx: 1, zIndex: 1 }}>
         <Paper elevation={5} sx={{ width: 200, p: 2, mx: 1.5, height: "fit-content" }}>
           <header>
             <Typography variant="body2" color="textSecondary">
