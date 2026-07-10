@@ -1,6 +1,4 @@
-import { order } from "../order/order"; // TODO:
 import { achievements, achievementsSign, achievementsTitle, prefix as PREFIX } from "./data";
-
 import {
   red, orange, amber,
   teal, green, lime,
@@ -9,6 +7,7 @@ import {
 } from "@mui/material/colors";
 import type { Color } from "@mui/material/styles";
 import { getAchievementIndexes } from "./utils";
+import type { OrderStruct } from "../types";
 
 const signColors = {
   [PREFIX.MAX]: [red, orange, amber],
@@ -17,24 +16,15 @@ const signColors = {
   [PREFIX.WITH]: [grey, brown, purple]
 }
 
-const {
-  MAX_GROUPS,
-  MAX_FAMILIES,
-  MAX_SPECIES,
-  COMPLETED_FIRST_TEN,
-  COMPLETED_FIRST_FIFTY,
-  COMPLETED_FIRST_HUNDRED,
-  HALF_FAMILIES_INDEX,
-  HALF_SPECIES_INDEX,
-  HALF_SPECIES_LENGTH,
-  WITH_FIRST_TEN,
-  WITH_FIRST_FIFTY,
-  WITH_FIRST_HUNDRED
-} = getAchievementIndexes(order);
+
+export function isAchieveInRange(startNum: number, endNum: number, order: OrderStruct) {
+  const points = Object.values(getAchievementIndexes(order));
+  return points.findIndex((value) => startNum < value && value < endNum) > -1;
+}
 
 
-export function isAchieveInRange(startNum: number, endNum: number) {
-  const points = [
+export function checkAchievements(curCount: number, order: OrderStruct) {
+  const {
     MAX_GROUPS,
     MAX_FAMILIES,
     MAX_SPECIES,
@@ -47,13 +37,9 @@ export function isAchieveInRange(startNum: number, endNum: number) {
     WITH_FIRST_TEN,
     WITH_FIRST_FIFTY,
     WITH_FIRST_HUNDRED
-  ];
-
-  return points.findIndex((value) => startNum < value && value < endNum) > -1;
-}
+  } = getAchievementIndexes(order);
 
 
-export function checkAchievements(curCount: number) {
   switch (curCount) {
     case COMPLETED_FIRST_TEN:
       return createAchievement(PREFIX.COMPLETED + "_FIRST_TEN", signColors[PREFIX.COMPLETED][0]);

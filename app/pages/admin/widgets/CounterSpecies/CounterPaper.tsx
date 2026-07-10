@@ -1,18 +1,9 @@
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { Button, ButtonGroup, Paper, Stack, Typography } from "@mui/material"
-import { order } from "./utils/data/order/order";
 import { isAchieveInRange } from "./utils/data/achievements/checkAchievements";
 import type { ListType } from "./CounterSpecies";
+import type { OrderStruct } from "./utils/data/types";
 
-
-const speciesMAX = order.families[order.families.length - 1].species_length;
-const edgePartNum = order.families_length / 2;
-
-const groups =
-  new Set(
-    order.families
-      .reduce((acc, value) => [...acc, value.species_length], [] as number[])
-  )
 
 export enum ListSide { Left, Right }
 
@@ -21,6 +12,7 @@ interface CounterPaperProps {
   count: number;
   isAchieve: boolean;
   listLength: number;
+  order: OrderStruct;
   addListItem: (isBilateral: ListSide) => React.Dispatch<React.SetStateAction<ListType[]>>;
   changeCountHandler: (newCount: number) => void;
 }
@@ -29,10 +21,22 @@ export const CounterPaper = ({
   count,
   isAchieve,
   listLength,
+  order,
   addListItem,
   changeCountHandler
 }: CounterPaperProps) => {
   const achievedCountRef = useRef<number>(0); // MAX count value
+
+  const speciesMAX = useMemo(() => order.families[order.families.length - 1].species_length, [order]);
+  const edgePartNum = useMemo(() => order.families_length / 2, [order]);
+
+  const groups = useMemo(
+    () => new Set(
+      order.families
+        .reduce((acc, value) => [...acc, value.species_length], [] as number[])
+    ),
+    [order]
+  )
 
   const goneFamiliesCalc =
     order.families
@@ -47,7 +51,8 @@ export const CounterPaper = ({
     isAchieveInRange
   } = calcHighestDigitPlace(
     count,
-    Array.from(groups).find((species) => species > count) || speciesMAX
+    Array.from(groups).find((species) => species > count) || speciesMAX,
+    order
   );
 
 
@@ -120,7 +125,7 @@ export const CounterPaper = ({
 
 // Рассчитать наибольший разряд до искомого значения
 // 1 / 10 / 100 / 1000
-function calcHighestDigitPlace(curCount: number, goal: number) {
+function calcHighestDigitPlace(curCount: number, goal: number, order: OrderStruct) {
   if (curCount > goal || goal <= 0 || curCount < 0) {
     throw new Error("Некорректное значение счётчика или искомого числа!");
   }
@@ -130,6 +135,6 @@ function calcHighestDigitPlace(curCount: number, goal: number) {
 
   return {
     stepPos,
-    isAchieveInRange: isAchieveInRange(curCount, curCount + stepPos)
+    isAchieveInRange: isAchieveInRange(curCount, curCount + stepPos, order)
   }
 }

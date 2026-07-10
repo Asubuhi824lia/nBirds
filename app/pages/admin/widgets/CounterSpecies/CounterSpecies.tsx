@@ -6,6 +6,7 @@ import { AchieveCard } from "./AchieveCard/AchieveCard";
 import { checkAchievements, type AchieveCardType } from "./utils/data/achievements/checkAchievements";
 import { achievements } from "./utils/data/achievements/data";
 import { CounterPaper } from "./CounterPaper";
+import { order } from "./utils/data/order/order";
 
 /** 
  * Доп.
@@ -44,11 +45,8 @@ export const CounterSpecies = () => {
 
   const changeCountHandler = (newCount: number) => {
     setCount(newCount);
-    checkAchieve(newCount);
-  }
-
-  function checkAchieve(count: number) {
-    const achieve = checkAchievements(count);
+    // check achieve
+    const achieve = checkAchievements(count, order);
     if (achieve && !achieves.some(({ title }) => title === achieve.title)) {
       setAchieves(prev => [...prev, { ...achieve, count }]);
     }
@@ -65,6 +63,7 @@ export const CounterSpecies = () => {
           count={count}
           isAchieve={achieves.some((achieve) => achieve.count === count)}
           listLength={listLeft.length + listRight.length}
+          order={order}
           addListItem={(isBilateral) => !isBilateral ? setListLeft : setListRight}
           changeCountHandler={changeCountHandler}
         />
