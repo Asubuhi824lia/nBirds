@@ -33,13 +33,12 @@ function getCompletedFirstValues(order: OrderStruct) {
     MAX_GROUPS: groups.size,
     MAX_FAMILIES: order.families_length,
     MAX_SPECIES: getSpeciesAllNum(order),
-    withFirstTen: Array.from(groups).filter((value) => value <= 10).length,
-    withFirstFifty: Array.from(groups).filter((value) => value <= 50).length,
-    withFirstHundren: Array.from(groups).filter((value) => value <= 100).length,
-    completedFirstTen: 10,
-    completedFirstFifty: 50,
-    completedFirstHundren: 100,
-    groups
+    WITH_FIRST_TEN: Array.from(groups).filter((value) => value <= 10).length,
+    WITH_FIRST_FIFTY: Array.from(groups).filter((value) => value <= 50).length,
+    WITH_FIRST_HUNDRED: Array.from(groups).filter((value) => value <= 100).length,
+    COMPLETED_FIRST_TEN: 10,
+    COMPLETED_FIRST_FIFTY: 50,
+    COMPLETED_FIRST_HUNDRED: 100
   }
 }
 

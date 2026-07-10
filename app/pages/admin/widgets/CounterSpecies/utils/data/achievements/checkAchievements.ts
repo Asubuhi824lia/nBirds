@@ -1,5 +1,5 @@
 import { order } from "../order/order"; // TODO:
-import { achievements, achievementsSign, achievementsTitle } from "./data";
+import { achievements, achievementsSign, achievementsTitle, prefix as PREFIX } from "./data";
 
 import {
   red, orange, amber,
@@ -10,28 +10,26 @@ import {
 import type { Color } from "@mui/material/styles";
 import { getAchievementIndexes } from "./utils";
 
-// оттенки характерного цвета — характерной группе ачивок
-// TODO: общий префикс — в 1 источник
 const signColors = {
-  MAX: [red, orange, amber],
-  COMPLETED: [teal, green, lime],
-  HALF: [cyan, blue, indigo],
-  WITH: [grey, brown, purple]
+  [PREFIX.MAX]: [red, orange, amber],
+  [PREFIX.COMPLETED]: [teal, green, lime],
+  [PREFIX.HALF]: [cyan, blue, indigo],
+  [PREFIX.WITH]: [grey, brown, purple]
 }
 
 const {
   MAX_GROUPS,
   MAX_FAMILIES,
   MAX_SPECIES,
-  completedFirstTen,
-  completedFirstFifty,
-  completedFirstHundren,
+  COMPLETED_FIRST_TEN,
+  COMPLETED_FIRST_FIFTY,
+  COMPLETED_FIRST_HUNDRED,
   HALF_FAMILIES_INDEX,
   HALF_SPECIES_INDEX,
   HALF_SPECIES_LENGTH,
-  withFirstTen,
-  withFirstFifty,
-  withFirstHundren
+  WITH_FIRST_TEN,
+  WITH_FIRST_FIFTY,
+  WITH_FIRST_HUNDRED
 } = getAchievementIndexes(order);
 
 
@@ -40,15 +38,15 @@ export function isAchieveInRange(startNum: number, endNum: number) {
     MAX_GROUPS,
     MAX_FAMILIES,
     MAX_SPECIES,
-    completedFirstTen,
-    completedFirstFifty,
-    completedFirstHundren,
+    COMPLETED_FIRST_TEN,
+    COMPLETED_FIRST_FIFTY,
+    COMPLETED_FIRST_HUNDRED,
     HALF_FAMILIES_INDEX,
     HALF_SPECIES_INDEX,
     HALF_SPECIES_LENGTH,
-    withFirstTen,
-    withFirstFifty,
-    withFirstHundren
+    WITH_FIRST_TEN,
+    WITH_FIRST_FIFTY,
+    WITH_FIRST_HUNDRED
   ];
 
   return points.findIndex((value) => startNum < value && value < endNum) > -1;
@@ -57,33 +55,33 @@ export function isAchieveInRange(startNum: number, endNum: number) {
 
 export function checkAchievements(curCount: number) {
   switch (curCount) {
-    case completedFirstTen:
-      return createAchievement("COMPLETED_FIRST_TEN", signColors.COMPLETED[0]);
-    case completedFirstFifty:
-      return createAchievement("COMPLETED_FIRST_FIFTY", signColors.COMPLETED[1]);
-    case completedFirstHundren:
-      return createAchievement("COMPLETED_FIRST_HUNDRED", signColors.COMPLETED[2]);
+    case COMPLETED_FIRST_TEN:
+      return createAchievement(PREFIX.COMPLETED + "_FIRST_TEN", signColors[PREFIX.COMPLETED][0]);
+    case COMPLETED_FIRST_FIFTY:
+      return createAchievement(PREFIX.COMPLETED + "_FIRST_FIFTY", signColors[PREFIX.COMPLETED][1]);
+    case COMPLETED_FIRST_HUNDRED:
+      return createAchievement(PREFIX.COMPLETED + "_FIRST_HUNDRED", signColors[PREFIX.COMPLETED][2]);
 
-    case withFirstTen:
-      return createAchievement("WITH_FIRST_TEN", signColors.WITH[0], curCount.toString());
-    case withFirstFifty:
-      return createAchievement("WITH_FIRST_FIFTY", signColors.WITH[1], curCount.toString());
-    case withFirstHundren:
-      return createAchievement("WITH_FIRST_HUNDRED", signColors.WITH[2], curCount.toString());
+    case WITH_FIRST_TEN:
+      return createAchievement(PREFIX.WITH + "_FIRST_TEN", signColors[PREFIX.WITH][0], curCount.toString());
+    case WITH_FIRST_FIFTY:
+      return createAchievement(PREFIX.WITH + "_FIRST_FIFTY", signColors[PREFIX.WITH][1], curCount.toString());
+    case WITH_FIRST_HUNDRED:
+      return createAchievement(PREFIX.WITH + "_FIRST_HUNDRED", signColors[PREFIX.WITH][2], curCount.toString());
 
     case MAX_GROUPS:
-      return createAchievement("MAX_GROUPS", signColors.MAX[0]);
+      return createAchievement(PREFIX.MAX + "_GROUPS", signColors[PREFIX.MAX][0]);
     case MAX_FAMILIES:
-      return createAchievement("MAX_FAMILIES", signColors.MAX[1]);
+      return createAchievement(PREFIX.MAX + "_FAMILIES", signColors[PREFIX.MAX][1]);
     case MAX_SPECIES:
-      return createAchievement("MAX_SPECIES", signColors.MAX[2]);
+      return createAchievement(PREFIX.MAX + "_SPECIES", signColors[PREFIX.MAX][2]);
 
     case HALF_FAMILIES_INDEX:
-      return createAchievement("HALF_FAMILIES", signColors.HALF[0]);
+      return createAchievement(PREFIX.HALF + "_FAMILIES", signColors[PREFIX.HALF][0]);
     case HALF_SPECIES_INDEX:
-      return createAchievement("HALF_SPECIES", signColors.HALF[1]);
+      return createAchievement(PREFIX.HALF + "_SPECIES", signColors[PREFIX.HALF][1]);
     case HALF_SPECIES_LENGTH:
-      return createAchievement("HALF_SPECIES_LENGTH", signColors.HALF[2]);
+      return createAchievement(PREFIX.HALF + "_SPECIES_LENGTH", signColors[PREFIX.HALF][2]);
   }
 }
 
