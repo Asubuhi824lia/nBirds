@@ -14,7 +14,6 @@ export const AchieveCard = ({
 }) => {
 
   return (
-    // TODO: different bgcolor & red[]
     <Card
       variant="outlined"
       sx={{
