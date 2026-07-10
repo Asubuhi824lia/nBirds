@@ -57,7 +57,7 @@ export const CounterSpecies = () => {
       <header style={{ display: "flex", justifyContent: "center", padding: 16, backgroundColor: "lightseagreen" }}>
         <Typography variant="h5" component="h1">Отряд: {order.name || order.latin_name}</Typography>
       </header>
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <main style={{ display: "flex", justifyContent: "center" }}>
         <NumCardList
           list={listLeft}
           curCount={count}
@@ -86,7 +86,7 @@ export const CounterSpecies = () => {
           list={listRight}
           curCount={count}
         />
-      </div>
+      </main>
     </section>
   )
 }
