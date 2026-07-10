@@ -53,35 +53,40 @@ export const CounterSpecies = () => {
   }
 
   return (
-    <>
-      <NumCardList
-        list={listLeft}
-        curCount={count}
-      />
-      <Stack spacing={1} sx={{ alignItems: 'center', mx: 1, zIndex: 1 }}>
-        <CounterPaper
-          count={count}
-          isAchieve={achieves.some((achieve) => achieve.count === count)}
-          listLength={listLeft.length + listRight.length}
-          order={order}
-          addListItem={(isBilateral) => !isBilateral ? setListLeft : setListRight}
-          changeCountHandler={changeCountHandler}
+    <section style={{ display: "flex", gap: 24, justifyContent: "center", flexDirection: "column" }}>
+      <header style={{ display: "flex", justifyContent: "center", padding: 16, backgroundColor: "lightseagreen" }}>
+        <Typography variant="h5" component="h1">Отряд: {order.name || order.latin_name}</Typography>
+      </header>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <NumCardList
+          list={listLeft}
+          curCount={count}
         />
-        {!!achieves.length && (
-          <Paper elevation={5} sx={{ p: 2, mx: 1.5 }}>
-            <Typography variant="caption">{achieves.length}/{Object.keys(achievements).length}</Typography>
-            <AchieveCardList
-              achieves={achieves}
-              count={count}
-              changeCountHandler={changeCountHandler}
-            />
-          </Paper>
-        )}
-      </Stack>
-      <NumCardList
-        list={listRight}
-        curCount={count}
-      />
-    </>
+        <Stack spacing={1} sx={{ alignItems: 'center', mx: 1, zIndex: 1, gap: 2 }}>
+          <CounterPaper
+            count={count}
+            isAchieve={achieves.some((achieve) => achieve.count === count)}
+            listLength={listLeft.length + listRight.length}
+            order={order}
+            addListItem={(isBilateral) => !isBilateral ? setListLeft : setListRight}
+            changeCountHandler={changeCountHandler}
+          />
+          {!!achieves.length && (
+            <Paper elevation={5} sx={{ p: 2, mx: 1.5 }}>
+              <Typography variant="caption">{achieves.length}/{Object.keys(achievements).length}</Typography>
+              <AchieveCardList
+                achieves={achieves}
+                count={count}
+                changeCountHandler={changeCountHandler}
+              />
+            </Paper>
+          )}
+        </Stack>
+        <NumCardList
+          list={listRight}
+          curCount={count}
+        />
+      </div>
+    </section>
   )
 }
