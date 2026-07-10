@@ -1,8 +1,8 @@
 import { useMemo, useRef } from "react";
 import { Button, ButtonGroup, Paper, Stack, Typography } from "@mui/material"
-import { isAchieveInRange } from "./utils/data/achievements/checkAchievements";
-import type { ListType } from "./CounterSpecies";
-import type { OrderStruct } from "./utils/data/types";
+import { isAchieveInRange } from "../utils/data/achievements/checkAchievements";
+import type { ListType } from "../CounterSpecies";
+import type { OrderStruct } from "../utils/data/types";
 
 
 export enum ListSide { Left, Right }

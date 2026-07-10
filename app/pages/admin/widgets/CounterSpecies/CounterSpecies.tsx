@@ -2,11 +2,11 @@ import { Paper, Stack, Typography } from "@mui/material";
 import { useState } from "react"
 import { NumCardList } from "./NumCardList/NumCardList";
 import type { FamilyStruct } from "./utils/data/types";
-import { AchieveCard } from "./AchieveCard/AchieveCard";
-import { checkAchievements, type AchieveCardType } from "./utils/data/achievements/checkAchievements";
+import { checkAchievements } from "./utils/data/achievements/checkAchievements";
 import { achievements } from "./utils/data/achievements/data";
-import { CounterPaper } from "./CounterPaper";
+import { CounterPaper } from "./CounterPaper/CounterPaper";
 import { order } from "./utils/data/order/order";
+import { AchieveCardList, type AchievesType } from "./AchieveCardList/AchieveCardList";
 
 /** 
  * Доп.
@@ -41,7 +41,7 @@ export const CounterSpecies = () => {
   const [listLeft, setListLeft] = useState<ListType[]>([]);
   const [listRight, setListRight] = useState<ListType[]>([]);
 
-  const [achieves, setAchieves] = useState<Array<AchieveCardType & { count: number }>>([]);
+  const [achieves, setAchieves] = useState<AchievesType[]>([]);
 
   const changeCountHandler = (newCount: number) => {
     setCount(newCount);
@@ -70,16 +70,11 @@ export const CounterSpecies = () => {
         {!!achieves.length && (
           <Paper elevation={5} sx={{ p: 2, mx: 1.5 }}>
             <Typography variant="caption">{achieves.length}/{Object.keys(achievements).length}</Typography>
-            <Stack spacing={.5} direction="column-reverse">
-              {achieves.map((achieve, index) => (
-                <AchieveCard
-                  key={`achieve-card-${index}`}
-                  achieve={achieve}
-                  isActive={achieves.find(({ title }) => title === achieve.title)?.count === count}
-                  onClick={() => changeCountHandler(achieve.count)}
-                />
-              ))}
-            </Stack>
+            <AchieveCardList
+              achieves={achieves}
+              count={count}
+              changeCountHandler={changeCountHandler}
+            />
           </Paper>
         )}
       </Stack>

@@ -2,7 +2,6 @@ import { Avatar, Card, CardHeader } from "@mui/material";
 import type { AchieveCardType } from "../utils/data/achievements/checkAchievements";
 
 
-
 export const AchieveCard = ({
   achieve,
   isActive,

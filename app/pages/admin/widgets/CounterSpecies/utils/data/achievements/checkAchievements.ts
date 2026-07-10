@@ -71,7 +71,6 @@ export function checkAchievements(curCount: number, order: OrderStruct) {
   }
 }
 
-// TODO:
 type AchieveTypes = keyof typeof achievements;
 
 export type AchieveCardType = {
