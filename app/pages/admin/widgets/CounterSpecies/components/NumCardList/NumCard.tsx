@@ -1,6 +1,7 @@
 import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardHeader, Typography } from "@mui/material"
-import type { FamilyStruct } from "../utils/data/types";
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
+
+import type { FamilyStruct } from "../../utils/data/types";
 
 interface NumCardProps {
   curCount: number;

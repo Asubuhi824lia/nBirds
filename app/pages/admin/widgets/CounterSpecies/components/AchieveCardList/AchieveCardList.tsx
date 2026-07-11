@@ -1,6 +1,7 @@
 import { Stack } from "@mui/material"
+
 import { AchieveCard } from "./AchieveCard"
-import type { AchieveCardType } from "../utils/data/achievements/checkAchievements"
+import type { AchieveCardType } from "../../utils/data/achievements/checkAchievements"
 
 export type AchievesType = AchieveCardType & { count: number };
 
