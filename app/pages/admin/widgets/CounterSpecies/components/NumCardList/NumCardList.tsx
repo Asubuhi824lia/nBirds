@@ -1,7 +1,8 @@
-import { Button, Grid } from "@mui/material"
-import type { ListType } from "../CounterSpecies";
-import { NumCard } from "./NumCard";
 import { useState } from "react";
+import { Button, Grid } from "@mui/material" 
+
+import { NumCard } from "./NumCard"; 
+import type { ListType } from "../../utils/data/types";
 
 
 interface NumCardListProps {

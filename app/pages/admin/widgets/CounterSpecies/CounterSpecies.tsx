@@ -1,12 +1,12 @@
 import { Paper, Stack, Typography } from "@mui/material";
 import { useState } from "react"
-import { NumCardList } from "./NumCardList/NumCardList";
-import type { FamilyStruct } from "./utils/data/types";
+import { NumCardList } from "./components/NumCardList/NumCardList";
 import { checkAchievements } from "./utils/data/achievements/checkAchievements";
 import { achievements } from "./utils/data/achievements/data";
-import { CounterPaper } from "./CounterPaper/CounterPaper";
+import { CounterPaper } from "./components/CounterPaper/CounterPaper";
 import { order } from "./utils/data/order/order";
-import { AchieveCardList, type AchievesType } from "./AchieveCardList/AchieveCardList";
+import { AchieveCardList, type AchievesType } from "./components/AchieveCardList/AchieveCardList"; 
+import type { ListType } from "./utils/data/types";
 
 /** 
  * Доп.
@@ -30,11 +30,6 @@ import { AchieveCardList, type AchievesType } from "./AchieveCardList/AchieveCar
  * — «Многогранность» — тренировка на каждый Акцент за 1 день — для первого дня
  */
 
-
-export type ListType = {
-  families: FamilyStruct[];
-  speciesNum: number;
-}
 
 export const CounterSpecies = () => {
   const [count, setCount] = useState<number>(0);

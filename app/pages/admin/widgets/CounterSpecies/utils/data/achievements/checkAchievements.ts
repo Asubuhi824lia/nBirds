@@ -22,7 +22,6 @@ export function isAchieveInRange(startNum: number, endNum: number, order: OrderS
   return points.findIndex((value) => startNum < value && value < endNum) > -1;
 }
 
-
 export function checkAchievements(curCount: number, order: OrderStruct) {
   const {
     MAX_GROUPS,
@@ -81,7 +80,7 @@ export type AchieveCardType = {
   accentBg: Color[100];
 }
 
-export function createAchievement(CODE: AchieveTypes, color: Color, symbol?: string): AchieveCardType {
+function createAchievement(CODE: AchieveTypes, color: Color, symbol?: string): AchieveCardType {
   return ({
     signSymbol: symbol ?? achievementsSign[CODE],
     title: achievementsTitle[CODE],
