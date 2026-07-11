@@ -3,26 +3,35 @@ import type { FamilyStruct } from "../utils/data/types";
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 
 interface NumCardProps {
-  isTabActive: boolean;
-  toggleTabActive: () => void;
   curCount: number;
-  speciesNum: number;
   families: Array<FamilyStruct>;
+  isTabActive: boolean;
+  speciesNum: number;
+  onClick: () => void;
+  toggleTabActive: () => void;
 }
 
-export const NumCard = ({ curCount, speciesNum, families, isTabActive, toggleTabActive }: NumCardProps) => {
+export const NumCard = ({
+  curCount,
+  families,
+  isTabActive,
+  speciesNum,
+  onClick,
+  toggleTabActive
+}: NumCardProps) => {
 
   return (
     <Card
       raised={speciesNum === curCount}
       sx={{
         bgcolor: speciesNum === curCount ? "lightsalmon" : "lightcyan",
-        height: "fit-content",
+        height: "fit-content"
       }}
     >
       <CardHeader
         title={speciesNum}
         subheader={isTabActive ? "видов" : null}
+        sx={{ cursor: "pointer" }}
         slotProps={{
           content: { sx: { display: "flex", direction: "rtl", justifyContent: "left" } },
           subheader: {
@@ -34,6 +43,7 @@ export const NumCard = ({ curCount, speciesNum, families, isTabActive, toggleTab
             }
           },
         }}
+        onClick={onClick}
       />
       <CardContent>
         <Typography variant="h3" component="center">{families.length}</Typography>
@@ -58,7 +68,6 @@ export const NumCard = ({ curCount, speciesNum, families, isTabActive, toggleTab
               ))}
             </AccordionDetails>
           </Accordion>
-
         </div>
       </CardContent>
     </Card>

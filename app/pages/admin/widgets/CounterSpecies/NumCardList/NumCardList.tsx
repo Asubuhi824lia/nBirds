@@ -5,11 +5,12 @@ import { useState } from "react";
 
 
 interface NumCardListProps {
-  list: ListType[];
   curCount: number;
+  list: ListType[];
+  changeCountHandler: (count: number) => void
 }
 
-export const NumCardList = ({ list, curCount }: NumCardListProps) => {
+export const NumCardList = ({ curCount, list, changeCountHandler }: NumCardListProps) => {
   const [activeTabs, setActiveTabs] = useState<number[]>([]);
 
   const onExpandAll = () => setActiveTabs([...list.map((_, index) => index)])
@@ -41,11 +42,12 @@ export const NumCardList = ({ list, curCount }: NumCardListProps) => {
         {list.map(({ speciesNum, families }, index) => (
           <Grid key={`families-card-${index}`} size={1}>
             <NumCard
-              isTabActive={activeTabs.includes(index)}
-              toggleTabActive={() => toggleTabActive(index)}
               curCount={curCount}
-              speciesNum={speciesNum}
               families={families}
+              isTabActive={activeTabs.includes(index)}
+              speciesNum={speciesNum}
+              onClick={() => changeCountHandler(speciesNum)}
+              toggleTabActive={() => toggleTabActive(index)}
             />
           </Grid>
         ))}

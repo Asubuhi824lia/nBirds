@@ -32,8 +32,8 @@ import { AchieveCardList, type AchievesType } from "./AchieveCardList/AchieveCar
 
 
 export type ListType = {
-  speciesNum: number;
   families: FamilyStruct[];
+  speciesNum: number;
 }
 
 export const CounterSpecies = () => {
@@ -62,6 +62,7 @@ export const CounterSpecies = () => {
         <NumCardList
           list={listLeft}
           curCount={count}
+          changeCountHandler={setCount}
         />
         <Stack spacing={1} sx={{ alignItems: 'center', mx: 1, zIndex: 1, gap: 2 }}>
           <CounterPaper
@@ -86,6 +87,7 @@ export const CounterSpecies = () => {
         <NumCardList
           list={listRight}
           curCount={count}
+          changeCountHandler={setCount}
         />
       </main>
     </section>
