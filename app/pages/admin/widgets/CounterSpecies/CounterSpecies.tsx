@@ -12,6 +12,7 @@ import { AchieveCardList, type AchievesType } from "./AchieveCardList/AchieveCar
  * Доп.
  * 
  * Диаграмма «видов — семейств/родов/...»
+ * Варианты группировки групп по общему значению
  */
 
 /** 

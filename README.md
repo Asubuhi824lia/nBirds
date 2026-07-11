@@ -1,86 +1,53 @@
-# Welcome to React Router!
+# Welcome to «Birds: Counter Species»!
 
-A modern, production-ready template for building full-stack React applications using React Router.
-
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+Проект представляет собой простой счётчик, переключение между значениями которого помогает наглядно сгруппировать семейства одного отряда «Воробьинообразные» по общности количества видов, содержащихся в них.
 
 ## Features
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+### Counter
 
-## Getting Started
+- Изменение счётчика по клику
+- Изменение ряда состояний в зависимости от 1 главного состояния (`count`)
+- Переход на порядок вперёд (`10`/`100`) при отсутствии на дистанции значения подходящего «группе»
+- подсчёт достигнутых «групп»
+- отображение максимальных значений «подгрупп» (пример: семейств, видов)
+- подсчёт пройденных «подгрупп», соответствующих счётчику
 
-### Installation
+### List
 
-Install the dependencies:
+- Формирование двустороннего списка (разделение по `edgePartNum` - ½ «подгрупп» «таксона»)
+- Диапазон счётчика ограничен диапазоном «подгрупп» (пример: максимальное число видов в семействе)
+- Возможность развернуть/свернуть список «подгурпп» (пример: семейств) «группы»
+- «Развернуть всё» — отдельно для каждой стороны списка
+- «Свернуть всё» — отдельно для каждой стороны списка
 
-```bash
-npm install
-```
+### Achieves
 
-### Development
+- Ведение перечня ачивок по достигаемым значениям
+- Изменение счётчика переходом между значениями достигнутых ачивок
+- Визуальное виделение ачивки, которой соответствует текущее значение счётчика
 
-Start the development server with HMR:
-
-```bash
-npm run dev
-```
-
-Your application will be available at `http://localhost:5173`.
-
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
+## Groups
 
 ```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
+├── таксон: «отряд»
+│   ├── отряд: «Воробьинообразные»
+├── группы — набор «подгрупп», содержащих одно число «подзначений»
+│   ├── подгруппы: «семейства»
+│       ├── подзначения: «виды»
 ```
 
-## Styling
+## Interface
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+```
+├── header: название таксона
+├── main:
+│   ├── Боковые:
+│       ├── двусторонний список «групп»
+│   ├── Центр:
+│       ├── счётчик
+│       ├── список ачивок
+```
 
 ---
 

@@ -70,7 +70,7 @@ export const CounterPaper = ({
     if (newCount > achievedCountRef.current) {
       achievedCountRef.current = newCount;
 
-      // prevent extra additions
+      // prevent extra additions, lite variant
       if (familiesCalculated.length) {
         const isBilateral: ListSide = +(achievedCountRef.current > edgePartNum);
         const setList = addListItem(isBilateral);
