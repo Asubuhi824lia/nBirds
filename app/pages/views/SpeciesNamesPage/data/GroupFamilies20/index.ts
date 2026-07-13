@@ -1,0 +1,1 @@
+export { GroupFamilies20 } from './GroupFamilies20'

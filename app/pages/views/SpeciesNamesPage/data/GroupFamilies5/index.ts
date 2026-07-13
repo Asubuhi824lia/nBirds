@@ -1,0 +1,1 @@
+export { GroupFamilies5 } from './GroupFamilies5'
