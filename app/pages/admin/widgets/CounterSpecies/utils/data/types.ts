@@ -10,8 +10,8 @@ interface GeneraStruct extends SpeciesStruct {
 }
 
 export interface FamilyStruct extends Omit<GeneraStruct, "species"> {
-  genera: Array<GeneraStruct>;
-  genera_length: number;
+  genera?: Array<GeneraStruct>;
+  genera_length?: number;
 }
 
 export interface OrderStruct extends Omit<FamilyStruct, "genera"> {

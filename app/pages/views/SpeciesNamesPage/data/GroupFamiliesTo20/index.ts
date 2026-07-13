@@ -1,0 +1,1 @@
+export { GroupFamiliesTo20 } from './GroupFamiliesTo20'

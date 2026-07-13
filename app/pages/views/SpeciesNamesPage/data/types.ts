@@ -11,7 +11,7 @@ interface FamilyGroupStruct extends SpeciesStruct {
 export interface FamiliesGroup {
   families_length?: number;
   families: Array<FamilyGroupStruct>;
-  max_species_length: number;
+  max_species_length?: number;
   min_species_length: number;
 }
 

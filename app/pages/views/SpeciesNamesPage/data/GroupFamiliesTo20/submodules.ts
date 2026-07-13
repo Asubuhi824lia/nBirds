@@ -1,121 +1,7 @@
 import type { FamilyStruct } from "~/pages/admin/widgets/CounterSpecies/utils/data/types";
 
 
-export const TwentyFamily: Array<FamilyStruct> = [
-  // Вдовушковые 20
-  {
-    name: "Вдовушковые",
-    latin_name: "Viduidae",
-    genera: [
-      {
-        name: "Кукушковые ткачи",
-        latin_name: "Anomalospiza",
-        species_length: 1,
-        species: [
-          {
-            name: "Кукушковый ткач",
-            latin_name: "Anomalospiza imberbis",
-          },
-        ]
-      },
-      {
-        name: "Вдовушки",
-        latin_name: "Vidua",
-        species_length: 19,
-        species: [
-          {
-            name: "Ккамерунская вдовушка",
-            latin_name: "Vidua camerunensis",
-          },
-          {
-            name: "Красноногая вдовушка",
-            latin_name: "Vidua chalybeata",
-            alternative_names: ["красноногий стальной ткач", "Деревенская вдовушка", "Атласная вдовушка", "Сенегальский ткачик"]
-          },
-          {
-            name: "замбезийская вдовушка",
-            latin_name: "Vidua codringtoni",
-          },
-          {
-            name: "Вдовушка Фишера",
-            latin_name: "Vidua fischeri",
-            alternative_names: ["Светлохвостая вдовушка"]
-          },
-          {
-            name: "Белоногая вдовушка",
-            latin_name: "Vidua funerea",
-            alternative_names: ["белоногий стальной ткач", "Бледноногая вдовушка"],
-          },
-          {
-            name: "Блестящая вдовушка",
-            latin_name: "Vidua hypocherina",
-            alternative_names: ["стальной ткач", "Чёрная вдовушка"]
-          },
-          {
-            name: "Гвинейская райская вдовушка",
-            latin_name: "Vidua interjecta",
-            alternative_names: ["длиннохвостая райская вдовушка"]
-          },
-          {
-            name: "Чернолицая вдовушка",
-            latin_name: "Vidua larvaticola",
-          },
-          {
-            name: "Доминиканская вдовушка",
-            latin_name: "Vidua macroura",
-            alternative_names: ["Узкохвостая вдовушка", "Острохвостая вдовушка"]
-          },
-          {
-            name: "Горная вдовушка",
-            latin_name: "Vidua maryae",
-            alternative_names: ["Вдовушка Жос-Плате"] //TODO: !!
-          },
-          {
-            name: "Нигерийская вдовушка",
-            latin_name: "Vidua nigeriae",
-          },
-          {
-            name: "Широкохвостая райская вдовушка",
-            latin_name: "Vidua obtusa",
-          },
-          {
-            name: "Пышнохвостая райская вдовушка",
-            latin_name: "Vidua orientalis",
-            alternative_names: ["Широкохвостая райская вдовушка"]
-          },
-          {
-            name: "Райская вдовушка",
-            latin_name: "Vidua paradisaea",
-            alternative_names: ["Длиннохвостая райская вдовушка"]
-          },
-          {
-            name: "Фиолетовая вдовушка",
-            latin_name: "Vidua purpurascens",
-            alternative_names: ["Пурпурная вдовушка"]
-          },
-          {
-            name: "Астрильдовая вдовушка",
-            latin_name: "Vidua raricola",
-          },
-          {
-            name: "Королевская вдовушка",
-            latin_name: "Vidua regia",
-          },
-          {
-            name: "тоголезская райская вдовушка",
-            latin_name: "Vidua togoensis",
-          },
-          {
-            name: "Вильсонова вдовушка",
-            latin_name: "Vidua wilsoni",
-            alternative_names: ["вильсонов стальной ткач"]
-          },
-        ]
-      },
-    ],
-    genera_length: 2,
-    species_length: 20,
-  },
+export const TwentyToFamily: Array<FamilyStruct> = [
   // 18 - Африканские славки
   {
     name: "Африканские славки",
@@ -732,9 +618,6 @@ export const TwentyFamily: Array<FamilyStruct> = [
     genera_length: 8,
     species_length: 11,
   },
-]
-
-export const TenFamily: Array<FamilyStruct> = [
   // 10 - Альциппы
   {
     name: "",
@@ -798,6 +681,9 @@ export const TenFamily: Array<FamilyStruct> = [
     genera_length: 1,
     species_length: 10,
   },
+]
+
+export const TenToFamily: Array<FamilyStruct> = [
   // 9 - Пищуховые, Стеностировые (мухоловки-феи)
   {
     name: "Пищуховые",
@@ -1127,5 +1013,88 @@ export const TenFamily: Array<FamilyStruct> = [
     ],
     genera_length: 2,
     species_length: 6,
+  },
+]
+
+export const FiveToFamily: Array<FamilyStruct> = [
+  // Passerida
+  // 5 - Оляпки
+  {
+    name: "Оляпковые",
+    latin_name: "Cinclidae",
+    genera: [
+      {
+        name: "Оляпки",
+        latin_name: "Cinclus",
+        species_length: 5,
+        species: [
+          {
+            name: "Оляпка",
+            latin_name: "Cinclus cinclus",
+            alternative_names: ["обыкновенная оляпка", "водяной дрозд", "водяной воробей"]
+          },
+          {
+            name: "Бурая оляпка",
+            latin_name: "Cinclus pallasii",
+          },
+          {
+            name: "Американская оляпка",
+            latin_name: "Cinclus mexicanus",
+          },
+          {
+            name: "Белоголовая оляпка",
+            latin_name: "Cinclus leucocephalus",
+          },
+          {
+            name: "Рыжегорлая оляпка",
+            latin_name: "Cinclus schulzii",
+          },
+        ]
+      }
+    ],
+    genera_length: 1,
+    species_length: 5,
+  },
+  // Corvida
+  // 5 - Шилоклювые тимелии
+  {
+    name: "Шилоклювые тимелии",
+    latin_name: "Pomatostomidae",
+    genera: [
+      {
+        name: "",
+        latin_name: "Garritornis",
+        species_length: 1,
+        species: [{
+          name: "",
+          latin_name: "Garritornis isidorei",
+        }]
+      },
+      {
+        name: "",
+        latin_name: "Pomatostomus",
+        species_length: 4,
+        species: [
+          {
+            name: "Сероголовая шилоклювая тимелия",
+            latin_name: "Pomatostomus temporalis",
+          },
+          {
+            name: "Белогорлая шилоклювая тимелия",
+            latin_name: "Pomatostomus halli",
+          },
+          {
+            name: "Белобровая шилоклювая тимелия",
+            latin_name: "Pomatostomus superciliosus",
+          },
+          {
+            name: "Красноголовая шилоклювая тимелия",
+            latin_name: "Pomatostomus ruficeps",
+          },
+        ]
+      }
+    ],
+    genera_length: 2,
+    species_length: 5,
   },
 ]
