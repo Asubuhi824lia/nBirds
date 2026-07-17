@@ -1,9 +1,9 @@
-import { CounterSpecies } from "~/pages/admin/widgets/CounterSpecies/CounterSpecies";
+import { SpeciesNamesPage } from "~/pages/views/SpeciesNamesPage/SpeciesNamesPage";
 
 export default function Home() {
   return (
     <section style={{ display: "flex", justifyContent: "center" }}>
-      <CounterSpecies />
+      <SpeciesNamesPage />
     </section>
   )
 }
