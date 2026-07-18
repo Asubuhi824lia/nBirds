@@ -69,11 +69,13 @@ export const SpeciesNamesPage = () => {
             const key = N < 10 ? N : (Math.floor(N / 10) * 10);
 
             // divide to subgroups by N
-            if (parts.has(key) && parts.get(key))
+            if (parts.has(key))
               parts.set(key, [...parts.get(key) as FamilyGroupStruct[], family])
             else
               parts.set(key, [family])
           })
+
+          const partsSorted = (Array.from(parts.entries())).sort((a, b) => a[0] - b[0]);
 
           return (
             <CustomTabPanel key={`tab-group-${index}`} value={tab} index={index}>
@@ -87,9 +89,11 @@ export const SpeciesNamesPage = () => {
                 />
                 <CardContent>
                   <Grid spacing={3} container sx={{ display: "flex", justifyContent: "center" }}>
-                    {Array.from(parts.entries()).map(([species_num, families], ind) => (
+                    {partsSorted.map(([species_num, families], ind) => (
                       <Grid key={`group-${index}-part-${ind}`}>
-                        <Typography variant="h5">{species_num + (species_num < 10 ? '' : "+")}</Typography>
+                        <Typography variant="h5">
+                          {species_num + (species_num < 10 ? '' : "+")}
+                        </Typography>
                         <List dense>
                           {families.map((family, i) => (
                             <ListItemText key={`group-${index}-part-${ind}-family-${i}`}>
