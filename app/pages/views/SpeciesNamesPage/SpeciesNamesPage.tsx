@@ -65,8 +65,8 @@ export const SpeciesNamesPage = () => {
           const parts = new Map<number, FamilyGroupStruct[]>();
 
           group.families.map((family) => {
-            const num_part = family.species_length % 100;
-            const key = num_part < 10 ? num_part : (Math.ceil(num_part / 10) * 10);
+            const N = family.species_length;
+            const key = N < 10 ? N : (Math.floor(N / 10) * 10);
 
             // divide to subgroups by N
             if (parts.has(key) && parts.get(key))
@@ -89,13 +89,13 @@ export const SpeciesNamesPage = () => {
                   <Grid spacing={3} container sx={{ display: "flex", justifyContent: "center" }}>
                     {Array.from(parts.entries()).map(([species_num, families], ind) => (
                       <Grid key={`group-${index}-part-${ind}`}>
-                        <Typography variant="h5">{species_num + (species_num <= 10 ? '' : "+")}</Typography>
+                        <Typography variant="h5">{species_num + (species_num < 10 ? '' : "+")}</Typography>
                         <List dense>
                           {families.map((family, i) => (
                             <ListItemText key={`group-${index}-part-${ind}-family-${i}`}>
-                              {species_num < 10
-                                ? family.name || family.latin_name
-                                : family.name || family.latin_name + ' — ' + family.species_length
+                              {family.species_length < 10
+                                ? (family.name || family.latin_name)
+                                : (family.name || family.latin_name) + ' — ' + family.species_length
                               }
                             </ListItemText>
                           ))}
@@ -109,7 +109,7 @@ export const SpeciesNamesPage = () => {
           )
         })}
       </Grid>
-    </section >
+    </section>
   )
 }
 
