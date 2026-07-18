@@ -432,8 +432,8 @@ export const TwentyToFamily: Array<FamilyStruct> = [
   },
   // 11 - Ремезовые, Bernieridae
   {
-    name: "",
-    latin_name: "",
+    name: "Ремезовые",
+    latin_name: "Remizidae",
     genera: [
       {
         name: "Ремезы",

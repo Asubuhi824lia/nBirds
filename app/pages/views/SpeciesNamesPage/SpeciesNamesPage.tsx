@@ -64,6 +64,7 @@ export const SpeciesNamesPage = () => {
         {FamiliesGroups.map((group, index) => {
           const parts = new Map<number, FamilyGroupStruct[]>();
 
+          // get groups
           group.families.map((family) => {
             const N = family.species_length;
             const key = N < 10 ? N : (Math.floor(N / 10) * 10);
@@ -74,8 +75,14 @@ export const SpeciesNamesPage = () => {
             else
               parts.set(key, [family])
           })
+          // sort groups
+          parts.forEach((part, key) => {
+            const partSorted = part.sort((a, b) => a.species_length - b.species_length);
+            parts.set(key, partSorted);
+          })
 
-          const partsSorted = (Array.from(parts.entries())).sort((a, b) => a[0] - b[0]);
+          const partsSorted: [number, FamilyGroupStruct[]][]
+            = (Array.from(parts.entries())).sort((a, b) => a[0] - b[0]);
 
           return (
             <CustomTabPanel key={`tab-group-${index}`} value={tab} index={index}>
@@ -95,14 +102,25 @@ export const SpeciesNamesPage = () => {
                           {species_num + (species_num < 10 ? '' : "+")}
                         </Typography>
                         <List dense>
-                          {families.map((family, i) => (
-                            <ListItemText key={`group-${index}-part-${ind}-family-${i}`}>
-                              {family.species_length < 10
-                                ? (family.name || family.latin_name)
-                                : (family.name || family.latin_name) + ' — ' + family.species_length
-                              }
-                            </ListItemText>
-                          ))}
+                          {families.map((family, i) => {
+                            const name =
+                              family.name
+                              || family.latin_name
+                              || family.alternative_names?.[0]
+                              || "???";
+                            return (
+                              <ListItemText
+                                key={`group-${index}-part-${ind}-family-${i}`}
+                                sx={{ width: "100%", cursor: "pointer" }}
+                                slotProps={{ primary: { sx: { display: "flex", justifyContent: "space-between" } } }}
+                              >
+                                <span>{name}</span>
+                                {family.species_length >= 10 && (
+                                  <span style={{ color: "GrayText" }}>&nbsp;{' — ' + family.species_length}</span>
+                                )}
+                              </ListItemText>
+                            )
+                          })}
                         </List>
                       </Grid>
                     ))}
