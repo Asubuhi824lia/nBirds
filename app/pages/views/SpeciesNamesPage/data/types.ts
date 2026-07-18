@@ -4,7 +4,7 @@ export interface SpeciesStruct {
   alternative_names?: Array<string>;
 }
 
-interface FamilyGroupStruct extends SpeciesStruct {
+export interface FamilyGroupStruct extends SpeciesStruct {
   species_length: number;
 }
 

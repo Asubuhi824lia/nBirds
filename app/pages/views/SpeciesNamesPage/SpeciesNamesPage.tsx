@@ -9,10 +9,11 @@
  * «отряд: род —> виды»
  */
 
-import { Box, Card, CardContent, CardHeader, Grid, List, ListItem, Tab, Tabs } from "@mui/material"
+import { Box, Card, CardContent, CardHeader, Grid, List, ListItemText, Tab, Tabs, Typography } from "@mui/material"
 // TODO: variable — fromLowerCase
 import { FamiliesGroups } from "./data/FamiliesGroups"
 import { useState } from "react"
+import type { FamilyGroupStruct } from "./data/types";
 
 
 
@@ -59,31 +60,56 @@ export const SpeciesNamesPage = () => {
         </Tabs>
       </Box>
 
-      <Grid container spacing={1} sx={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between" }}>
-        {FamiliesGroups.map((group, index) => (
-          <CustomTabPanel key={`tab-group-${index}`} value={tab} index={index}>
-            <Card key={`group-${index}`} sx={{ width: 'fit-content', height: "fit-content" }}>
-              <CardHeader
-                component="center"
-                title={
-                  `${group.min_species_length}`
-                  + (group.max_species_length ? ` - ${group.max_species_length}` : '+')
-                }
-              />
-              <CardContent>
-                <List>
-                  {group.families.map((family, ind) => (
-                    <ListItem key={`group-${index}-family-${ind}`}>
-                      {family.name || family.latin_name} — {family.species_length}
-                    </ListItem>
-                  ))}
-                </List>
-              </CardContent>
-            </Card>
-          </CustomTabPanel>
-        ))}
+      <Grid container spacing={1} sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+        {FamiliesGroups.map((group, index) => {
+          const parts = new Map<number, FamilyGroupStruct[]>();
+
+          group.families.map((family) => {
+            const num_part = family.species_length % 100;
+            const key = num_part < 10 ? num_part : (Math.ceil(num_part / 10) * 10);
+
+            // divide to subgroups by N
+            if (parts.has(key) && parts.get(key))
+              parts.set(key, [...parts.get(key) as FamilyGroupStruct[], family])
+            else
+              parts.set(key, [family])
+          })
+
+          return (
+            <CustomTabPanel key={`tab-group-${index}`} value={tab} index={index}>
+              <Card key={`group-${index}`} sx={{ width: 'fit-content', height: "fit-content" }}>
+                <CardHeader
+                  component="center"
+                  title={
+                    `${group.min_species_length}`
+                    + (group.max_species_length ? ` - ${group.max_species_length}` : '+')
+                  }
+                />
+                <CardContent>
+                  <Grid spacing={3} container sx={{ display: "flex", justifyContent: "center" }}>
+                    {Array.from(parts.entries()).map(([species_num, families], ind) => (
+                      <Grid key={`group-${index}-part-${ind}`}>
+                        <Typography variant="h5">{species_num + (species_num <= 10 ? '' : "+")}</Typography>
+                        <List dense>
+                          {families.map((family, i) => (
+                            <ListItemText key={`group-${index}-part-${ind}-family-${i}`}>
+                              {species_num < 10
+                                ? family.name || family.latin_name
+                                : family.name || family.latin_name + ' — ' + family.species_length
+                              }
+                            </ListItemText>
+                          ))}
+                        </List>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </CardContent>
+              </Card>
+            </CustomTabPanel>
+          )
+        })}
       </Grid>
-    </section>
+    </section >
   )
 }
 
