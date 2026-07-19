@@ -96,34 +96,44 @@ export const SpeciesNamesPage = () => {
                 />
                 <CardContent>
                   <Grid spacing={3} container sx={{ display: "flex", justifyContent: "center" }}>
-                    {partsSorted.map(([species_num, families], ind) => (
-                      <Grid key={`group-${index}-part-${ind}`}>
-                        <Typography variant="h5">
-                          {species_num + (species_num < 10 ? '' : "+")}
-                        </Typography>
-                        <List dense>
-                          {families.map((family, i) => {
-                            const name =
-                              family.name
-                              || family.latin_name
-                              || family.alternative_names?.[0]
-                              || "???";
-                            return (
-                              <ListItemText
-                                key={`group-${index}-part-${ind}-family-${i}`}
-                                sx={{ width: "100%", cursor: "pointer" }}
-                                slotProps={{ primary: { sx: { display: "flex", justifyContent: "space-between" } } }}
-                              >
-                                <span>{name}</span>
-                                {family.species_length >= 10 && (
-                                  <span style={{ color: "GrayText" }}>&nbsp;{' — ' + family.species_length}</span>
-                                )}
-                              </ListItemText>
-                            )
-                          })}
-                        </List>
-                      </Grid>
-                    ))}
+                    {partsSorted.map(([species_num, families], ind, arr) => {
+                      const isSingleOnly = new Set(
+                        families.map(({ species_length }) => species_length)
+                      ).size === 1;
+                      const isLonely =
+                        families.length === 1;
+
+                      const isSpecificValue = isLonely || isSingleOnly || species_num < 10;
+
+                      return (
+                        <Grid key={`group-${index}-part-${ind}`}>
+                          <Typography variant="h5" sx={(arr.length === 1) ? { textAlign: "center" } : null}>
+                            {(isSpecificValue ? families[0].species_length : `${species_num}+`)}
+                          </Typography>
+                          <List dense>
+                            {families.map((family, i) => {
+                              const name =
+                                family.name
+                                || family.latin_name
+                                || family.alternative_names?.[0]
+                                || "???";
+                              return (
+                                <ListItemText
+                                  key={`group-${index}-part-${ind}-family-${i}`}
+                                  sx={{ width: "100%", cursor: "pointer" }}
+                                  slotProps={{ primary: { sx: { display: "flex", justifyContent: "space-between" } } }}
+                                >
+                                  <span>{name}</span>
+                                  {(family.species_length >= 10 && !isSpecificValue) && (
+                                    <span style={{ color: "GrayText" }}>&nbsp;{' — ' + family.species_length}</span>
+                                  )}
+                                </ListItemText>
+                              )
+                            })}
+                          </List>
+                        </Grid>
+                      )
+                    })}
                   </Grid>
                 </CardContent>
               </Card>
