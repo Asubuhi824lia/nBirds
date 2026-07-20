@@ -3,7 +3,7 @@ import { GroupFamiliesTo20 } from "./GroupFamiliesTo20";
 import type { FamiliesGroup } from "./types";
 
 export const FamiliesGroups: Array<FamiliesGroup> = [
-  GroupFamiliesTo5,   // to 6   [1, 5)
+  GroupFamiliesTo5,   // to 5   [1, 5)
   GroupFamiliesTo20,  // to 20  [5, 20)
 
   // [20, 49)

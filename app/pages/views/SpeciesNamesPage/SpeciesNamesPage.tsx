@@ -9,11 +9,12 @@
  * «отряд: род —> виды»
  */
 
-import { Box, Card, CardContent, CardHeader, Grid, List, ListItemText, Tab, Tabs, Typography } from "@mui/material"
+import { Box, Card, CardContent, CardHeader, Container, Divider, Grid, List, ListItemText, Stack, Tab, Tabs, Typography } from "@mui/material"
 // TODO: variable — fromLowerCase
 import { FamiliesGroups } from "./data/FamiliesGroups"
 import { useState } from "react"
 import type { FamilyGroupStruct } from "./data/types";
+import { FilterName } from "./components/Filters/FilterName";
 
 
 
@@ -33,6 +34,7 @@ export const SpeciesNamesPage = () => {
         display: 'flex',
         justifyContent: 'center',
         flexDirection: "column",
+        gap: 64,
         width: '80%'
       }}
     >
@@ -60,87 +62,92 @@ export const SpeciesNamesPage = () => {
         </Tabs>
       </Box>
 
-      <Grid container spacing={1} sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
-        {FamiliesGroups.map((group, index) => {
-          const parts = new Map<number, FamilyGroupStruct[]>();
+      <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
+        <Grid container spacing={1} sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+          {FamiliesGroups.map((group, index) => {
+            const parts = new Map<number, FamilyGroupStruct[]>();
 
-          // get groups
-          group.families.map((family) => {
-            const N = family.species_length;
-            const key = N < 10 ? N : (Math.floor(N / 10) * 10);
+            // get groups
+            group.families.map((family) => {
+              const N = family.species_length;
+              const key = N < 10 ? N : (Math.floor(N / 10) * 10);
 
-            // divide to subgroups by N
-            if (parts.has(key))
-              parts.set(key, [...parts.get(key) as FamilyGroupStruct[], family])
-            else
-              parts.set(key, [family])
-          })
-          // sort groups
-          parts.forEach((part, key) => {
-            const partSorted = part.sort((a, b) => a.species_length - b.species_length);
-            parts.set(key, partSorted);
-          })
+              // divide to subgroups by N
+              if (parts.has(key))
+                parts.set(key, [...parts.get(key) as FamilyGroupStruct[], family])
+              else
+                parts.set(key, [family])
+            })
+            // sort groups
+            parts.forEach((part, key) => {
+              const partSorted = part.sort((a, b) => a.species_length - b.species_length);
+              parts.set(key, partSorted);
+            })
 
-          const partsSorted: [number, FamilyGroupStruct[]][]
-            = (Array.from(parts.entries())).sort((a, b) => a[0] - b[0]);
+            const partsSorted: [number, FamilyGroupStruct[]][]
+              = (Array.from(parts.entries())).sort((a, b) => a[0] - b[0]);
 
-          return (
-            <CustomTabPanel key={`tab-group-${index}`} value={tab} index={index}>
-              <Card key={`group-${index}`} sx={{ width: 'fit-content', height: "fit-content" }}>
-                <CardHeader
-                  component="center"
-                  title={
-                    `${group.min_species_length}`
-                    + (group.max_species_length ? ` - ${group.max_species_length}` : '+')
-                  }
-                />
-                <CardContent>
-                  <Grid spacing={3} container sx={{ display: "flex", justifyContent: "center" }}>
-                    {partsSorted.map(([species_num, families], ind, arr) => {
-                      const isSingleOnly = new Set(
-                        families.map(({ species_length }) => species_length)
-                      ).size === 1;
-                      const isLonely =
-                        families.length === 1;
+            return (
+              <CustomTabPanel key={`tab-group-${index}`} value={tab} index={index}>
+                <Card key={`group-${index}`} sx={{ width: 'fit-content', height: "fit-content" }}>
+                  <CardHeader
+                    component="center"
+                    title={
+                      `${group.min_species_length}`
+                      + (group.max_species_length ? ` - ${group.max_species_length}` : '+')
+                    }
+                  />
+                  <CardContent>
+                    <Grid spacing={3} container sx={{ display: "flex", justifyContent: "center" }}>
+                      {partsSorted.map(([species_num, families], ind, arr) => {
+                        const isSingleOnly = new Set(
+                          families.map(({ species_length }) => species_length)
+                        ).size === 1;
+                        const isLonely =
+                          families.length === 1;
 
-                      const isSpecificValue = isLonely || isSingleOnly || species_num < 10;
+                        const isSpecificValue = isLonely || isSingleOnly || species_num < 10;
 
-                      return (
-                        <Grid key={`group-${index}-part-${ind}`}>
-                          <Typography variant="h5" sx={(arr.length === 1) ? { textAlign: "center" } : null}>
-                            {(isSpecificValue ? families[0].species_length : `${species_num}+`)}
-                          </Typography>
-                          <List dense>
-                            {families.map((family, i) => {
-                              const name =
-                                family.name
-                                || family.latin_name
-                                || family.alternative_names?.[0]
-                                || "???";
-                              return (
-                                <ListItemText
-                                  key={`group-${index}-part-${ind}-family-${i}`}
-                                  sx={{ width: "100%", cursor: "pointer" }}
-                                  slotProps={{ primary: { sx: { display: "flex", justifyContent: "space-between" } } }}
-                                >
-                                  <span>{name}</span>
-                                  {(family.species_length >= 10 && !isSpecificValue) && (
-                                    <span style={{ color: "GrayText" }}>&nbsp;{' — ' + family.species_length}</span>
-                                  )}
-                                </ListItemText>
-                              )
-                            })}
-                          </List>
-                        </Grid>
-                      )
-                    })}
-                  </Grid>
-                </CardContent>
-              </Card>
-            </CustomTabPanel>
-          )
-        })}
-      </Grid>
+                        return (
+                          <Grid key={`group-${index}-part-${ind}`}>
+                            <Typography variant="h5" sx={(arr.length === 1) ? { textAlign: "center" } : null}>
+                              {(isSpecificValue ? families[0].species_length : `${species_num}+`)}
+                            </Typography>
+                            <List dense>
+                              {families.map((family, i) => {
+                                const name =
+                                  family.name
+                                  || family.alternative_names?.[0]
+                                  || family.latin_name
+                                  || "???";
+                                return (
+                                  <ListItemText
+                                    key={`group-${index}-part-${ind}-family-${i}`}
+                                    sx={{ width: "100%", cursor: "pointer" }}
+                                    slotProps={{ primary: { sx: { display: "flex", justifyContent: "space-between" } } }}
+                                  >
+                                    <span>{name}</span>
+                                    {(family.species_length >= 10 && !isSpecificValue) && (
+                                      <span style={{ color: "GrayText" }}>&nbsp;{' — ' + family.species_length}</span>
+                                    )}
+                                  </ListItemText>
+                                )
+                              })}
+                            </List>
+                          </Grid>
+                        )
+                      })}
+                    </Grid>
+                  </CardContent>
+                </Card>
+              </CustomTabPanel>
+            )
+          })}
+        </Grid>
+        <Container sx={{ width: "fit-content" }}>
+          <FilterName />
+        </Container>
+      </Stack>
     </section>
   )
 }
