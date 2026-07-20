@@ -9,7 +9,7 @@
  * «отряд: род —> виды»
  */
 
-import { Box, Card, CardContent, CardHeader, Container, Divider, Grid, List, ListItemText, Stack, Tab, Tabs, Typography } from "@mui/material"
+import { Box, Card, CardContent, CardHeader, Container, Divider, Grid, List, ListItem, ListItemText, Stack, Tab, Tabs, Typography } from "@mui/material"
 // TODO: variable — fromLowerCase
 import { FamiliesGroups } from "./data/FamiliesGroups"
 import { useState } from "react"
@@ -19,8 +19,9 @@ import { FiltersNaming, type RadioGroupNameProps } from "./components/Filters/Fi
 
 
 const modesNameAlt = [
-  { value: "alt_names_without", label: "Не показывать" },
-  { value: "alt_names_with", label: "Добавить" },
+  { value: "alt_names_with_only", label: "Показывать при отсутствии локализации" },
+  { value: "alt_names_with_every", label: "Показывать для каждого" },
+  { value: "alt_names_without", label: "Без альтернатив" },
 ]
 const modesNameLatin = [
   { value: "latin_names_with_only", label: "Показывать при отсутствии локализации" },
@@ -47,6 +48,8 @@ export const SpeciesNamesPage = () => {
 
   const [typeNameAlt, setTypeNameAlt] = useState(defaultValueAlt);
   const [typeNameLatin, setTypeNameLatin] = useState(defaultValueLatin);
+
+  console.log(typeNameAlt)
 
   const groups: RadioGroupNameProps[] = [
     {
@@ -107,6 +110,7 @@ export const SpeciesNamesPage = () => {
             // get groups
             group.families.map((family) => {
               const tempFamily = structuredClone(family);
+
               // ADD FILTER BY NAME TYPES
               switch (typeNameLatin) {
                 case "latin_names_without":
@@ -155,6 +159,11 @@ export const SpeciesNamesPage = () => {
 
                         const isSpecificValue = isLonely || isSingleOnly || species_num < 10;
 
+                        const isLatinEvery = typeNameLatin === "latin_names_with_every";
+                        const isAltEvery = typeNameAlt === "alt_names_with_every";
+
+                        const isAltWithout = typeNameAlt === "alt_names_without";
+
                         return (
                           <Grid key={`group-${index}-part-${ind}`}>
                             <Typography variant="h5" sx={(arr.length === 1) ? { textAlign: "center" } : null}>
@@ -164,20 +173,42 @@ export const SpeciesNamesPage = () => {
                               {families.map((family, i) => {
                                 const name =
                                   family.name
-                                  || family.alternative_names?.[0]
+                                  || (isAltWithout ? false : family.alternative_names?.[0])
                                   || family.latin_name
                                   || "???";
                                 return (
-                                  <ListItemText
-                                    key={`group-${index}-part-${ind}-family-${i}`}
-                                    sx={{ width: "100%", cursor: "pointer" }}
-                                    slotProps={{ primary: { sx: { display: "flex", justifyContent: "space-between" } } }}
-                                  >
-                                    <span>{name}</span>
-                                    {(family.species_length >= 10 && !isSpecificValue) && (
-                                      <span style={{ color: "GrayText" }}>&nbsp;{' — ' + family.species_length}</span>
-                                    )}
-                                  </ListItemText>
+                                  <ListItem key={`group-${index}-part-${ind}-family-${i}`}>
+                                    {(i > 0) && (<Divider />)}
+                                    <ListItemText
+                                      secondary={
+                                        <div>
+                                          {isLatinEvery && ((name !== family.latin_name) && `лат. ${family.latin_name || "???"}`)}
+                                          {isAltEvery && (
+                                            <>
+                                              {family.alternative_names?.map((name, id) => (
+                                                <p key={`alternative-name-${id}`}>{name}</p>
+                                              ))}
+                                            </>
+                                          )}
+                                        </div>
+                                      }
+                                      slotProps={{
+                                        root: {
+                                          sx: {
+                                            width: "100%", cursor: "pointer", px: .8, borderRadius: 2,
+                                            ":hover": { bgcolor: "antiquewhite" }
+                                          }
+                                        }
+                                      }}
+                                    >
+                                      <p style={{ display: "flex", justifyContent: "space-between" }}>
+                                        <span>{name}</span>
+                                        {(family.species_length >= 10 && !isSpecificValue) && (
+                                          <span style={{ color: "GrayText" }}>&nbsp;{' — ' + family.species_length}</span>
+                                        )}
+                                      </p>
+                                    </ListItemText>
+                                  </ListItem>
                                 )
                               })}
                             </List>

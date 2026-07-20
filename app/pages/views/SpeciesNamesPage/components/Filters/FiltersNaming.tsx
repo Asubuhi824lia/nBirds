@@ -1,7 +1,6 @@
 // TODO: ! выделять цветом корни каждого слова
 
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from "@mui/material"
-import { useState } from "react"
 
 // TODO: to the extra file
 
