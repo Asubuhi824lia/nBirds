@@ -14,8 +14,25 @@ import { Box, Card, CardContent, CardHeader, Container, Divider, Grid, List, Lis
 import { FamiliesGroups } from "./data/FamiliesGroups"
 import { useState } from "react"
 import type { FamilyGroupStruct } from "./data/types";
-import { FilterName } from "./components/Filters/FilterName";
+import { FiltersNaming, type RadioGroupNameProps } from "./components/Filters/FiltersNaming";
 
+
+
+const modesNameAlt = [
+  { value: "alt_names_without", label: "Не показывать" },
+  { value: "alt_names_with", label: "Добавить" },
+]
+const modesNameLatin = [
+  { value: "latin_names_with_only", label: "Показывать при отсутствии локализации" },
+  { value: "latin_names_with_every", label: "Показывать для каждого" },
+  { value: "latin_names_without", label: "Без латыни" },
+  { value: "latin_names_only", label: "Только латынь" }
+]
+
+const defaultValueAlt = modesNameAlt[0].value;
+const defaultValueLatin = modesNameLatin[0].value;
+
+const prefixGroup = "radio-group-name";
 
 
 /**main List
@@ -27,6 +44,26 @@ import { FilterName } from "./components/Filters/FilterName";
 
 export const SpeciesNamesPage = () => {
   const [tab, setTab] = useState<number>(0);
+
+  const [typeNameAlt, setTypeNameAlt] = useState(defaultValueAlt);
+  const [typeNameLatin, setTypeNameLatin] = useState(defaultValueLatin);
+
+  const groups: RadioGroupNameProps[] = [
+    {
+      id: "alt",
+      title: "Альтернативные имена",
+      actualType: typeNameAlt,
+      onChangeActualType: setTypeNameAlt,
+      modesName: modesNameAlt
+    },
+    {
+      id: "latin",
+      title: "Латинские имена",
+      actualType: typeNameLatin,
+      onChangeActualType: setTypeNameLatin,
+      modesName: modesNameLatin
+    }
+  ]
 
   return (
     <section
@@ -69,14 +106,24 @@ export const SpeciesNamesPage = () => {
 
             // get groups
             group.families.map((family) => {
-              const N = family.species_length;
-              const key = N < 10 ? N : (Math.floor(N / 10) * 10);
-
+              const tempFamily = structuredClone(family);
+              // ADD FILTER BY NAME TYPES
+              switch (typeNameLatin) {
+                case "latin_names_without":
+                  if (!family.name && !family.alternative_names?.length) return; // не добавлять в Map
+                  else break;
+                case "latin_names_only":
+                  tempFamily.name = "";
+                  tempFamily.alternative_names = [];
+                  break;
+              }
               // divide to subgroups by N
+              const N = family.species_length; //результат поля в temp не меняется
+              const key = N < 10 ? N : (Math.floor(N / 10) * 10);
               if (parts.has(key))
-                parts.set(key, [...parts.get(key) as FamilyGroupStruct[], family])
+                parts.set(key, [...parts.get(key) as FamilyGroupStruct[], tempFamily])
               else
-                parts.set(key, [family])
+                parts.set(key, [tempFamily])
             })
             // sort groups
             parts.forEach((part, key) => {
@@ -145,12 +192,15 @@ export const SpeciesNamesPage = () => {
           })}
         </Grid>
         <Container sx={{ width: "fit-content" }}>
-          <FilterName />
+          <FiltersNaming filterGroups={groups} />
         </Container>
       </Stack>
     </section>
   )
 }
+
+
+
 
 
 interface TabPanelProps {

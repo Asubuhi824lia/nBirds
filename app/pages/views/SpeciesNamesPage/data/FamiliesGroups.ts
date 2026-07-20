@@ -7,6 +7,7 @@ export const FamiliesGroups: Array<FamiliesGroup> = [
   GroupFamiliesTo20,  // to 20  [5, 20)
 
   // [20, 49)
+  // TODO: add latin names!
   {
     families: [
       {
