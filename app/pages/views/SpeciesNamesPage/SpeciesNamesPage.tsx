@@ -13,8 +13,9 @@ import { Box, Card, CardContent, CardHeader, Container, Divider, Grid, List, Lis
 // TODO: variable — fromLowerCase
 import { FamiliesGroups } from "./data/FamiliesGroups"
 import { useState } from "react"
-import type { FamilyGroupStruct } from "./data/types";
+import type { FamilyGroupStruct, OptionType } from "./data/types";
 import { FiltersNaming, type RadioGroupNameProps } from "./components/Filters/FiltersNaming";
+import { NamePartSelect } from "./components/NamePartSelect/NamePartSelect";
 
 
 
@@ -33,8 +34,6 @@ const modesNameLatin = [
 const defaultValueAlt = modesNameAlt[0].value;
 const defaultValueLatin = modesNameLatin[0].value;
 
-const prefixGroup = "radio-group-name";
-
 
 /**main List
  * 
@@ -45,6 +44,8 @@ const prefixGroup = "radio-group-name";
 
 export const SpeciesNamesPage = () => {
   const [tab, setTab] = useState<number>(0);
+
+  const [optionName, setOptionName] = useState<OptionType | null | undefined>(null);
 
   const [typeNameAlt, setTypeNameAlt] = useState(defaultValueAlt);
   const [typeNameLatin, setTypeNameLatin] = useState(defaultValueLatin);
@@ -174,6 +175,38 @@ export const SpeciesNamesPage = () => {
                                   || (isAltWithout ? false : family.alternative_names?.[0])
                                   || family.latin_name
                                   || "???";
+
+                                const nameParts = [name];
+                                if (optionName) {
+                                  // get parts
+                                  const root = optionName.label.toLowerCase();
+                                  const sides = name.toLowerCase().split(root); // if (1 вхождение)
+
+                                  if (name.toLocaleLowerCase().includes(root))
+                                    console.log(name.toLocaleLowerCase().includes(root), root, sides);
+
+                                  // | [...]
+                                  if (name.toLowerCase().indexOf(root) !== -1) {
+                                    // ["", ""]
+                                    if (name.toLowerCase() === optionName.label.toLowerCase())
+                                      return
+                                    // start — 1st empty | ["", ...]
+                                    else if (!sides[0])
+                                      sides[0] = ucFirst(optionName.label);
+                                    // end — last empty | [..., ""]
+                                    else if (!sides[1])
+                                      sides[1] = optionName.label;
+                                    // center | [..., ...]
+                                    else {
+                                      sides[2] = sides[1];
+                                      sides[1] = optionName.label;
+                                    }
+
+                                    // update
+                                    sides.forEach((value, i) => nameParts[i] = value);
+                                  }
+                                }
+
                                 return (
                                   <ListItem key={`group-${index}-part-${ind}-family-${i}`}>
                                     {(i > 0) && (<Divider />)}
@@ -200,7 +233,20 @@ export const SpeciesNamesPage = () => {
                                       }}
                                     >
                                       <p style={{ display: "flex", justifyContent: "space-between" }}>
-                                        <span>{name}</span>
+                                        <span>
+                                          {nameParts.length > 1
+                                            ? (nameParts.map((value, i) => (
+                                              <span
+                                                key={`name=part-${i}`}
+                                                style={optionName?.label.toLocaleLowerCase() === value.toLocaleLowerCase()
+                                                  ? { backgroundColor: "pink" }
+                                                  : {}
+                                                }
+                                              >{i === 0 ? ucFirst(value) : value}</span>
+                                            )))
+                                            : name
+                                          }
+                                        </span>
                                         {(family.species_length >= 10 && !isSpecificValue) && (
                                           <span style={{ color: "GrayText" }}>&nbsp;{' — ' + family.species_length}</span>
                                         )}
@@ -220,15 +266,16 @@ export const SpeciesNamesPage = () => {
             )
           })}
         </Grid>
+
         <Container sx={{ width: "fit-content" }}>
           <FiltersNaming filterGroups={groups} />
+
+          <NamePartSelect value={optionName?.value} onChange={setOptionName} />
         </Container>
       </Stack>
     </section>
   )
 }
-
-
 
 
 
@@ -259,4 +306,9 @@ function a11yProps(index: number) {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`
   };
+}
+
+function ucFirst(str: string) {
+  if (!str) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }

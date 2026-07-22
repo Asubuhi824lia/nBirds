@@ -19,3 +19,8 @@ export interface FamiliesGroup {
  * _________________
  * *genera_length
  */
+
+export type OptionType = {
+  value: number | null;
+  label: string;
+}

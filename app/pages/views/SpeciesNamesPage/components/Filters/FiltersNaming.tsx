@@ -2,28 +2,6 @@
 
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from "@mui/material"
 
-// TODO: to the extra file
-
-// общие названия семейств — по форме (корню)
-// указывать кол-во для каждого таба — (+общее?)
-const nameRootFamilies = [
-  "свиристел",
-  "синиц",
-  "сорокопут",
-  "толстоголовк", // род
-  "певун",
-  "птица",
-  "медосос", // + alt_name
-  "хвост",
-  "пополз", // + alt_name
-  "тимел",
-  "пищух",
-  "славк",
-  "глаз",
-  "ткач",
-  "вьюр",
-]
-
 const prefixGroup = "radio-group-name";
 
 // TODO: названия "семейств", соотв. названиям "родов"
@@ -34,7 +12,7 @@ export const FiltersNaming = ({ filterGroups }: { filterGroups: RadioGroupNamePr
     <section style={{ maxWidth: "350px" }}>
       {/* Показывать... */}
       {/* TODO: "Режим" просмотра — переформулировать */}
-      <Typography>Режим просмотра</Typography>
+      <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Режим просмотра</Typography>
 
       {filterGroups.map((group, ind) => (
         <RadioGroupName key={`${prefixGroup}-${ind}`} {...group} />
@@ -86,7 +64,7 @@ function RadioGroupName({
 }: RadioGroupNameProps) {
   return (
     <FormControl>
-      <FormLabel id={`${prefixGroup}-${id}`}>{title}</FormLabel>
+      <FormLabel id={`${prefixGroup}-${id}`} sx={{ marginBottom: 1 }}>{title}</FormLabel>
       <RadioGroup name={`${prefixGroup}-${id}`} defaultValue={modesName[DEFAULT_INDEX].value}>
         {modesName.map((mode, index) => (
           <FormControlLabel
