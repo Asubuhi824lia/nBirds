@@ -71,6 +71,7 @@ export interface RadioGroupNameProps {
   modesName: Array<{
     value: string;
     label: string;
+    hint?: string;
   }>;
   DEFAULT_INDEX?: number;
 }
@@ -92,6 +93,7 @@ function RadioGroupName({
             key={`${prefixGroup}-${id}-item-${index}`}
             value={mode.value}
             label={mode.label}
+            title={mode.hint}
             checked={actualType === mode.value}
             control={<Radio size="small" onChange={e => onChangeActualType(e.target.value)} />}
             slotProps={{ typography: { sx: { fontSize: ".9rem" } } }}

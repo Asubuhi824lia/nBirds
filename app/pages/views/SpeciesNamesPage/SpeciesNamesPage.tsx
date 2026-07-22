@@ -19,14 +19,14 @@ import { FiltersNaming, type RadioGroupNameProps } from "./components/Filters/Fi
 
 
 const modesNameAlt = [
-  { value: "alt_names_with_only", label: "Показывать при отсутствии локализации" },
+  { value: "alt_names_with_only", label: "Показывать при отсутствии локализации", hint: "Когда на русском отсутствует\nглавное название" },
   { value: "alt_names_with_every", label: "Показывать для каждого" },
-  { value: "alt_names_without", label: "Без альтернатив" },
+  { value: "alt_names_without", label: "Не показывать совсем" },
 ]
 const modesNameLatin = [
-  { value: "latin_names_with_only", label: "Показывать при отсутствии локализации" },
+  { value: "latin_names_with_only", label: "Показывать при отсутствии локализации", hint: "Когда на русском отсутствует\nлюбое название" },
   { value: "latin_names_with_every", label: "Показывать для каждого" },
-  { value: "latin_names_without", label: "Без латыни" },
+  { value: "latin_names_without", label: "Не показывать совсем" },
   { value: "latin_names_only", label: "Только латынь" }
 ]
 
@@ -48,8 +48,6 @@ export const SpeciesNamesPage = () => {
 
   const [typeNameAlt, setTypeNameAlt] = useState(defaultValueAlt);
   const [typeNameLatin, setTypeNameLatin] = useState(defaultValueLatin);
-
-  console.log(typeNameAlt)
 
   const groups: RadioGroupNameProps[] = [
     {
