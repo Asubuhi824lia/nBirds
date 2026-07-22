@@ -21,6 +21,6 @@ export interface FamiliesGroup {
  */
 
 export type OptionType = {
-  value: number | null;
+  value: number;
   label: string;
 }

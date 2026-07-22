@@ -6,27 +6,27 @@ import type { OptionType } from "../../data/types";
 const nameRootFamilies = [
   "свиристел",
   "синиц",
-  "сорокопут",
-  "толстоголовк", // род
   "певун",
   "птиц",
   "медосос", // + alt_name
-  "хвост",
   "пополз", // + alt_name
   "тимел",
   "пищух",
   "славк",
-  "глаз",
   "ткач",
   "вьюр",
+  "сорокопут",
+  "толстоголовк", // род
+  "глаз",
+  "хвост",
 ]
 
 export const NamePartSelect = ({
-  value,
+  value = -1,
   onChange
 }: {
   value?: number | null,
-  onChange: ({ value, label }: OptionType) => void
+  onChange: (option: OptionType | null) => void
 }) => {
   const label = "Корни названий";
   const prefix = "root-name";
@@ -48,6 +48,7 @@ export const NamePartSelect = ({
               label: nameRootFamilies[value as number]
             })}
         >
+          <MenuItem key={`name-root-item-null`} value={-1} defaultChecked><em>None</em></MenuItem>
           {nameRootFamilies.map((nameRoot, id) => (
             <MenuItem key={`name-root-item-${id}`} value={id}>{nameRoot}</MenuItem>
           ))}

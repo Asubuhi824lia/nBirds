@@ -177,7 +177,7 @@ export const SpeciesNamesPage = () => {
                                   || "???";
 
                                 const nameParts = [name];
-                                if (optionName) {
+                                if (optionName && optionName?.value >= 0) {
                                   // get parts
                                   const root = optionName.label.toLowerCase();
                                   const sides = name.toLowerCase().split(root); // if (1 вхождение)
