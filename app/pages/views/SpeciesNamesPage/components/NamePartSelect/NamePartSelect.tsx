@@ -1,5 +1,4 @@
 import { FormControl, InputLabel, ListSubheader, MenuItem, Select, Typography } from "@mui/material"
-import type { OptionType } from "../../data/types";
 import { items, NamePartPrefix as prefix, NamePartLabel as label } from "./data";
 
 // общие названия семейств — по форме (корню)
@@ -14,16 +13,17 @@ import { items, NamePartPrefix as prefix, NamePartLabel as label } from "./data"
  *    .3 + возм-ть выбрать цвет из палитры 
  *  2. multiple — при выборе значения + строка с ним, опцию в disabled
  *    .? строкой? Select`ом?
+ *    .* при выборе nameRoots, всех из группы "subheader", заменить на отдельный "Chip" с вертикальным списом с возможностью убрать *)
  * -----
  * //Багфиксы
  * //Рефакторинг
  */
 export const NamePartSelect = ({
-  value = -1,
+  value = [],
   onChange
 }: {
-  value?: number | null, // TODO: | string
-  onChange: (option: OptionType | null) => void
+  value: string[],
+  onChange: (value: string[]) => void
 }) => {
   return (
     <section>
@@ -39,11 +39,11 @@ export const NamePartSelect = ({
           value={value}
           // задаёт отступ для label у линии select
           label={label}
+          // TODO: add "renderValue" as a "placeholder"
           onChange={({ target: { value } }) =>
-            onChange({
-              value: value as number,
-              label: value as number > -1 ? items[value as number].label : "None"
-            })
+            onChange(
+              typeof value === 'string' ? value.split(',') : value
+            )
           }
         >
           <MenuItem key={`${prefix}-group-null`} value={-1} defaultChecked><em>None</em></MenuItem>
@@ -52,7 +52,7 @@ export const NamePartSelect = ({
             type
               ? <ListSubheader key={`${prefix}-subheader`}>{label}</ListSubheader>
               : (
-                <MenuItem key={`${prefix}-item-${index}`} value={index}>{label}</MenuItem>
+                <MenuItem key={`${prefix}-item-${index}`} value={label}>{label}</MenuItem>
               ))}
         </Select>
       </FormControl>

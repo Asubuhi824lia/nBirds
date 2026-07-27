@@ -13,7 +13,7 @@ import { Box, Card, CardContent, CardHeader, Container, Divider, Grid, List, Lis
 // TODO: variable — fromLowerCase
 import { FamiliesGroups } from "./data/FamiliesGroups"
 import { useState } from "react"
-import type { FamilyGroupStruct, OptionType } from "./data/types";
+import type { FamilyGroupStruct } from "./data/types";
 import { FiltersNaming, type RadioGroupNameProps } from "./components/Filters/FiltersNaming";
 import { NamePartSelect } from "./components/NamePartSelect/NamePartSelect";
 
@@ -45,7 +45,7 @@ const defaultValueLatin = modesNameLatin[0].value;
 export const SpeciesNamesPage = () => {
   const [tab, setTab] = useState<number>(0);
 
-  const [optionName, setOptionName] = useState<OptionType | null | undefined>(null);
+  const [selectedNames, setSelectedNames] = useState<string[]>([]);
 
   const [typeNameAlt, setTypeNameAlt] = useState(defaultValueAlt);
   const [typeNameLatin, setTypeNameLatin] = useState(defaultValueLatin);
@@ -176,41 +176,21 @@ export const SpeciesNamesPage = () => {
                                   || family.latin_name
                                   || "???";
 
-                                const nameParts = [name];
-                                if (optionName && optionName?.value >= 0) {
-                                  // get parts
-                                  const root = optionName.label.toLowerCase();
-                                  const sides = name.toLowerCase().split(root); // if (1 вхождение)
-
-                                  if (name.toLocaleLowerCase().includes(root))
-                                    console.log(name.toLocaleLowerCase().includes(root), root, sides);
-
-                                  // | [...]
-                                  if (name.toLowerCase().indexOf(root) !== -1) {
-                                    // ["", ""]
-                                    if (name.toLowerCase() === optionName.label.toLowerCase())
-                                      return
-                                    // start — 1st empty | ["", ...]
-                                    else if (!sides[0])
-                                      sides[0] = ucFirst(optionName.label);
-                                    // end — last empty | [..., ""]
-                                    else if (!sides[1])
-                                      sides[1] = optionName.label;
-                                    // center | [..., ...]
-                                    else {
-                                      sides[2] = sides[1];
-                                      sides[1] = optionName.label;
-                                    }
-
-                                    // update
-                                    sides.forEach((value, i) => nameParts[i] = value);
-                                  }
-                                }
+                                //поиск совпадений
+                                const nameParts = selectedNames
+                                  .map(nameSelected =>
+                                    findNameRoot({ name, nameSelected })
+                                  )
+                                  .reduce((acc, names) => names ? [...(acc ?? []), ...names] : acc, [] as string[]);
 
                                 return (
                                   <ListItem key={`group-${index}-part-${ind}-family-${i}`}>
                                     {(i > 0) && (<Divider />)}
                                     <ListItemText
+                                      sx={{
+                                        width: "100%", cursor: "pointer", px: .8, borderRadius: 2,
+                                        ":hover": { bgcolor: "antiquewhite" }
+                                      }}
                                       secondary={
                                         <div>
                                           {isLatinEvery && ((name !== family.latin_name) && `лат. ${family.latin_name || "???"}`)}
@@ -223,27 +203,20 @@ export const SpeciesNamesPage = () => {
                                           )}
                                         </div>
                                       }
-                                      slotProps={{
-                                        root: {
-                                          sx: {
-                                            width: "100%", cursor: "pointer", px: .8, borderRadius: 2,
-                                            ":hover": { bgcolor: "antiquewhite" }
-                                          }
-                                        }
-                                      }}
                                     >
                                       <p style={{ display: "flex", justifyContent: "space-between" }}>
                                         <span>
-                                          {nameParts.length > 1
+                                          {nameParts && nameParts.length > 1
                                             ? (nameParts.map((value, i) => (
                                               <span
                                                 key={`name=part-${i}`}
-                                                style={optionName?.label.toLocaleLowerCase() === value.toLocaleLowerCase()
-                                                  ? { backgroundColor: "pink" }
-                                                  : {}
-                                                }
+                                              // style={selectedNames?.label.toLocaleLowerCase() === value.toLocaleLowerCase()
+                                              //   ? { backgroundColor: "pink" }
+                                              //   : {}
+                                              // }
                                               >{i === 0 ? ucFirst(value) : value}</span>
                                             )))
+                                            // TODO: а если "nameRoot" и "name" пересекаются?
                                             : name
                                           }
                                         </span>
@@ -270,13 +243,49 @@ export const SpeciesNamesPage = () => {
         <Container sx={{ width: "fit-content", display: "flex", flexDirection: "column", gap: 4 }}>
           <FiltersNaming filterGroups={groups} />
 
-          <NamePartSelect value={optionName?.value} onChange={setOptionName} />
+          <NamePartSelect value={selectedNames} onChange={setSelectedNames} />
         </Container>
       </Stack>
-    </section>
+    </section >
   )
 }
 
+interface FindNameRootProps {
+  nameSelected: string;
+  name: string;
+}
+function findNameRoot({
+  nameSelected,
+  name,
+}: FindNameRootProps): string[] | null {
+  // case unification
+  nameSelected = nameSelected.toLowerCase();
+  name = name.toLowerCase();
+
+
+  // [...]
+  if (!name.includes(name)) return null; // if (1 вхождение)
+  // ["", ""]
+  if (name === nameSelected) return [name];
+
+
+  // get parts
+  const sides = name.split(name);
+
+  // start — 1st empty | ["", ...]
+  if (!sides[0])
+    sides[0] = ucFirst(nameSelected);
+  // end — last empty | [..., ""]
+  else if (!sides[1])
+    sides[1] = nameSelected;
+  // center | [..., ...]
+  else {
+    sides[2] = sides[1];
+    sides[1] = nameSelected;
+  }
+
+  return sides.map((value) => value);
+}
 
 
 interface TabPanelProps {
