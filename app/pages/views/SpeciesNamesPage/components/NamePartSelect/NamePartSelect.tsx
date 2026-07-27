@@ -5,7 +5,7 @@ import type { OptionType } from "../../data/types";
 // указывать кол-во для каждого таба — (+общее?)
 const nameRootGroups = [
   {
-    title: "",
+    title: "—", //TODO: перепродумать название
     roots: [
       "птиц",
     ]
@@ -56,16 +56,13 @@ export const NamePartSelect = ({
   interface NameRootGroup {
     label: string;
     type: ItemType;
-    Element: React.ElementType;
   }
   const items: NameRootGroup[] = nameRootGroups.map((group) => [
     {
-      Element: ListSubheader,
       type: ItemType.ListSubheader,
       label: group.title
     },
     ...group.roots.map((root) => ({
-      Element: MenuItem,
       type: ItemType.MenuItem,
       label: root
     }))
@@ -85,26 +82,20 @@ export const NamePartSelect = ({
           id={`${prefix}-select`}
           value={value}
           label={label}
-          onChange={(e) => {
-            console.log(e.target.value)
-            // // TODO: add throw Error() ?
-            // if (!value || !(typeof value === "string")) return;
-            // const [group, root] = (value as string).split("-");
-            // if (!group || !root) return;
-            // if (isNaN(Number(group)) || isNaN(Number(root))) return;
-
-            // onChange({
-            //   value: `${groupId}-${rootId}`,
-            //   label: nameRootGroups[groupId].roots[rootId]
-            // })
-          }}
+          onChange={({ target: { value } }) =>
+            onChange({
+              value: value as number,
+              label: value as number > -1 ? items[value as number].label : "None"
+            })
+          }
         >
           <MenuItem key={`${prefix}-group-null`} value={-1} defaultChecked><em>None</em></MenuItem>
-          {items.map(({ Element, label, type }, index) =>
+          {/* `index` не последовательный для `MenuItem` */}
+          {items.map(({ label, type }, index) =>
             type
-              ? <Element key={`${prefix}-subheader`}>{label}</Element>
+              ? <ListSubheader key={`${prefix}-subheader`}>{label}</ListSubheader>
               : (
-                <Element key={`${prefix}-item-${index}`} value={index}>{label}</Element>
+                <MenuItem key={`${prefix}-item-${index}`} value={index}>{label}</MenuItem>
               ))}
         </Select>
       </FormControl>
