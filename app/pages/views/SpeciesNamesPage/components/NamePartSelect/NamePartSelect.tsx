@@ -1,46 +1,23 @@
-import { FormControl, InputLabel, ListSubheader, MenuItem, Select } from "@mui/material"
+import { FormControl, InputLabel, ListSubheader, MenuItem, Select, Typography } from "@mui/material"
 import type { OptionType } from "../../data/types";
+import { items, NamePartPrefix as prefix, NamePartLabel as label } from "./data";
 
 // общие названия семейств — по форме (корню)
 // указывать кол-во для каждого таба — (+общее?)
-const nameRootGroups = [
-  {
-    title: "—", //TODO: перепродумать название
-    roots: [
-      "птиц",
-    ]
-  },
-  {
-    title: "Пение",
-    roots: [
-      "свиристел",
-      "синиц",
-      "певун",
-      "тимел",
-      "пищух",
-      "славк",
-    ]
-  },
-  {
-    title: "Поведение",
-    roots: [
-      "ткач",
-      "вьюр",
-      "медосос", // + alt_name
-      "пополз", // + alt_name
-      "сорокопут",
-    ]
-  },
-  {
-    title: "Строение",
-    roots: [
-      "глаз",
-      "хвост",
-      "толстоголовк", // род
-    ]
-  }
-]
 
+
+// TODO:
+// + multiple: отдельная часть — отдельным цветом
+/** 1. подготовить цвета — в кол-ве items.length штук
+ *    .1 + возм-ть выбрать ВСЕ
+ *    .2 + возм-ть очистить ВСЕ
+ *    .3 + возм-ть выбрать цвет из палитры 
+ *  2. multiple — при выборе значения + строка с ним, опцию в disabled
+ *    .? строкой? Select`ом?
+ * -----
+ * //Багфиксы
+ * //Рефакторинг
+ */
 export const NamePartSelect = ({
   value = -1,
   onChange
@@ -48,39 +25,19 @@ export const NamePartSelect = ({
   value?: number | null, // TODO: | string
   onChange: (option: OptionType | null) => void
 }) => {
-  const label = "Корни названий";
-  const prefix = "root-name";
-
-  enum ItemType { MenuItem = 0, ListSubheader = 1 };
-
-  interface NameRootGroup {
-    label: string;
-    type: ItemType;
-  }
-  const items: NameRootGroup[] = nameRootGroups.map((group) => [
-    {
-      type: ItemType.ListSubheader,
-      label: group.title
-    },
-    ...group.roots.map((root) => ({
-      type: ItemType.MenuItem,
-      label: root
-    }))
-  ])
-    .reduce((acc, group) => [...acc, ...group], [])
-
-
   return (
-    <>
-      <p>Сортировка</p>
+    <section>
+      {/* TODO: "Сортировка" — переформулировать */}
+      <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Сортировка</Typography>
       <FormControl fullWidth sx={{ marginTop: 1 }}>
-        <InputLabel htmlFor={`${prefix}-select`} id={`${prefix}-select`}>{label}</InputLabel>
+        <InputLabel htmlFor={`${prefix}-select`} id={`${prefix}-select-label`}>{label}</InputLabel>
         <Select
           fullWidth
-          // labelId="demo-simple-select-label"//TODO
-          labelId={`${prefix}-select`}
+          // клик по label даёт клик по select
+          labelId={`${prefix}-select-label`}
           id={`${prefix}-select`}
           value={value}
+          // задаёт отступ для label у линии select
           label={label}
           onChange={({ target: { value } }) =>
             onChange({
@@ -99,6 +56,6 @@ export const NamePartSelect = ({
               ))}
         </Select>
       </FormControl>
-    </>
+    </section>
   )
 }

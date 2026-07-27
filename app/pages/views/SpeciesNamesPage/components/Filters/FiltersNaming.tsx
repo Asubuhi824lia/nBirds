@@ -64,7 +64,7 @@ function RadioGroupName({
 }: RadioGroupNameProps) {
   return (
     <FormControl>
-      <FormLabel id={`${prefixGroup}-${id}`} sx={{ marginBottom: 1 }}>{title}</FormLabel>
+      <FormLabel id={`${prefixGroup}-${id}`}>{title}</FormLabel>
       <RadioGroup name={`${prefixGroup}-${id}`} defaultValue={modesName[DEFAULT_INDEX].value}>
         {modesName.map((mode, index) => (
           <FormControlLabel

@@ -267,7 +267,7 @@ export const SpeciesNamesPage = () => {
           })}
         </Grid>
 
-        <Container sx={{ width: "fit-content" }}>
+        <Container sx={{ width: "fit-content", display: "flex", flexDirection: "column", gap: 4 }}>
           <FiltersNaming filterGroups={groups} />
 
           <NamePartSelect value={optionName?.value} onChange={setOptionName} />
