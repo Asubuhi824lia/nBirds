@@ -31,12 +31,13 @@ export const NamePartSelect = ({
       {/* TODO: "Сортировка" — переформулировать */}
       <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Сортировка</Typography>
       <FormControl fullWidth sx={{ marginTop: 1 }}>
-        <InputLabel htmlFor={`${prefix}-select`} id={`${prefix}-select-label`}>{label}</InputLabel>
+        <InputLabel htmlFor={`${prefix}-select`} id={`${prefix}-select-label`} shrink>{label}</InputLabel>
         <Select
           multiple
           fullWidth
+          displayEmpty
           // клик по label даёт клик по select
-          // labelId={`${prefix}-select-label`}
+          labelId={`${prefix}-select-label`}
           id={`${prefix}-select`}
           value={curValue}
           // задаёт отступ для label у линии select
@@ -48,17 +49,21 @@ export const NamePartSelect = ({
           }
           renderValue={(selected) => (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((value) => (
+              {(selected.length === 0)
+                ? <em>None</em>
+                : selected.map((value) => (
                   <Chip key={value} label={value} />
-              ))}
+                ))
+              }
             </Box>
-          )}
+          )
+          }
         >
           <MenuItem key={`${prefix}-group-null`} value="" disabled defaultChecked><em>None</em></MenuItem>
           {/* `index` не последовательный для `MenuItem` */}
           {items.map(({ label, type }, index) =>
             type
-              ? <ListSubheader key={`${prefix}-subheader`}>{label}</ListSubheader>
+              ? <ListSubheader key={`${prefix}-subheader-${index}`}>{label}</ListSubheader>
               : (
                 <MenuItem key={`${prefix}-item-${index}`} value={label}>{label}</MenuItem>
               ))}
