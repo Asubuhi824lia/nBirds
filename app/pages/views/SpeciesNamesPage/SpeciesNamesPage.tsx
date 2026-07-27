@@ -178,10 +178,8 @@ export const SpeciesNamesPage = () => {
 
                                 //поиск совпадений
                                 const nameParts = selectedNames
-                                  .map(nameSelected =>
-                                    findNameRoot({ name, nameSelected })
-                                  )
-                                  .reduce((acc, names) => names ? [...(acc ?? []), ...names] : acc, [] as string[]);
+                                  .map(nameSelected => findNameRoot({ name, nameSelected }))
+                                  .reduce((acc, names) => names ? [...(acc ?? []), ...names] : acc, []);
 
                                 return (
                                   <ListItem key={`group-${index}-part-${ind}-family-${i}`}>
@@ -210,10 +208,10 @@ export const SpeciesNamesPage = () => {
                                             ? (nameParts.map((value, i) => (
                                               <span
                                                 key={`name=part-${i}`}
-                                              // style={selectedNames?.label.toLocaleLowerCase() === value.toLocaleLowerCase()
-                                              //   ? { backgroundColor: "pink" }
-                                              //   : {}
-                                              // }
+                                                style={selectedNames.includes(value.toLocaleLowerCase())
+                                                  ? { backgroundColor: "pink" }
+                                                  : {}
+                                                }
                                               >{i === 0 ? ucFirst(value) : value}</span>
                                             )))
                                             // TODO: а если "nameRoot" и "name" пересекаются?
@@ -264,13 +262,13 @@ function findNameRoot({
 
 
   // [...]
-  if (!name.includes(name)) return null; // if (1 вхождение)
+  if (!name.includes(nameSelected)) return null; // if (1 вхождение)
   // ["", ""]
   if (name === nameSelected) return [name];
 
 
   // get parts
-  const sides = name.split(name);
+  const sides = name.split(nameSelected);
 
   // start — 1st empty | ["", ...]
   if (!sides[0])
@@ -284,7 +282,7 @@ function findNameRoot({
     sides[1] = nameSelected;
   }
 
-  return sides.map((value) => value);
+  return [...sides]; //TODO: Why?
 }
 
 

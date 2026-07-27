@@ -25,6 +25,7 @@ export const NamePartSelect = ({
   value: string[],
   onChange: (value: string[]) => void
 }) => {
+
   return (
     <section>
       {/* TODO: "Сортировка" — переформулировать */}
@@ -32,6 +33,7 @@ export const NamePartSelect = ({
       <FormControl fullWidth sx={{ marginTop: 1 }}>
         <InputLabel htmlFor={`${prefix}-select`} id={`${prefix}-select-label`}>{label}</InputLabel>
         <Select
+          multiple
           fullWidth
           // клик по label даёт клик по select
           labelId={`${prefix}-select-label`}
