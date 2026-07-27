@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, ListSubheader, MenuItem, Select, Typography } from "@mui/material"
+import { Box, Chip, FormControl, InputLabel, ListSubheader, MenuItem, Select, Typography } from "@mui/material"
 import { items, NamePartPrefix as prefix, NamePartLabel as label } from "./data";
 
 // общие названия семейств — по форме (корню)
@@ -19,10 +19,10 @@ import { items, NamePartPrefix as prefix, NamePartLabel as label } from "./data"
  * //Рефакторинг
  */
 export const NamePartSelect = ({
-  value = [],
+  curValue = [],
   onChange
 }: {
-  value: string[],
+  curValue: string[],
   onChange: (value: string[]) => void
 }) => {
 
@@ -36,19 +36,25 @@ export const NamePartSelect = ({
           multiple
           fullWidth
           // клик по label даёт клик по select
-          labelId={`${prefix}-select-label`}
+          // labelId={`${prefix}-select-label`}
           id={`${prefix}-select`}
-          value={value}
+          value={curValue}
           // задаёт отступ для label у линии select
           label={label}
-          // TODO: add "renderValue" as a "placeholder"
           onChange={({ target: { value } }) =>
             onChange(
               typeof value === 'string' ? value.split(',') : value
             )
           }
+          renderValue={(selected) => (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {selected.map((value) => (
+                  <Chip key={value} label={value} />
+              ))}
+            </Box>
+          )}
         >
-          <MenuItem key={`${prefix}-group-null`} value={-1} defaultChecked><em>None</em></MenuItem>
+          <MenuItem key={`${prefix}-group-null`} value="" disabled defaultChecked><em>None</em></MenuItem>
           {/* `index` не последовательный для `MenuItem` */}
           {items.map(({ label, type }, index) =>
             type

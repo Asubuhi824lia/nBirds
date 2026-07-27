@@ -241,7 +241,7 @@ export const SpeciesNamesPage = () => {
         <Container sx={{ width: "fit-content", display: "flex", flexDirection: "column", gap: 4 }}>
           <FiltersNaming filterGroups={groups} />
 
-          <NamePartSelect value={selectedNames} onChange={setSelectedNames} />
+          <NamePartSelect curValue={selectedNames} onChange={setSelectedNames} />
         </Container>
       </Stack>
     </section >
