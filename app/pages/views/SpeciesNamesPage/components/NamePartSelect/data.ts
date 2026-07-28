@@ -1,5 +1,21 @@
 import { ItemType, type NameRootGroup } from "./types"
 
+import {
+  red, orange, amber,
+  teal, green, lime,
+  cyan, blue, indigo,
+  grey, brown, purple,
+  pink, yellow, blueGrey
+} from "@mui/material/colors";
+
+export const colors = [
+  red, orange, amber,
+  teal, green, lime,
+  cyan, blue, indigo,
+  grey, brown, purple,
+  pink, yellow, blueGrey
+];
+
 /** Для локальных констант
  * 
  * "имяКомпонента" + "название"

@@ -1,5 +1,6 @@
 import { Box, Chip, FormControl, InputLabel, ListSubheader, MenuItem, Select, Typography } from "@mui/material"
-import { items, NamePartPrefix as prefix, NamePartLabel as label } from "./data";
+import { items, NamePartPrefix as prefix, NamePartLabel as label, colors } from "./data";
+
 
 // общие названия семейств — по форме (корню)
 // указывать кол-во для каждого таба — (+общее?)
@@ -51,13 +52,12 @@ export const NamePartSelect = ({
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
               {(selected.length === 0)
                 ? <em>None</em>
-                : selected.map((value) => (
-                  <Chip key={value} label={value} />
+                : selected.map((value, i) => (
+                  <Chip key={value} label={value} sx={{ bgcolor: colors[i % colors.length][100] }} />
                 ))
               }
             </Box>
-          )
-          }
+          )}
         >
           <MenuItem key={`${prefix}-group-null`} value="" disabled defaultChecked><em>None</em></MenuItem>
           {/* `index` не последовательный для `MenuItem` */}
@@ -69,6 +69,6 @@ export const NamePartSelect = ({
               ))}
         </Select>
       </FormControl>
-    </section>
+    </section >
   )
 }
