@@ -19,7 +19,7 @@ import { items, NamePartPrefix as prefix, NamePartLabel as label, colors } from 
  * //Багфиксы
  * //Рефакторинг
  */
-export const NamePartSelect = ({
+export const SelectNamePart = ({
   curValue = [],
   onChange
 }: {

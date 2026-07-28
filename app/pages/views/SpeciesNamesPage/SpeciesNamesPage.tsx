@@ -1,8 +1,6 @@
 /**
  * Визуализация отношения «отряд: семейство —> виды»
  * 
- * 
- * 
  * Доп.:
  * «класс: отряд —> семейства»
  * «отряд: семейство —> рода»
@@ -15,9 +13,9 @@ import { FamiliesGroups } from "./data/FamiliesGroups"
 import { useState } from "react"
 import type { FamilyGroupStruct } from "./data/types";
 import { FiltersNaming, type RadioGroupNameProps } from "./components/Filters/FiltersNaming/FiltersNaming";
-import { NamePartSelect } from "./components/NamePartSelect/NamePartSelect";
 import { TabLabel } from "./components/TabLabel";
-
+import { StyleMainContainer, StylePageSection, StyleHeaderTabsBox, StyleMainGrid, StyleCenteredWrapper } from "./styles";
+import SelectNamePart from "./components/SelectNamePart";
 
 
 const modesNameAlt = [
@@ -67,176 +65,166 @@ export const SpeciesNamesPage = () => {
       modesName: modesNameLatin
     }
   ]
-
   return (
-    <section
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: "column",
-        gap: 64,
-        width: '80%'
-      }}
-    >
-      <Box
-        sx={{
-          borderBottom: 1,
-          display: 'flex',
-          justifyContent: "center",
-          borderColor: 'divider',
-          bgcolor: 'ThreeDLightShadow'
-        }}
-      >
-        <Tabs centered value={tab} onChange={(_, setValue) => setTab(setValue)}>
-          {FamiliesGroups.map((group, index) => (
-            <TabLabel key={index} tabIndex={index} tabActual={tab} group={group} />
-          ))}
-        </Tabs>
-      </Box>
+    <section style={StylePageSection}>
+      {/* TODO: может ли header быть частью, напрямую влияющей на содержание main? до какой степени?*/}
+      <header>
+        <Box sx={StyleHeaderTabsBox}>
+          <Tabs centered value={tab} onChange={(_, setValue) => setTab(setValue)}>
+            {FamiliesGroups.map((group, index) => (
+              <TabLabel key={index} tabIndex={index} tabActual={tab} group={group} />
+            ))}
+          </Tabs>
+        </Box>
+      </header>
 
-      <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />}>
-        <Grid container spacing={1} sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
-          {FamiliesGroups.map((group, index) => {
-            const parts = new Map<number, FamilyGroupStruct[]>();
+      <main>
+        <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />} sx={{ justifyContent: "flex-end" }}>
+          <div style={StyleCenteredWrapper}>
+            <Grid container spacing={1} sx={StyleMainGrid}>
+              {FamiliesGroups.map((group, index) => {
+                const parts = new Map<number, FamilyGroupStruct[]>();
 
-            // get groups
-            group.families.map((family) => {
-              const tempFamily = structuredClone(family);
+                // get groups
+                group.families.map((family) => {
+                  const tempFamily = structuredClone(family);
 
-              // ADD FILTER BY NAME TYPES
-              switch (typeNameLatin) {
-                case "latin_names_without":
-                  if (!family.name && !family.alternative_names?.length) return; // не добавлять в Map
-                  else break;
-                case "latin_names_only":
-                  tempFamily.name = "";
-                  tempFamily.alternative_names = [];
-                  break;
-              }
-              // divide to subgroups by N
-              const N = family.species_length; //результат поля в temp не меняется
-              const key = N < 10 ? N : (Math.floor(N / 10) * 10);
-              if (parts.has(key))
-                parts.set(key, [...parts.get(key) as FamilyGroupStruct[], tempFamily])
-              else
-                parts.set(key, [tempFamily])
-            })
-            // sort groups
-            parts.forEach((part, key) => {
-              const partSorted = part.sort((a, b) => a.species_length - b.species_length);
-              parts.set(key, partSorted);
-            })
+                  // ADD FILTER BY NAME TYPES
+                  switch (typeNameLatin) {
+                    case "latin_names_without":
+                      if (!family.name && !family.alternative_names?.length) return; // не добавлять в Map
+                      else break;
+                    case "latin_names_only":
+                      tempFamily.name = "";
+                      tempFamily.alternative_names = [];
+                      break;
+                  }
+                  // divide to subgroups by N
+                  const N = family.species_length; //результат поля в temp не меняется
+                  const key = N < 10 ? N : (Math.floor(N / 10) * 10);
+                  if (parts.has(key))
+                    parts.set(key, [...parts.get(key) as FamilyGroupStruct[], tempFamily])
+                  else
+                    parts.set(key, [tempFamily])
+                })
+                // sort groups
+                parts.forEach((part, key) => {
+                  const partSorted = part.sort((a, b) => a.species_length - b.species_length);
+                  parts.set(key, partSorted);
+                })
 
-            const partsSorted: [number, FamilyGroupStruct[]][]
-              = (Array.from(parts.entries())).sort((a, b) => a[0] - b[0]);
+                const partsSorted: [number, FamilyGroupStruct[]][]
+                  = (Array.from(parts.entries())).sort((a, b) => a[0] - b[0]);
 
-            return (
-              <CustomTabPanel key={`tab-group-${index}`} index={index} value={tab}>
-                <Card key={`group-${index}`} sx={{ width: 'fit-content', height: "fit-content" }}>
-                  <CardHeader
-                    component="center"
-                    title={
-                      `${group.min_species_length}`
-                      + (group.max_species_length ? ` - ${group.max_species_length}` : '+')
-                    }
-                  />
-                  <CardContent>
-                    <Grid spacing={3} container sx={{ display: "flex", justifyContent: "center" }}>
-                      {partsSorted.map(([species_num, families], ind, arr) => {
-                        const isSingleOnly = new Set(
-                          families.map(({ species_length }) => species_length)
-                        ).size === 1;
-                        const isLonely =
-                          families.length === 1;
+                return (
+                  <CustomTabPanel key={`tab-group-${index}`} index={index} value={tab}>
+                    <Card key={`group-${index}`} sx={{ width: 'fit-content', height: "fit-content" }}>
+                      <CardHeader
+                        component="center"
+                        title={
+                          `${group.min_species_length}`
+                          + (group.max_species_length ? ` - ${group.max_species_length}` : '+')
+                        }
+                      />
+                      <CardContent>
+                        <Grid spacing={3} container sx={{ display: "flex", justifyContent: "center" }}>
+                          {partsSorted.map(([species_num, families], ind, arr) => {
+                            const isSingleOnly = new Set(
+                              families.map(({ species_length }) => species_length)
+                            ).size === 1;
+                            const isLonely =
+                              families.length === 1;
 
-                        const isSpecificValue = isLonely || isSingleOnly || species_num < 10;
+                            const isSpecificValue = isLonely || isSingleOnly || species_num < 10;
 
-                        const isLatinEvery = typeNameLatin === "latin_names_with_every";
-                        const isAltEvery = typeNameAlt === "alt_names_with_every";
+                            const isLatinEvery = typeNameLatin === "latin_names_with_every";
+                            const isAltEvery = typeNameAlt === "alt_names_with_every";
 
-                        const isAltWithout = typeNameAlt === "alt_names_without";
+                            const isAltWithout = typeNameAlt === "alt_names_without";
 
-                        return (
-                          <Grid key={`group-${index}-part-${ind}`}>
-                            <Typography variant="h5" sx={(arr.length === 1) ? { textAlign: "center" } : null}>
-                              {(isSpecificValue ? families[0].species_length : `${species_num}+`)}
-                            </Typography>
-                            <List dense>
-                              {families.map((family, i) => {
-                                const name =
-                                  family.name
-                                  || (isAltWithout ? false : family.alternative_names?.[0])
-                                  || family.latin_name
-                                  || "???";
+                            return (
+                              <Grid key={`group-${index}-part-${ind}`}>
+                                <Typography variant="h5" sx={(arr.length === 1) ? { textAlign: "center" } : null}>
+                                  {(isSpecificValue ? families[0].species_length : `${species_num}+`)}
+                                </Typography>
+                                <List dense>
+                                  {families.map((family, i) => {
+                                    const name =
+                                      family.name
+                                      || (isAltWithout ? false : family.alternative_names?.[0])
+                                      || family.latin_name
+                                      || "???";
 
-                                //поиск совпадений
-                                const nameParts = selectedNames
-                                  .map(nameSelected => findNameRoot({ name, nameSelected }))
-                                  .reduce((acc, names) => names ? [...(acc ?? []), ...names] : acc, []);
+                                    //поиск совпадений
+                                    const nameParts = selectedNames
+                                      .map(nameSelected => findNameRoot({ name, nameSelected }))
+                                      .reduce((acc, names) => names ? [...(acc ?? []), ...names] : acc, []);
 
-                                return (
-                                  <ListItem key={`group-${index}-part-${ind}-family-${i}`}>
-                                    {(i > 0) && (<Divider />)}
-                                    <ListItemText
-                                      sx={{
-                                        width: "100%", cursor: "pointer", px: .8, borderRadius: 2,
-                                        ":hover": { bgcolor: "antiquewhite" }
-                                      }}
-                                      secondary={
-                                        <div>
-                                          {isLatinEvery && ((name !== family.latin_name) && `лат. ${family.latin_name || "???"}`)}
-                                          {isAltEvery && (
-                                            <>
-                                              {family.alternative_names?.map((name, id) => (
-                                                <p key={`alternative-name-${id}`}>{name}</p>
-                                              ))}
-                                            </>
-                                          )}
-                                        </div>
-                                      }
-                                    >
-                                      <p style={{ display: "flex", justifyContent: "space-between" }}>
-                                        <span>
-                                          {nameParts && nameParts.length > 1
-                                            ? (nameParts.map((value, i) => (
-                                              <span
-                                                key={`name=part-${i}`}
-                                                style={selectedNames.includes(value.toLocaleLowerCase())
-                                                  ? { backgroundColor: "pink" }
-                                                  : {}
-                                                }
-                                              >{i === 0 ? ucFirst(value) : value}</span>
-                                            )))
-                                            // TODO: а если "nameRoot" и "name" пересекаются?
-                                            : name
+                                    return (
+                                      <ListItem key={`group-${index}-part-${ind}-family-${i}`}>
+                                        {(i > 0) && (<Divider />)}
+                                        <ListItemText
+                                          sx={{
+                                            width: "100%", cursor: "pointer", px: .8, borderRadius: 2,
+                                            ":hover": { bgcolor: "antiquewhite" }
+                                          }}
+                                          secondary={
+                                            <div>
+                                              {isLatinEvery && ((name !== family.latin_name) && `лат. ${family.latin_name || "???"}`)}
+                                              {isAltEvery && (
+                                                <>
+                                                  {family.alternative_names?.map((name, id) => (
+                                                    <p key={`alternative-name-${id}`}>{name}</p>
+                                                  ))}
+                                                </>
+                                              )}
+                                            </div>
                                           }
-                                        </span>
-                                        {(family.species_length >= 10 && !isSpecificValue) && (
-                                          <span style={{ color: "GrayText" }}>&nbsp;{' — ' + family.species_length}</span>
-                                        )}
-                                      </p>
-                                    </ListItemText>
-                                  </ListItem>
-                                )
-                              })}
-                            </List>
-                          </Grid>
-                        )
-                      })}
-                    </Grid>
-                  </CardContent>
-                </Card>
-              </CustomTabPanel>
-            )
-          })}
-        </Grid>
+                                        >
+                                          <p style={{ display: "flex", justifyContent: "space-between" }}>
+                                            <span>
+                                              {nameParts && nameParts.length > 1
+                                                ? (nameParts.map((value, i) => (
+                                                  <span
+                                                    key={`name=part-${i}`}
+                                                    style={selectedNames.includes(value.toLocaleLowerCase())
+                                                      ? { backgroundColor: "pink" }
+                                                      : {}
+                                                    }
+                                                  >{i === 0 ? ucFirst(value) : value}</span>
+                                                )))
+                                                // TODO: а если "nameRoot" и "name" пересекаются?
+                                                : name
+                                              }
+                                            </span>
+                                            {(family.species_length >= 10 && !isSpecificValue) && (
+                                              <span style={{ color: "GrayText" }}>&nbsp;{' — ' + family.species_length}</span>
+                                            )}
+                                          </p>
+                                        </ListItemText>
+                                      </ListItem>
+                                    )
+                                  })}
+                                </List>
+                              </Grid>
+                            )
+                          })}
+                        </Grid>
+                      </CardContent>
+                    </Card>
+                  </CustomTabPanel>
+                )
+              })}
+            </Grid>
+          </div>
 
-        <Container sx={{ width: "fit-content", display: "flex", flexDirection: "column", gap: 4 }}>
-          <FiltersNaming filterGroups={groups} />
+          <Container sx={StyleMainContainer}>
+            <FiltersNaming filterGroups={groups} />
 
-          <NamePartSelect curValue={selectedNames} onChange={setSelectedNames} />
-        </Container>
-      </Stack>
+            <SelectNamePart curValue={selectedNames} onChange={setSelectedNames} />
+          </Container>
+        </Stack>
+      </main>
     </section >
   )
 }
