@@ -48,7 +48,7 @@ TabLabel.displayName = "TabLabel";
 
 function a11yProps(index: number) {
   return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`
+    id: `tab-range-${index}`,
+    'aria-controls': `tabpanel-range-${index}`
   };
 }

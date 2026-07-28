@@ -87,14 +87,9 @@ export const SpeciesNamesPage = () => {
           bgcolor: 'ThreeDLightShadow'
         }}
       >
-        <Tabs centered value={tab} onChange={(_, setValue) => setTab(setValue)} aria-label="basic tabs example">
+        <Tabs centered value={tab} onChange={(_, setValue) => setTab(setValue)}>
           {FamiliesGroups.map((group, index) => (
-            <TabLabel
-              key={index}
-              tabIndex={index}
-              tabActual={tab}
-              group={group}
-            />
+            <TabLabel key={index} tabIndex={index} tabActual={tab} group={group} />
           ))}
         </Tabs>
       </Box>
@@ -136,7 +131,7 @@ export const SpeciesNamesPage = () => {
               = (Array.from(parts.entries())).sort((a, b) => a[0] - b[0]);
 
             return (
-              <CustomTabPanel key={`tab-group-${index}`} value={tab} index={index}>
+              <CustomTabPanel key={`tab-group-${index}`} index={index} value={tab}>
                 <Card key={`group-${index}`} sx={{ width: 'fit-content', height: "fit-content" }}>
                   <CardHeader
                     component="center"
@@ -295,10 +290,10 @@ function CustomTabPanel(props: TabPanelProps) {
 
   return (
     <div
+      id={`tabpanel-range-${index}`}
+      aria-labelledby={`tab-range-${index}`}
       role="tabpanel"
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
