@@ -9,13 +9,14 @@
  * «отряд: род —> виды»
  */
 
-import { Box, Card, CardContent, CardHeader, Container, Divider, Grid, List, ListItem, ListItemText, Stack, Tab, Tabs, Typography } from "@mui/material"
+import { Box, Card, CardContent, CardHeader, Container, Divider, Grid, List, ListItem, ListItemText, Stack, Tabs, Typography } from "@mui/material"
 // TODO: variable — fromLowerCase
 import { FamiliesGroups } from "./data/FamiliesGroups"
 import { useState } from "react"
 import type { FamilyGroupStruct } from "./data/types";
 import { FiltersNaming, type RadioGroupNameProps } from "./components/Filters/FiltersNaming/FiltersNaming";
 import { NamePartSelect } from "./components/NamePartSelect/NamePartSelect";
+import { TabLabel } from "./components/TabLabel";
 
 
 
@@ -87,15 +88,12 @@ export const SpeciesNamesPage = () => {
         }}
       >
         <Tabs centered value={tab} onChange={(_, setValue) => setTab(setValue)} aria-label="basic tabs example">
-          {FamiliesGroups.map(({ min_species_length: min, max_species_length: max }, index) => (
-            <Tab
-              key={`tab-${index}`}
-              {...a11yProps(index)}
-              sx={{ bgcolor: tab !== index ? "ThreeDFace" : "Background" }}
-              label={
-                `${min}`
-                + (max ? ` - ${max}` : '+')
-              }
+          {FamiliesGroups.map((group, index) => (
+            <TabLabel
+              key={index}
+              tabIndex={index}
+              tabActual={tab}
+              group={group}
             />
           ))}
         </Tabs>
@@ -308,12 +306,7 @@ function CustomTabPanel(props: TabPanelProps) {
   );
 }
 
-function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`
-  };
-}
+
 
 function ucFirst(str: string) {
   if (!str) return str;
