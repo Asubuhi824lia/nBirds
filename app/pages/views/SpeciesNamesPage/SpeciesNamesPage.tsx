@@ -14,7 +14,7 @@ import { Box, Card, CardContent, CardHeader, Container, Divider, Grid, List, Lis
 import { FamiliesGroups } from "./data/FamiliesGroups"
 import { useState } from "react"
 import type { FamilyGroupStruct } from "./data/types";
-import { FiltersNaming, type RadioGroupNameProps } from "./components/Filters/FiltersNaming";
+import { FiltersNaming, type RadioGroupNameProps } from "./components/Filters/FiltersNaming/FiltersNaming";
 import { NamePartSelect } from "./components/NamePartSelect/NamePartSelect";
 
 
