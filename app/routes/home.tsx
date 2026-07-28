@@ -1,4 +1,4 @@
-import { SpeciesNamesPage } from "~/pages/views/SpeciesNamesPage/SpeciesNamesPage";
+import SpeciesNamesPage from "~/pages/views/SpeciesNamesPage";
 
 export default function Home() {
   return (

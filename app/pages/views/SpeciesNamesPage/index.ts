@@ -1,0 +1,1 @@
+export { SpeciesNamesPage as default } from "./SpeciesNamesPage";
