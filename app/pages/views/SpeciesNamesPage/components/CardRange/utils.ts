@@ -10,14 +10,18 @@ export function findNameRoot({
   nameSelected = nameSelected.toLowerCase();
   name = name.toLowerCase();
 
-
   // [...]
   if (!name.includes(nameSelected)) return null; // if (1 вхождение)
   // ["", ""]
   if (name === nameSelected) return [name];
 
+  return getParts({ name, nameSelected });
+}
 
-  // get parts
+function getParts({
+  nameSelected,
+  name,
+}: FindNameRootProps) {
   const sides = name.split(nameSelected);
 
   // start — 1st empty | ["", ...]
@@ -32,7 +36,7 @@ export function findNameRoot({
     sides[1] = nameSelected;
   }
 
-  return [...sides]; //TODO: Why?
+  return [...sides];
 }
 
 export function ucFirst(str: string) {

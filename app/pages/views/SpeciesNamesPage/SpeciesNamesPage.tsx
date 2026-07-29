@@ -11,57 +11,12 @@ import { Box, Container, Divider, Grid, Stack, Tabs } from "@mui/material"
 // TODO: variable — fromLowerCase
 import { FamiliesGroups } from "./data/FamiliesGroups"
 import { useState } from "react"
-import { FiltersNaming, type RadioGroupNameProps } from "./components/Filters/FiltersNaming/FiltersNaming";
-import { TabLabel } from "./components/TabLabel";
+import { FiltersNaming, type RadioGroupNameProps } from "./components/Filters/FiltersNaming";
 import { StyleMainContainer, StylePageSection, StyleHeaderTabsBox, StyleMainGrid, StyleCenteredWrapper } from "./styles";
 import SelectNamePart from "./components/SelectNamePart";
 import { CardRange } from "./components/CardRange/CardRange";
-
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      id={`tabpanel-range-${index}`}
-      aria-labelledby={`tab-range-${index}`}
-      role="tabpanel"
-      hidden={value !== index}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-    </div>
-  );
-}
-
-
-const modesNameAlt = [
-  { value: "alt_names_with_only", label: "Показывать при отсутствии локализации", hint: "Когда на русском отсутствует\nглавное название" },
-  { value: "alt_names_with_every", label: "Показывать для каждого" },
-  { value: "alt_names_without", label: "Не показывать совсем" },
-]
-const modesNameLatin = [
-  { value: "latin_names_with_only", label: "Показывать при отсутствии локализации", hint: "Когда на русском отсутствует\nлюбое название" },
-  { value: "latin_names_with_every", label: "Показывать для каждого" },
-  { value: "latin_names_without", label: "Не показывать совсем" },
-  { value: "latin_names_only", label: "Только латынь" }
-]
-
-const defaultValueAlt = modesNameAlt[0].value;
-const defaultValueLatin = modesNameLatin[0].value;
-
-
-/**main List
- * 
- * ListUnions
- * CardUnion
- */
+import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "./data";
+import { CustomTabPanel, TabLabel } from "./components/Filters/FiltersClassifications";
 
 
 export const SpeciesNamesPage = () => {
@@ -95,7 +50,7 @@ export const SpeciesNamesPage = () => {
         <Box sx={StyleHeaderTabsBox}>
           <Tabs centered value={tab} onChange={(_, setValue) => setTab(setValue)}>
             {FamiliesGroups.map((group, index) => (
-              <TabLabel key={index} tabIndex={index} tabActual={tab} group={group} />
+              <TabLabel key={`tab-${index}`} tabIndex={index} tabActual={tab} group={group} />
             ))}
           </Tabs>
         </Box>

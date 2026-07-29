@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { Tab, type TabProps } from "@mui/material"
-import type { FamiliesGroup } from "../data/types";
+import type { FamiliesGroup } from "~/pages/views/SpeciesNamesPage/data/types";
 
 /**
  * Format Changes!
@@ -19,21 +19,21 @@ interface TabLabelProps extends TabProps {
   tabActual: number;
   group: FamiliesGroup;
 }
+// forwardRef для переключения
 export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
   ({
     tabIndex,
     tabActual,
-    group,
+    group: {
+      max_species_length: max,
+      min_species_length: min
+    },
     ...props
   }, ref) => {
-    // TODO: with useMemo()?
-    const max = group.max_species_length;
-    const min = group.min_species_length;
     return (
       <Tab
         ref={ref}
         {...props}
-        key={`tab-${tabIndex}`}
         label={
           `${min}`
           + (max ? ` - ${max}` : '+')
@@ -46,6 +46,8 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
 )
 TabLabel.displayName = "TabLabel";
 
+
+// TODO: где лучше располагать если в 1 файле? верх? низ?
 function a11yProps(index: number) {
   return {
     id: `tab-range-${index}`,
