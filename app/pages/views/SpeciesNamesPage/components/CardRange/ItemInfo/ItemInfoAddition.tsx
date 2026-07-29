@@ -8,7 +8,10 @@ interface ItemInfoAdditionProps {
 }
 export const ItemInfoAddition = ({
   name,
-  family,
+  family: {
+    latin_name: nameLatin,
+    alternative_names: nameAlternatives
+  },
   typeNameLatin,
   typeNameAlt
 }: ItemInfoAdditionProps) => {
@@ -17,10 +20,10 @@ export const ItemInfoAddition = ({
 
   return (
     <span>
-      {isLatinEvery && ((name !== family.latin_name) && `лат. ${family.latin_name || "???"}`)}
+      {isLatinEvery && ((name !== nameLatin) && `лат. ${nameLatin || "???"}`)}
       {isAltEvery && (
         <>
-          {family.alternative_names?.map((name, id) => (
+          {nameAlternatives?.map((name, id) => (
             <p key={`alternative-name-${id}`}>{name}</p>
           ))}
         </>

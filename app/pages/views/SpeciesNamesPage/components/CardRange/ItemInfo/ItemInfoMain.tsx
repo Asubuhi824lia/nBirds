@@ -10,7 +10,9 @@ interface ItemInfoMainProps {
 }
 export const ItemInfoMain = ({
   name,
-  family,
+  family: {
+    species_length: length
+  },
   isSpecificValue,
   nameParts,
   selectedNames,
@@ -31,8 +33,8 @@ export const ItemInfoMain = ({
         : name
       }
     </span>
-    {(family.species_length >= 10 && !isSpecificValue) && (
-      <span style={{ color: "GrayText" }}>&nbsp;{' — ' + family.species_length}</span>
+    {(length >= 10 && !isSpecificValue) && (
+      <span style={{ color: "GrayText" }}>&nbsp;{' — ' + length}</span>
     )}
   </p>
 )

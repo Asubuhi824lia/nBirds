@@ -27,7 +27,7 @@ export const SpeciesNamesPage = () => {
   const [typeNameAlt, setTypeNameAlt] = useState(defaultValueAlt);
   const [typeNameLatin, setTypeNameLatin] = useState(defaultValueLatin);
 
-  const groups: RadioGroupNameProps[] = [
+  const filterGroups: RadioGroupNameProps[] = [
     {
       id: "alt",
       title: "Альтернативные имена",
@@ -75,7 +75,7 @@ export const SpeciesNamesPage = () => {
           </div>
 
           <Container sx={StyleMainContainer}>
-            <FiltersNaming filterGroups={groups} />
+            <FiltersNaming filterGroups={filterGroups} />
 
             <SelectNamePart curValue={selectedNames} onChange={setSelectedNames} />
           </Container>
