@@ -30,6 +30,8 @@ export interface RadioGroupNameProps {
     label: string;
     hint?: string;
   }>;
+  // TODO: прописать на уровне типов, что "isDisabled" только для группы с `title: "Альтернативные имена"`
+  isDisabled?: boolean;
   DEFAULT_INDEX?: number;
 }
 
@@ -39,10 +41,11 @@ export function RadioGroupName({
   actualType,
   onChangeActualType,
   modesName,
+  isDisabled,
   DEFAULT_INDEX = 0
 }: RadioGroupNameProps) {
   return (
-    <FormControl>
+    <FormControl sx={{ gap: 1 }}>
       <FormLabel id={`${prefixGroup}-${id}`}>{title}</FormLabel>
       <RadioGroup name={`${prefixGroup}-${id}`} defaultValue={modesName[DEFAULT_INDEX].value}>
         {modesName.map((mode, index) => (
@@ -52,8 +55,9 @@ export function RadioGroupName({
             label={mode.label}
             title={mode.hint}
             checked={actualType === mode.value}
+            disabled={isDisabled}
             control={<Radio size="small" onChange={e => onChangeActualType(e.target.value)} />}
-            slotProps={{ typography: { sx: { fontSize: ".9rem" } } }}
+            slotProps={{ typography: { sx: { fontSize: ".8rem" } } }}
           />
         ))}
       </RadioGroup>

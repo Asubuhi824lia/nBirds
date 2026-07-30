@@ -34,13 +34,18 @@ export const SpeciesNamesPage = () => {
       title: "Альтернативные имена",
       actualType: typeNameAlt,
       onChangeActualType: setTypeNameAlt,
+      isDisabled: typeNameLatin === "latin_names_only",
       modesName: modesNameAlt
     },
     {
       id: "latin",
       title: "Латинские имена",
       actualType: typeNameLatin,
-      onChangeActualType: setTypeNameLatin,
+      onChangeActualType: (newType: string) => {
+        setTypeNameLatin(newType);
+        if (newType === "latin_names_only")
+          setTypeNameAlt("alt_names_without");
+      },
       modesName: modesNameLatin
     }
   ]
