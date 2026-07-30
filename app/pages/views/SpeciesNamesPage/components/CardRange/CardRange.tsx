@@ -1,12 +1,11 @@
 import { Card, CardContent, CardHeader, Grid, List, Typography } from "@mui/material";
-import type { FamiliesGroup, FamilyGroupStruct } from "../../data/types";
 import { ListItemGroup } from "./ListItemGroup";
 import { findNameRoot } from "./utils";
-import { getGroupsByNum } from "../../utils";
+import {  type FamilyGroupPartsStruct } from "../../utils";
 
 interface CardRangeProps {
   groupId: number;
-  group: FamiliesGroup;
+  group: FamilyGroupPartsStruct;
   typeNameLatin: string;
   typeNameAlt: string;
   selectedNames: string[];
@@ -18,7 +17,7 @@ export const CardRange = ({
   typeNameAlt,
   selectedNames
 }: CardRangeProps) => {
-  const partsSorted = getGroupsByNum(group, typeNameLatin) as [number, FamilyGroupStruct[]][];
+  // TODO: check options type!
 
   return (
     <Card key={`group-${groupId}`} sx={{ width: 'fit-content', height: "fit-content" }}>
@@ -31,7 +30,7 @@ export const CardRange = ({
       />
       <CardContent>
         <Grid spacing={3} container sx={{ display: "flex", justifyContent: "center" }}>
-          {partsSorted.map(([species_num, families], partId, arr) => {
+          {group.families.map(([species_num, families], partId, arr) => {
             const isSingleOnly = new Set(
               families.map(({ species_length }) => species_length)
             ).size === 1;

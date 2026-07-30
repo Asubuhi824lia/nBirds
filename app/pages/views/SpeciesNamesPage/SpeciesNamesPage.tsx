@@ -17,6 +17,11 @@ import SelectNamePart from "./components/SelectNamePart";
 import { CardRange } from "./components/CardRange/CardRange";
 import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "./data";
 import { CustomTabPanel, TabLabel } from "./components/Filters/FiltersClassifications";
+import { getPartsByNum } from "./utils";
+
+
+// struct from API
+const GroupsPartsFamilies = getPartsByNum(FamiliesGroups);
 
 
 export const SpeciesNamesPage = () => {
@@ -49,6 +54,11 @@ export const SpeciesNamesPage = () => {
       modesName: modesNameLatin
     }
   ]
+
+  const handleTabChange = (_: React.SyntheticEvent<Element, Event>, newValue: number) => {
+    setTab(newValue);
+  }
+
   return (
     <section style={StylePageSection}>
       {/* TODO: может ли header быть частью, напрямую влияющей на содержание main? до какой степени?*/}
@@ -60,8 +70,8 @@ export const SpeciesNamesPage = () => {
       */}
       <header>
         <Box sx={StyleHeaderTabsBox}>
-          <Tabs centered value={tab} onChange={(_, setValue) => setTab(setValue)}>
-            {FamiliesGroups.map((group, index) => (
+          <Tabs centered value={tab} onChange={handleTabChange}>
+            {GroupsPartsFamilies.map((group, index) => (
               <TabLabel
                 key={`tab-${index}`}
                 tabIndex={index}
@@ -137,7 +147,7 @@ export const SpeciesNamesPage = () => {
         <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />} sx={{ justifyContent: "flex-end" }}>
           <section style={StyleCenteredWrapper}>
             <Grid container spacing={1} sx={StyleMainGrid}>
-              {FamiliesGroups.map((group, index) => (
+              {GroupsPartsFamilies.map((group, index) => (
                 <CustomTabPanel key={`tab-group-${index}`} index={index} value={tab}>
                   <CardRange
                     groupId={index}
