@@ -2,6 +2,17 @@ import { GroupFamiliesTo5 } from "./GroupFamiliesTo5";
 import { GroupFamiliesTo20 } from "./GroupFamiliesTo20";
 import type { FamiliesGroup } from "./types";
 
+/**
+ * Flow: 
+ *  SpeciesNamesPage => TabLabel (group) => max_species_length / min_species_length
+ * 
+ *  SpeciesNamesPage => CardRange(group) =**>  ListItemGroup (family) => ItemInfoMain & ItemInfoAddition (family) => ...
+ *  ... => ItemInfoMain => { species_length }
+ *  ... => ItemInfoAddition => { latin_name / alternative_names }
+ * 
+ * * — 1 modif. 
+ */
+
 export const FamiliesGroups: Array<FamiliesGroup> = [
   GroupFamiliesTo5,   // to 5   [1, 5)
   GroupFamiliesTo20,  // to 20  [5, 20)

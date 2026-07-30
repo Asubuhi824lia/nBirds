@@ -17,17 +17,17 @@ import type { FamiliesGroup } from "~/pages/views/SpeciesNamesPage/data/types";
 interface TabLabelProps extends TabProps {
   tabIndex: number;
   tabActual: number;
-  group: FamiliesGroup;
+  groupRange: {
+    max?: number;
+    min: number;
+  }
 }
 // forwardRef для переключения
 export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
   ({
     tabIndex,
     tabActual,
-    group: {
-      max_species_length: max,
-      min_species_length: min
-    },
+    groupRange: { max, min },
     ...props
   }, ref) => {
     return (
