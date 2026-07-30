@@ -27,3 +27,21 @@ export const modesNameLatin = [
 
 export const defaultValueAlt = modesNameAlt[0].value;
 export const defaultValueLatin = modesNameLatin[0].value;
+
+/**
+ * Эффекты режимов
+ * 
+ * "alt_names_with_only"    — В отсутствие nameMain: nameAlt[0]
+ * "latin_names_with_only"  — В отсутствие nameMain и nameAlt[0]: заместить nameLatin
+ * "latin_names_with_only" && "alt_names_with_only"   — В отсутствие nameMain: показ nameAlt[0]. В отсутствие nameAlt[0]: показ nameLatin.
+ * 
+ * "alt_names_with_every"   — альтернативы отдельно. В отсутствие nameMain: латынь
+ * "latin_names_with_every" — латынь отдельно. В отсутствие nameMain и nameAlt[0]: "—"
+ * "latin_names_with_every" && "alt_names_with_every" — латынь и альтернативы отдельно. В отсутствие nameMain: "—"
+ * 
+ * "latin_names_without" && "alt_names_without"       — при отсутствии любого названия, не показывать семейство
+ * "alt_names_without"      — показ nameMain. В отсутствие nameMain:  nameLatin
+ * "latin_names_without"    — либо показ nameAlt[0], либо показ nameMain, либо не показывать
+ * 
+ * "latin_names_only" => устанавливает "alt_names_without" И disabled modesNameAlt. Показ только: nameLatin.
+ */
