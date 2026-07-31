@@ -76,10 +76,7 @@ export const SpeciesNamesPage = () => {
                 key={`tab-${index}`}
                 tabIndex={index}
                 tabActual={tab}
-                groupRange={{
-                  max: group.max_species_length,
-                  min: group.min_species_length
-                }}
+                group={group}
               />
             ))}
           </Tabs>

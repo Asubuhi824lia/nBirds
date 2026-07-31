@@ -1,6 +1,6 @@
-import { forwardRef } from "react";
-import { Tab, type TabProps } from "@mui/material"
-import type { FamiliesGroup } from "~/pages/views/SpeciesNamesPage/data/types";
+import { forwardRef, useMemo } from "react";
+import { Badge, Chip, Divider, Tab, Tooltip, Typography, type TabProps } from "@mui/material";
+import type { FamilyGroupPartsStruct } from "~/pages/views/SpeciesNamesPage/utils";
 
 /**
  * Format Changes!
@@ -17,19 +17,32 @@ import type { FamiliesGroup } from "~/pages/views/SpeciesNamesPage/data/types";
 interface TabLabelProps extends TabProps {
   tabIndex: number;
   tabActual: number;
-  groupRange: {
-    max?: number;
-    min: number;
-  }
+  group: FamilyGroupPartsStruct;
 }
 // forwardRef для переключения
 export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
   ({
     tabIndex,
     tabActual,
-    groupRange: { max, min },
+    group: {
+      max_species_length: max,
+      min_species_length: min,
+      families_length,
+      families
+    },
     ...props
   }, ref) => {
+    const lengthSubGroups = families.length;
+    const lengthFamilies = useMemo(() => (
+      families_length ||
+      families.reduce((acc, subgroup) => acc + subgroup[1].length, 0)
+    ), [families_length, families])
+    const lengthSpecies = useMemo(() => (
+      families.reduce((acc, subgroup) => (
+        acc + subgroup[1].reduce((acc, family) => acc + family.species_length, 0)
+      ), 0)
+    ), [families])
+
     return (
       <Tab
         ref={ref}
@@ -38,6 +51,21 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
           `${min}`
           + (max ? ` - ${max}` : '+')
         }
+        icon={(
+          <Tooltip title={(
+            <div>
+              <Typography variant="subtitle2">G: Подгрупп: {lengthSubGroups}</Typography>
+              <Divider orientation="horizontal" variant="fullWidth" flexItem sx={{ borderColor: "aquamarine" }} />
+              <Typography variant="body2">F: Семейств: {lengthFamilies}</Typography>
+              <Typography variant="body2">S: Видов: {lengthSpecies}</Typography>
+            </div>
+          )}>
+            <Badge badgeContent={lengthFamilies} color="primary" overlap="rectangular">
+              <Chip label="F" color="primary" variant="outlined" size="medium" />
+            </Badge>
+          </Tooltip>
+        )}
+        iconPosition="end"
         {...a11yProps(tabIndex)}
         sx={{ bgcolor: tabIndex === tabActual ? "Background" : "ThreeDFace" }}
       />
