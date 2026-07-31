@@ -30,7 +30,7 @@ export const SelectNamePart = ({
   return (
     <section style={{ maxWidth: "350px" }}>
       {/* TODO: "Сортировка" — переформулировать */}
-      <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Сортировка</Typography>
+      <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Поиск</Typography>
       <FormControl fullWidth sx={{ marginTop: 1 }}>
         <InputLabel htmlFor={`${prefix}-select`} id={`${prefix}-select-label`} shrink>{label}</InputLabel>
         <Select

@@ -1,5 +1,6 @@
 import type { FamilyGroupStruct } from "../../../data/types";
 import type { RootGroupType } from "../../../utils";
+import { getOptionColor } from "../../SelectNamePart/utils";
 import { ucFirst } from "../utils";
 
 interface ItemInfoMainProps {
@@ -21,15 +22,18 @@ export const ItemInfoMain = ({
   <p style={{ display: "flex", justifyContent: "space-between" }}>
     <span>
       {nameParts && nameParts.length > 1
-        ? (nameParts.map((value, i) => (
-          <span
-            key={`name=part-${i}`}
-            style={selectedNames.find(root => root.root.toLowerCase() === value.toLowerCase()) //TODO: сократить
-              ? { backgroundColor: "pink" }
-              : {}
-            }
-          >{i === 0 ? ucFirst(value) : value}</span>
-        )))
+        ? (nameParts.map((value, i) => {
+          const partGroup = selectedNames.find(root => root.root.toLowerCase() === value.toLowerCase());
+          return (
+            <span
+              key={`name=part-${i}`}
+              style={partGroup //TODO: сократить
+                ? { backgroundColor: getOptionColor(partGroup.groupId) }
+                : {}
+              }
+            >{i === 0 ? ucFirst(value) : value}</span>
+          )
+        }))
         // TODO: а если "nameRoot" и "name" пересекаются?
         : name
       }

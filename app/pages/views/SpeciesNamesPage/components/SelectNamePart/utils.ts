@@ -18,6 +18,6 @@ export function getOptionColorFromValue(value: string, isLight?: boolean) {
       ?.id;
   return getOptionColor(groupId ?? 0, isLight);
 }
-function getOptionColor(groupId: number, isLight?: boolean) {
-  return colors[(groupId ?? 0) % colors.length][isLight ? 100 : 200];
+export function getOptionColor(groupId: number = 0, isLight?: boolean) {
+  return colors[(groupId) % colors.length][isLight ? 100 : 200];
 }
