@@ -1,6 +1,7 @@
-import { forwardRef, useMemo, useState } from "react";
+import { forwardRef, useMemo } from "react";
 import { Badge, Chip, Divider, Tab, Tooltip, Typography, type BadgeProps, type TabProps, type TypographyProps } from "@mui/material";
 import type { FamilyGroupPartsStruct } from "~/pages/views/SpeciesNamesPage/utils";
+import type { CountType } from "~/pages/views/SpeciesNamesPage/SpeciesNamesPage";
 
 /**
  * Format Changes!
@@ -18,6 +19,7 @@ interface TabLabelProps extends TabProps {
   tabIndex: number;
   tabActual: number;
   group: FamilyGroupPartsStruct;
+  stateCountType: [CountType, React.Dispatch<React.SetStateAction<CountType>>]
 }
 // forwardRef для переключения
 export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
@@ -29,6 +31,10 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
       min_species_length: min,
       families_length,
       families
+    },
+    stateCountType: {
+      "0": curCountType,
+      "1": setCurCountType
     },
     ...props
   }, ref) => {
@@ -42,9 +48,6 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
         acc + subgroup[1].reduce((acc, family) => acc + family.species_length, 0)
       ), 0)
     ), [families])
-
-    type CountType = "G" | "F" | "S";
-    const [curCountType, setCurCountType] = useState<CountType>("G");
 
     function getTypeCount(type: CountType) {
       switch (type) {
@@ -102,13 +105,23 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
               <TooltipItem type="F" />
               <TooltipItem type="S" />
             </div>
-          )}>
-            <Badge badgeContent={getTypeCount(curCountType)} color={getTypeColor(curCountType)} overlap="rectangular">
+          )}
+          >
+            <Badge
+              badgeContent={getTypeCount(curCountType)}
+              max={1000}
+              color={getTypeColor(curCountType)}
+              overlap="rectangular"
+            >
               <Chip label={curCountType} color={getTypeColor(curCountType)} variant="outlined" size="medium" />
             </Badge>
           </Tooltip>
         )}
-        iconPosition="end"
+        iconPosition={
+          curCountType === "S" && lengthSpecies > 99
+            ? "start"
+            : "end"
+        }
         {...a11yProps(tabIndex)}
         sx={{ bgcolor: tabIndex === tabActual ? "Background" : "ThreeDFace" }}
       />

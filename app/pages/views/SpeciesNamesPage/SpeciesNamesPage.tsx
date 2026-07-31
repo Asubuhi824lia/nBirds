@@ -23,9 +23,12 @@ import { getPartsByNum } from "./utils";
 // struct from API
 const GroupsPartsFamilies = getPartsByNum(FamiliesGroups);
 
+export type CountType = "G" | "F" | "S";
 
 export const SpeciesNamesPage = () => {
   const [tab, setTab] = useState<number>(0);
+  const stateCountType = useState<CountType>("G");
+
 
   // TODO: +опция "оставить только совпадающие с тэгами"
   const [selectedNames, setSelectedNames] = useState<string[]>([]);
@@ -77,6 +80,7 @@ export const SpeciesNamesPage = () => {
                 tabIndex={index}
                 tabActual={tab}
                 group={group}
+                stateCountType={stateCountType}
               />
             ))}
           </Tabs>
