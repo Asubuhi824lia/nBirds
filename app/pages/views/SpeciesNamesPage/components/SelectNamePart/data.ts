@@ -29,15 +29,16 @@ export const NamePartPrefix = "root-name";
 
 // ± DB
 export const nameRootGroups = [
+  // 0 _ "запасное" число, на случай отсутствия явного указания
   {
-    id: 0,
+    id: 1,
     title: "—", //TODO: перепродумать название
     roots: [
       "птиц",
     ]
   },
   {
-    id: 1,
+    id: 2,
     title: "Пение",
     roots: [
       "свиристел",
@@ -49,7 +50,7 @@ export const nameRootGroups = [
     ]
   },
   {
-    id: 2,
+    id: 3,
     title: "Поведение",
     roots: [
       "ткач",
@@ -60,7 +61,7 @@ export const nameRootGroups = [
     ]
   },
   {
-    id: 3,
+    id: 4,
     title: "Строение",
     roots: [
       "глаз",
@@ -73,10 +74,12 @@ export const nameRootGroups = [
 // ± API
 export const items: NameRootGroup[] = nameRootGroups.map((group) => [
   {
+    groupId: group.id,
     type: ItemType.ListSubheader,
     label: group.title
   },
   ...group.roots.map((root) => ({
+    groupId: group.id,
     type: ItemType.MenuItem,
     label: root
   }))

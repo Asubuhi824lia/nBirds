@@ -1,6 +1,6 @@
 import { Box, Chip, FormControl, InputLabel, ListSubheader, MenuItem, Select, Typography } from "@mui/material"
-import { items, NamePartPrefix as prefix, NamePartLabel as label, colors, nameRootGroups } from "./data";
-
+import { items, NamePartPrefix as prefix, NamePartLabel as label } from "./data";
+import { getOptionColorFromValue, setStyleSelectItem } from "./utils";
 
 // общие названия семейств — по форме (корню)
 // указывать кол-во для каждого таба — (+общее?)
@@ -28,7 +28,7 @@ export const SelectNamePart = ({
 }) => {
 
   return (
-    <section>
+    <section style={{ maxWidth: "350px" }}>
       {/* TODO: "Сортировка" — переформулировать */}
       <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Сортировка</Typography>
       <FormControl fullWidth sx={{ marginTop: 1 }}>
@@ -53,12 +53,9 @@ export const SelectNamePart = ({
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                 {(selected.length === 0)
                   ? <em>None</em>
-                  : selected.map((value) => {
-                    const groupId = nameRootGroups.find(({ roots }) => roots.includes(value))?.id;
-                    return (
-                      <Chip key={value} label={value} sx={{ bgcolor: colors[(groupId ?? 0) % colors.length][100] }} />
-                    )
-                  })
+                  : selected.map((value) => (
+                    <Chip key={value} label={value} sx={{ bgcolor: getOptionColorFromValue(value) }} />
+                  ))
                 }
               </Box>
             )
@@ -66,11 +63,11 @@ export const SelectNamePart = ({
         >
           <MenuItem key={`${prefix}-group-null`} value="" disabled defaultChecked><em>None</em></MenuItem>
           {/* `index` не последовательный для `MenuItem` */}
-          {items.map(({ label, type }, index) =>
+          {items.map(({ label, type, groupId }, index) =>
             type
               ? <ListSubheader key={`${prefix}-subheader-${index}`}>{label}</ListSubheader>
               : (
-                <MenuItem key={`${prefix}-item-${index}`} value={label}>{label}</MenuItem>
+                <MenuItem key={`${prefix}-item-${index}`} value={label} sx={setStyleSelectItem(groupId)}>{label}</MenuItem>
               ))}
         </Select>
       </FormControl>
