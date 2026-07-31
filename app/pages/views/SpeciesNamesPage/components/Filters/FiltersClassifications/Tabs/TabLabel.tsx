@@ -1,5 +1,5 @@
-import { forwardRef, useMemo } from "react";
-import { Badge, Chip, Divider, Tab, Tooltip, Typography, type TabProps } from "@mui/material";
+import { forwardRef, useMemo, useState } from "react";
+import { Badge, Chip, Divider, Tab, Tooltip, Typography, type BadgeProps, type TabProps, type TypographyProps } from "@mui/material";
 import type { FamilyGroupPartsStruct } from "~/pages/views/SpeciesNamesPage/utils";
 
 /**
@@ -43,6 +43,49 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
       ), 0)
     ), [families])
 
+    type CountType = "G" | "F" | "S";
+    const [curCountType, setCurCountType] = useState<CountType>("G");
+
+    function getTypeCount(type: CountType) {
+      switch (type) {
+        case "G": return lengthSubGroups;
+        case "F": return lengthFamilies;
+        case "S": return lengthSpecies;
+      }
+    }
+    function getTypeColor(type: CountType): BadgeProps["color"] {
+      switch (type) {
+        case "G": return "primary";
+        case "F": return "secondary";
+        case "S": return "success";
+      }
+    }
+    function getTypeVariant(type: CountType): TypographyProps["variant"] {
+      return type === curCountType ? "subtitle1" : "body2";
+    }
+
+    interface TooltipItemProps {
+      type: CountType;
+    }
+    const TooltipItem = ({ type }: TooltipItemProps) => {
+      const title = type === "G"
+        ? "Подгрупп"
+        : (type === "F"
+          ? "Семейств"
+          : "Видов"
+        );
+      const count = getTypeCount(type);
+      return (
+        <Typography
+          variant={getTypeVariant(type)}
+          onClick={() => setCurCountType(type)}
+          sx={{ cursor: "pointer" }}
+        >
+          {type}: {title} — {count}
+        </Typography>
+      )
+    }
+
     return (
       <Tab
         ref={ref}
@@ -54,14 +97,14 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
         icon={(
           <Tooltip title={(
             <div>
-              <Typography variant="subtitle2">G: Подгрупп: {lengthSubGroups}</Typography>
+              <TooltipItem type="G" />
               <Divider orientation="horizontal" variant="fullWidth" flexItem sx={{ borderColor: "aquamarine" }} />
-              <Typography variant="body2">F: Семейств: {lengthFamilies}</Typography>
-              <Typography variant="body2">S: Видов: {lengthSpecies}</Typography>
+              <TooltipItem type="F" />
+              <TooltipItem type="S" />
             </div>
           )}>
-            <Badge badgeContent={lengthFamilies} color="primary" overlap="rectangular">
-              <Chip label="F" color="primary" variant="outlined" size="medium" />
+            <Badge badgeContent={getTypeCount(curCountType)} color={getTypeColor(curCountType)} overlap="rectangular">
+              <Chip label={curCountType} color={getTypeColor(curCountType)} variant="outlined" size="medium" />
             </Badge>
           </Tooltip>
         )}
