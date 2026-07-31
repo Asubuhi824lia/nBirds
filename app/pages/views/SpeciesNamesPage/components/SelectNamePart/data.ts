@@ -1,7 +1,7 @@
 import { ItemType, type NameRootGroup } from "./types"
 
 import {
-  red, orange, amber,
+  red, orange,
   teal, green, lime,
   cyan, blue, indigo,
   grey, brown, purple,
@@ -9,7 +9,7 @@ import {
 } from "@mui/material/colors";
 
 export const colors = [
-  red, orange, amber,
+  red, orange,
   teal, green, lime,
   cyan, blue, indigo,
   grey, brown, purple,
@@ -28,14 +28,16 @@ export const NamePartLabel = "Корни названий";
 export const NamePartPrefix = "root-name";
 
 // ± DB
-const nameRootGroups = [
+export const nameRootGroups = [
   {
+    id: 0,
     title: "—", //TODO: перепродумать название
     roots: [
       "птиц",
     ]
   },
   {
+    id: 1,
     title: "Пение",
     roots: [
       "свиристел",
@@ -47,6 +49,7 @@ const nameRootGroups = [
     ]
   },
   {
+    id: 2,
     title: "Поведение",
     roots: [
       "ткач",
@@ -57,6 +60,7 @@ const nameRootGroups = [
     ]
   },
   {
+    id: 3,
     title: "Строение",
     roots: [
       "глаз",

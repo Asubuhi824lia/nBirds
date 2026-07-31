@@ -29,7 +29,6 @@ export const SpeciesNamesPage = () => {
   const [tab, setTab] = useState<number>(0);
   const stateCountType = useState<CountType>("G");
 
-
   // TODO: +опция "оставить только совпадающие с тэгами"
   const [selectedNames, setSelectedNames] = useState<string[]>([]);
 
