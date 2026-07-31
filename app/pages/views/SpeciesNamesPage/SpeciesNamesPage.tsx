@@ -17,11 +17,14 @@ import SelectNamePart from "./components/SelectNamePart";
 import { CardRange } from "./components/CardRange/CardRange";
 import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "./data";
 import { CustomTabPanel, TabLabel } from "./components/Filters/FiltersClassifications";
-import { getPartsByNum } from "./utils";
+import { getPartsByNum, type RootGroupType } from "./utils";
+import { nameRootGroups } from "./components/SelectNamePart/data";
 
 
 // struct from API
 const GroupsPartsFamilies = getPartsByNum(FamiliesGroups);
+
+
 
 export type CountType = "G" | "F" | "S";
 
@@ -30,7 +33,7 @@ export const SpeciesNamesPage = () => {
   const stateCountType = useState<CountType>("G");
 
   // TODO: +опция "оставить только совпадающие с тэгами"
-  const [selectedNames, setSelectedNames] = useState<string[]>([]);
+  const [selectedNames, setSelectedNames] = useState<RootGroupType[]>([]);
 
   const [typeNameAlt, setTypeNameAlt] = useState(defaultValueAlt);
   const [typeNameLatin, setTypeNameLatin] = useState(defaultValueLatin);
@@ -57,8 +60,30 @@ export const SpeciesNamesPage = () => {
     }
   ]
 
-  const handleTabChange = (_: React.SyntheticEvent<Element, Event>, newValue: number) => {
-    setTab(newValue);
+  const handleNameRootsSelected = (selected: string[]) => {
+    // преобразовать, присвоив группу заранее | для всех
+    const rootGroups: RootGroupType[] = selected.map((root) => ({
+      root,
+      groupId: nameRootGroups.find(({ roots }) => roots.includes(root))?.id ?? 0
+    }))
+    setSelectedNames(rootGroups);
+
+    // поиск и мутирвоание (дополнение) данных
+    GroupsPartsFamilies.forEach((group) => {
+      group.families.forEach((part) => {
+        part[1].forEach((family) => {
+          const name = (family.name || family.alternative_names?.[0])?.toLowerCase();
+          if (!name)
+            return;
+
+          const curSelectedGroups = rootGroups.filter((root) => name.includes(root.root.toLowerCase()));
+
+          // TODO: вроде работает, но переделать на покорректнее
+          // GroupsPartsFamilies[groupId].families[partId][1][familyId].SelectedGroups = [...curSelectedGroups];
+          family.SelectedGroups = [...curSelectedGroups];
+        })
+      })
+    })
   }
 
   return (
@@ -72,7 +97,7 @@ export const SpeciesNamesPage = () => {
       */}
       <header>
         <Box sx={StyleHeaderTabsBox}>
-          <Tabs centered value={tab} onChange={handleTabChange}>
+          <Tabs centered value={tab} onChange={(_, newValue) => setTab(newValue)}>
             {GroupsPartsFamilies.map((group, index) => (
               <TabLabel
                 key={`tab-${index}`}
@@ -86,8 +111,46 @@ export const SpeciesNamesPage = () => {
         </Box>
       </header>
 
-      <section>
-        {/* Widget CommonInfoGroup — Показ общей инфы по "группе"
+      <main>
+        <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />} sx={{ justifyContent: "flex-end" }}>
+          <section style={StyleCenteredWrapper}>
+            <Grid container spacing={1} sx={StyleMainGrid}>
+              {GroupsPartsFamilies.map((group, index) => (
+                <CustomTabPanel key={`tab-group-${index}`} index={index} value={tab}>
+                  <CardRange
+                    groupId={index}
+                    group={group}
+                    typeNameAlt={typeNameAlt}
+                    typeNameLatin={typeNameLatin}
+                    selectedNames={selectedNames}
+                  />
+                </CustomTabPanel>
+              ))}
+            </Grid>
+          </section>
+
+          <Container sx={StyleMainContainer}>
+            <FiltersNaming filterGroups={filterGroups} />
+
+            <SelectNamePart curValue={selectedNames.map(root => root.root)} onChange={handleNameRootsSelected} />
+          </Container>
+        </Stack>
+      </main>
+
+      {/* На перспективу
+          TODO: Footer
+          1. указание используемой классификации + год создания классификации (+обновляемость?..)
+          2. Select для переключения между доступными классификациями систематики
+          3. домены/разделы сайтов-источников
+      */}
+    </section >
+  )
+}
+
+
+{/* <section> */ }
+// TODO: add new Widget later
+{/* Widget CommonInfoGroup — Показ общей инфы по "группе"
           
           Бегунок фильтра "уровней" инфы — (по вычисляемости)
           управляющий компонент: <input type="range">
@@ -141,40 +204,4 @@ export const SpeciesNamesPage = () => {
                 .1) отдельно для кажд диапазона/наддиапазона (ур. 1/2)
               - статистика кол-ва повторений (семеств с одинаковым числом видов) - на общий график
         */}
-      </section>
-
-      <main>
-        <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />} sx={{ justifyContent: "flex-end" }}>
-          <section style={StyleCenteredWrapper}>
-            <Grid container spacing={1} sx={StyleMainGrid}>
-              {GroupsPartsFamilies.map((group, index) => (
-                <CustomTabPanel key={`tab-group-${index}`} index={index} value={tab}>
-                  <CardRange
-                    groupId={index}
-                    group={group}
-                    typeNameAlt={typeNameAlt}
-                    typeNameLatin={typeNameLatin}
-                    selectedNames={selectedNames}
-                  />
-                </CustomTabPanel>
-              ))}
-            </Grid>
-          </section>
-
-          <Container sx={StyleMainContainer}>
-            <FiltersNaming filterGroups={filterGroups} />
-
-            <SelectNamePart curValue={selectedNames} onChange={setSelectedNames} />
-          </Container>
-        </Stack>
-      </main>
-
-      {/* На перспективу
-          TODO: Footer
-          1. указание используемой классификации + год создания классификации (+обновляемость?..)
-          2. Select для переключения между доступными классификациями систематики
-          3. домены/разделы сайтов-источников
-      */}
-    </section >
-  )
-}
+{/* </section> */ }

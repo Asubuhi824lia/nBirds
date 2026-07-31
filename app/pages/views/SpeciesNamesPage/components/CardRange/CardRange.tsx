@@ -1,14 +1,14 @@
 import { Card, CardContent, CardHeader, Grid, List, Typography } from "@mui/material";
 import { ListItemGroup } from "./ListItemGroup";
 import { findNameRoot } from "./utils";
-import {  type FamilyGroupPartsStruct } from "../../utils";
+import { type FamilyGroupPartsStruct, type RootGroupType } from "../../utils";
 
 interface CardRangeProps {
   groupId: number;
   group: FamilyGroupPartsStruct;
   typeNameLatin: string;
   typeNameAlt: string;
-  selectedNames: string[];
+  selectedNames: RootGroupType[];
 }
 export const CardRange = ({
   groupId,

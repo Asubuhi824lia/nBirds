@@ -1,14 +1,24 @@
 import type { FamiliesGroup, FamilyGroupStruct } from "./data/types";
 
+// with selected name-root-parts
+// TODO: оставить flat? перевести на SelectedGroup?
+export type RootGroupType = {
+  groupId: number;
+  root: string //TODO: конкретизировать типизацию ч/з "FamiliesGroups"
+}
 
-type PartFamiliesStruct = [number, FamilyGroupStruct[]];
+export interface FamilyStruct extends FamilyGroupStruct {
+  SelectedGroups?: RootGroupType[];
+}
+
+type PartFamiliesStruct = [number, FamilyStruct[]];
 
 // Filter by Species Range
 export function getGroupsByNumbAndType(
   families: FamilyGroupStruct[],
   typeNameLatin: string
 ): PartFamiliesStruct[] {
-  const parts = new Map<number, FamilyGroupStruct[]>();
+  const parts = new Map<number, FamilyStruct[]>();
 
   // get groups
   families.map((family) => {
@@ -30,7 +40,7 @@ export function getGroupsByNumbAndType(
     const N = family.species_length; //результат поля в temp не меняется
     const key = N < 10 ? N : (Math.floor(N / 10) * 10);
     if (parts.has(key))
-      parts.set(key, [...parts.get(key) as FamilyGroupStruct[], tempFamily])
+      parts.set(key, [...parts.get(key) as FamilyStruct[], tempFamily])
     else
       parts.set(key, [tempFamily])
   })
@@ -59,7 +69,7 @@ export function getPartsByNum(groups: FamiliesGroup[]): FamilyGroupPartsStruct[]
   }))
 }
 export function getGroupPartsByNum(families: FamilyGroupStruct[]) {
-  const parts = new Map<number, FamilyGroupStruct[]>();
+  const parts = new Map<number, FamilyStruct[]>();
 
   // get groups
   families.map((family) => {
@@ -69,7 +79,7 @@ export function getGroupPartsByNum(families: FamilyGroupStruct[]) {
     const N = family.species_length; //результат поля в temp не меняется
     const key = N < 10 ? N : (Math.floor(N / 10) * 10);
     if (parts.has(key))
-      parts.set(key, [...parts.get(key) as FamilyGroupStruct[], tempFamily])
+      parts.set(key, [...parts.get(key) as FamilyStruct[], tempFamily])
     else
       parts.set(key, [tempFamily])
   })

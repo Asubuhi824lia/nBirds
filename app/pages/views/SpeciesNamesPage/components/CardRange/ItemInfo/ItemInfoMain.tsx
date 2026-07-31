@@ -1,4 +1,5 @@
 import type { FamilyGroupStruct } from "../../../data/types";
+import type { RootGroupType } from "../../../utils";
 import { ucFirst } from "../utils";
 
 interface ItemInfoMainProps {
@@ -6,7 +7,7 @@ interface ItemInfoMainProps {
   name: string;
   family: FamilyGroupStruct;
   nameParts: string[] | null;
-  selectedNames: string[];
+  selectedNames: RootGroupType[];
 }
 export const ItemInfoMain = ({
   name,
@@ -23,7 +24,7 @@ export const ItemInfoMain = ({
         ? (nameParts.map((value, i) => (
           <span
             key={`name=part-${i}`}
-            style={selectedNames.includes(value.toLocaleLowerCase())
+            style={selectedNames.find(root => root.root.toLowerCase() === value.toLowerCase()) //TODO: сократить
               ? { backgroundColor: "pink" }
               : {}
             }

@@ -2,6 +2,7 @@ import { Divider, ListItem, ListItemText } from "@mui/material";
 import type { FamilyGroupStruct } from "../../data/types";
 import { ItemInfoAddition } from "./ItemInfo/ItemInfoAddition";
 import { ItemInfoMain } from "./ItemInfo/ItemInfoMain";
+import type { RootGroupType } from "../../utils";
 
 interface ListGroupProps {
   familyId: number;
@@ -9,7 +10,7 @@ interface ListGroupProps {
   name: string;
   specPrimary: {
     isSpecificValue: boolean;
-    selectedNames: string[];
+    selectedNames: RootGroupType[];
     nameParts: string[] | null;
   };
   specSecondary: {
