@@ -49,6 +49,8 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
       ), 0)
     ), [families])
 
+    const isBadgeOverflow = curCountType === "S" && lengthSpecies > 99;
+
     function getTypeCount(type: CountType) {
       switch (type) {
         case "G": return lengthSubGroups;
@@ -112,16 +114,13 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
               max={1000}
               color={getTypeColor(curCountType)}
               overlap="rectangular"
+              sx={isBadgeOverflow ? { marginBottom: 1 } : null}
             >
               <Chip label={curCountType} color={getTypeColor(curCountType)} variant="outlined" size="medium" />
             </Badge>
           </Tooltip>
         )}
-        iconPosition={
-          curCountType === "S" && lengthSpecies > 99
-            ? "start"
-            : "end"
-        }
+        iconPosition={isBadgeOverflow ? "start" : "end"}
         {...a11yProps(tabIndex)}
         sx={{ bgcolor: tabIndex === tabActual ? "Background" : "ThreeDFace" }}
       />
