@@ -1,6 +1,7 @@
 import { Box, Chip, FormControl, InputLabel, ListSubheader, MenuItem, Select, Typography } from "@mui/material"
-import { items, NamePartPrefix as prefix, NamePartLabel as label } from "./data";
+import { items, NamePartPrefix as prefix, NamePartLabel as label, nameRootGroups } from "./data";
 import { getOptionColorFromValue, setStyleSelectItem } from "./utils";
+import { useMemo } from "react";
 
 // общие названия семейств — по форме (корню)
 // указывать кол-во для каждого таба — (+общее?)
@@ -26,6 +27,10 @@ export const SelectNamePart = ({
   curValue: string[],
   onChange: (value: string[]) => void
 }) => {
+  // TODO: naming type?
+  const nameRootsSequence = useMemo(() =>
+    nameRootGroups.reduce((acc, { roots }) => [...acc, ...roots], [] as string[])
+    , []);
 
   return (
     <section style={{ maxWidth: "350px" }}>
@@ -53,8 +58,8 @@ export const SelectNamePart = ({
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                 {(selected.length === 0)
                   ? <em>None</em>
-                  : selected.map((value) => (
-                    <Chip key={value} label={value} sx={{ bgcolor: getOptionColorFromValue(value) }} />
+                  : nameRootsSequence.map((root) => selected.includes(root) && (
+                    <Chip key={root} label={root} sx={{ bgcolor: getOptionColorFromValue(root) }} />
                   ))
                 }
               </Box>
