@@ -31,7 +31,7 @@ export const CardRange = ({
         }
       />
       <CardContent>
-        <Grid spacing={3} container sx={{ display: "flex", justifyContent: "center" }}>
+        <Grid spacing={3} container>
           {group.families.map(([species_num, families], partId, arr) => {
             const isSingleOnly = new Set(
               families.map(({ species_length }) => species_length)
