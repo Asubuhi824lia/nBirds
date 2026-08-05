@@ -41,7 +41,7 @@ export const defaultValueLatin = modesNameLatin[0].value;
  *  "latin_names_with_every" — латынь отдельно. В отсутствие nameMain и nameAlt[0] и (!)"alt_names_with_only": "—"
  *  "latin_names_with_every" && "alt_names_with_every" — латынь и альтернативы отдельно. В отсутствие nameMain: "—"
  * 
- * 
+ * <SpeciesNamesPage /> | <CardRange />
  * "latin_names_without" && "alt_names_without"       — при отсутствии любого названия, не показывать семейство
  * "alt_names_without"      — либо показ nameMain, либо показ nameLatin
  * "latin_names_without"    — либо показ nameMain, либо показ nameAlt[0], либо не показывать

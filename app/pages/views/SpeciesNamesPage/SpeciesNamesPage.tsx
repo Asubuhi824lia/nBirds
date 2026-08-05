@@ -24,8 +24,10 @@ import { ListNamePart } from "./ListNamePart";
 export type CountType = "G" | "F" | "S";
 
 export const SpeciesNamesPage = () => {
+  // TABs states
   const [tab, setTab] = useState<number>(0);
   const stateCountType = useState<CountType>("G");
+  const [isModeActive, setIsModeActive] = useState<boolean>(true); // TODO: rename
 
   // TODO: +опция "оставить только совпадающие с тэгами"
   const [selectedNames, setSelectedNames] = useState<RootGroupType[]>([]);
@@ -99,8 +101,17 @@ export const SpeciesNamesPage = () => {
                 tabIndex={index}
                 tabActual={tab}
                 group={group}
-                stateCountType={stateCountType}
+                isModeActive={isModeActive}
+                stateCountType={[
+                  stateCountType[0],
+                  (value: React.SetStateAction<CountType>) => {
+                    setIsModeActive((prev) => value !== stateCountType[0] || !prev)
+
+                    stateCountType[1](value);
+                  }
+                ]}
               />
+              // stateModeActive
             ))}
           </Tabs>
         </Box>

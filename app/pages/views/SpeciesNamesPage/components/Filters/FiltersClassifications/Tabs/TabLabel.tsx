@@ -19,6 +19,7 @@ interface TabLabelProps extends TabProps {
   tabIndex: number;
   tabActual: number;
   group: FamilyGroupPartsStruct;
+  isModeActive: boolean;
   stateCountType: [CountType, React.Dispatch<React.SetStateAction<CountType>>]
 }
 // forwardRef для переключения
@@ -32,6 +33,7 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
       families_length,
       families
     },
+    isModeActive,
     stateCountType: {
       "0": curCountType,
       "1": setCurCountType
@@ -59,15 +61,15 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
         case "S": return lengthSpecies;
       }
     }
-    function getTypeColor(type: CountType): BadgeProps["color"] {
+    function getTypeColor(type: CountType, isActive: boolean = isModeActive): BadgeProps["color"] {
       switch (type) {
-        case "G": return "primary";
-        case "F": return "secondary";
-        case "S": return "success";
+        case "G": return isActive ? "primary" : "default";
+        case "F": return isActive ? "secondary" : "default";
+        case "S": return isActive ? "success" : "default";
       }
     }
-    function getTypeVariant(type: CountType): TypographyProps["variant"] {
-      return type === curCountType ? "subtitle1" : "body2";
+    function getTypeVariant(type: CountType, isActive: boolean = isModeActive): TypographyProps["variant"] {
+      return ((type === curCountType) && isActive) ? "subtitle1" : "body2";
     }
 
     interface TooltipItemProps {
@@ -82,13 +84,18 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
         );
       const count = getTypeCount(type);
       return (
-        <Typography
-          variant={getTypeVariant(type)}
-          onClick={() => setCurCountType(type)}
-          sx={{ cursor: "pointer" }}
-        >
-          {type}: {title} — {count}
-        </Typography>
+        <>
+          <Typography
+            variant={getTypeVariant(type)}
+            onClick={() => setCurCountType(type)}
+            sx={{ cursor: "pointer" }}
+          >
+            {type}: {title} — {count}
+          </Typography>
+          {type === curCountType && (
+            <Divider orientation="horizontal" variant="fullWidth" flexItem sx={{ borderColor: "aquamarine" }} />
+          )}
+        </>
       )
     }
 
@@ -104,7 +111,6 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
           <Tooltip title={(
             <div>
               <TooltipItem type="G" />
-              <Divider orientation="horizontal" variant="fullWidth" flexItem sx={{ borderColor: "aquamarine" }} />
               <TooltipItem type="F" />
               <TooltipItem type="S" />
             </div>
@@ -115,7 +121,12 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
               max={1000}
               color={getTypeColor(curCountType)}
               overlap="rectangular"
-              sx={isBadgeOverflow ? { marginBottom: 1 } : null}
+              sx={{ marginBottom: isBadgeOverflow ? 1 : null }}
+              slotProps={{
+                badge: {
+                  sx: isModeActive ? null : { color: "initial" }
+                }
+              }}
             >
               <Chip label={curCountType} color={getTypeColor(curCountType)} variant="outlined" size="medium" />
             </Badge>
