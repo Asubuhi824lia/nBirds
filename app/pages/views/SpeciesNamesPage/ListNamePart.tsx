@@ -1,4 +1,4 @@
-import { List, ListItem, ListSubheader } from "@mui/material"
+import { List, ListItem, ListItemText, ListSubheader } from "@mui/material"
 import type { FamilyGroupPartsStruct } from "./utils"
 
 interface ListNamePartProps {
@@ -16,17 +16,26 @@ export const ListNamePart = ({
   // ), new Map());
 
   return (
-    <List>
-      {GroupsPartsFamiliesSelected?.map(({ familiesParts }) => (
-        1
-        // {
-        //   families.map((family) => (
-        //     <ListItem>
-        //       {family}
-        //     </ListItem>
-        //   ))
-        // }
-      ))}
-    </List>
+    <section>
+      <List>
+        {GroupsPartsFamiliesSelected?.map(({ familiesParts }, index) => (
+          <ListItem key={index}>
+            <ListSubheader>{index}</ListSubheader>
+            <ListItemText>
+              Совпадений: {familiesParts.reduce((acc, part) => acc + part[1].length, 0)}
+            </ListItemText>
+          </ListItem>
+        ))}
+      </List>
+    </section>
   )
 }
+
+
+{/* Перечень №1 */ }
+{/* Вид: "ТАБ — число совпадений (общее)" */ }
+{/* Вид: "ТАБ — число ГРУПП (общее) — число совпадений (общее)" */ }
+{/* Вид: "ТАБ — (ГРУППа — число совпадений (общее)) * ГРУППы" */ }
+{/* Вид: "ТАБ — число ТИПОВ совпадений (общее)" */ }
+
+{/* Вид: "ТИП — Перечень №1" */ }

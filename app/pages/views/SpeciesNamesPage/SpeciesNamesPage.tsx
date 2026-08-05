@@ -16,7 +16,7 @@ import SelectNamePart from "./components/SelectNamePart";
 import { CardRange } from "./components/CardRange/CardRange";
 import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "./data";
 import { CustomTabPanel, TabLabel } from "./components/Filters/FiltersClassifications";
-import { filterSelectedFamilies, filterSelectedFamiliesGroups, filterSelectedFamiliesParts, GroupsPartsFamilies, type RootGroupType } from "./utils";
+import { filterSelectedFamilies, filterSelectedFamiliesParts, GroupsPartsFamilies, type RootGroupType } from "./utils";
 import { nameRootGroups } from "./components/SelectNamePart/data";
 import { ListNamePart } from "./ListNamePart";
 
@@ -150,26 +150,17 @@ export const SpeciesNamesPage = () => {
               <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Поиск</Typography>
               <SelectNamePart curValue={selectedNames.map(root => root.root)} onChange={handleNameRootsSelected} />
               <ListNamePart
-                GroupsPartsFamiliesSelected={
-                  GroupsPartsFamilies.map(({ familiesParts, ...otherTabInfo }) => ({
-                    ...otherTabInfo,
-                    familiesParts:
-                      filterSelectedFamiliesParts(familiesParts)
-                  }))
-                  // .map(({ familiesParts, ...others }) => ({
-                  //   ...others,
-                  //   familiesParts:
-                  //     // отсечь неинформирующие "Parts"
-                  //     filterSelectedFamiliesParts(
-                  //       familiesParts
-                  //     )
-                  //       // в Parts отсечь неинформирующие "семейства"
-                  //       .map(([N, families]) => ([
-                  //         N,
-                  //         filterSelectedFamilies(families)
-                  //       ]))
-                  // }))
-                }
+                GroupsPartsFamiliesSelected={GroupsPartsFamilies.map(({ familiesParts, ...otherTabInfo }) => ({
+                  ...otherTabInfo,
+                  familiesParts:
+                    // оставить информатичные "parts"
+                    filterSelectedFamiliesParts(familiesParts)
+                      .map(([partId, part]) => ([
+                        partId,
+                        // оставить информативные "families"
+                        filterSelectedFamilies(part)
+                      ]))
+                }))}
               />
             </section>
           </Container>
