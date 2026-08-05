@@ -7,9 +7,8 @@
  * «отряд: род —> виды»
  */
 
-import { Box, Container, Divider, Grid, Stack, Tabs } from "@mui/material"
+import { Box, Container, Divider, Grid, Stack, Tabs, Typography } from "@mui/material"
 // TODO: variable — fromLowerCase
-import { FamiliesGroups } from "./data/FamiliesGroups"
 import { useState } from "react"
 import { FiltersNaming, type RadioGroupNameProps } from "./components/Filters/FiltersNaming";
 import { StyleMainContainer, StylePageSection, StyleHeaderTabsBox, StyleMainGrid, StyleCenteredWrapper } from "./styles";
@@ -17,13 +16,9 @@ import SelectNamePart from "./components/SelectNamePart";
 import { CardRange } from "./components/CardRange/CardRange";
 import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "./data";
 import { CustomTabPanel, TabLabel } from "./components/Filters/FiltersClassifications";
-import { getPartsByNum, type RootGroupType } from "./utils";
+import { GroupsPartsFamilies, type RootGroupType } from "./utils";
 import { nameRootGroups } from "./components/SelectNamePart/data";
-
-
-// struct from API
-const GroupsPartsFamilies = getPartsByNum(FamiliesGroups);
-
+import { ListNamePart } from "./ListNamePart";
 
 
 export type CountType = "G" | "F" | "S";
@@ -132,7 +127,29 @@ export const SpeciesNamesPage = () => {
           <Container sx={StyleMainContainer}>
             <FiltersNaming filterGroups={filterGroups} />
 
-            <SelectNamePart curValue={selectedNames.map(root => root.root)} onChange={handleNameRootsSelected} />
+            <section style={{ maxWidth: "350px" }}>
+              <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Поиск</Typography>
+              <SelectNamePart curValue={selectedNames.map(root => root.root)} onChange={handleNameRootsSelected} />
+              <ListNamePart
+                GroupsPartsFamiliesSelected={
+                  GroupsPartsFamilies
+                    .map(({ families, ...others }) => ({
+                      ...others,
+                      families:
+                        families
+                          .filter((group) => group[1].filter(({ SelectedGroups }) => SelectedGroups?.length).length)
+                          .map((group) => ([
+                            group[0],
+                            group[1]
+                              .filter((group) =>
+                                group.SelectedGroups
+                              )
+                            // TODO
+                          ]))
+                    }))
+                }
+              />
+            </section>
           </Container>
         </Stack>
       </main>

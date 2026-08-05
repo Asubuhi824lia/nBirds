@@ -1,4 +1,4 @@
-import { Box, Chip, FormControl, InputLabel, ListSubheader, MenuItem, Select, Typography } from "@mui/material"
+import { Box, Chip, FormControl, InputLabel, ListSubheader, MenuItem, Select } from "@mui/material"
 import { items, NamePartPrefix as prefix, NamePartLabel as label, nameRootGroups } from "./data";
 import { getOptionColorFromValue, setStyleSelectItem } from "./utils";
 import { useMemo } from "react";
@@ -27,55 +27,51 @@ export const SelectNamePart = ({
   curValue: string[],
   onChange: (value: string[]) => void
 }) => {
-  // TODO: naming type?
+  // последовательность "корней названий"
   const nameRootsSequence = useMemo(() =>
     nameRootGroups.reduce((acc, { roots }) => [...acc, ...roots], [] as string[])
     , []);
 
   return (
-    <section style={{ maxWidth: "350px" }}>
-      {/* TODO: "Сортировка" — переформулировать */}
-      <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Поиск</Typography>
-      <FormControl fullWidth sx={{ marginTop: 1 }}>
-        <InputLabel htmlFor={`${prefix}-select`} id={`${prefix}-select-label`} shrink>{label}</InputLabel>
-        <Select
-          multiple
-          fullWidth
-          displayEmpty
-          // клик по label даёт клик по select
-          labelId={`${prefix}-select-label`}
-          id={`${prefix}-select`}
-          value={curValue}
-          // задаёт отступ для label у линии select
-          label={label}
-          onChange={({ target: { value } }) =>
-            onChange(
-              typeof value === 'string' ? value.split(',') : value
-            )
-          }
-          renderValue={(selected) => {
-            return (
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                {(selected.length === 0)
-                  ? <em>None</em>
-                  : nameRootsSequence.map((root) => selected.includes(root) && (
-                    <Chip key={root} label={root} sx={{ bgcolor: getOptionColorFromValue(root) }} />
-                  ))
-                }
-              </Box>
-            )
-          }}
-        >
-          <MenuItem key={`${prefix}-group-null`} value="" disabled defaultChecked><em>None</em></MenuItem>
-          {/* `index` не последовательный для `MenuItem` */}
-          {items.map(({ label, type, groupId }, index) =>
-            type
-              ? <ListSubheader key={`${prefix}-subheader-${index}`}>{label}</ListSubheader>
-              : (
-                <MenuItem key={`${prefix}-item-${index}`} value={label} sx={setStyleSelectItem(groupId)}>{label}</MenuItem>
-              ))}
-        </Select>
-      </FormControl>
-    </section >
+    <FormControl fullWidth sx={{ marginTop: 1 }}>
+      <InputLabel htmlFor={`${prefix}-select`} id={`${prefix}-select-label`} shrink>{label}</InputLabel>
+      <Select
+        multiple
+        fullWidth
+        displayEmpty
+        // клик по label даёт клик по select
+        labelId={`${prefix}-select-label`}
+        id={`${prefix}-select`}
+        value={curValue}
+        // задаёт отступ для label у линии select
+        label={label}
+        onChange={({ target: { value } }) =>
+          onChange(
+            typeof value === 'string' ? value.split(',') : value
+          )
+        }
+        renderValue={(selected) => {
+          return (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {(selected.length === 0)
+                ? <em>None</em>
+                : nameRootsSequence.map((root) => selected.includes(root) && (
+                  <Chip key={root} label={root} sx={{ bgcolor: getOptionColorFromValue(root) }} />
+                ))
+              }
+            </Box>
+          )
+        }}
+      >
+        <MenuItem key={`${prefix}-group-null`} value="" disabled defaultChecked><em>None</em></MenuItem>
+        {/* `index` не последовательный для `MenuItem` */}
+        {items.map(({ label, type, groupId }, index) =>
+          type
+            ? <ListSubheader key={`${prefix}-subheader-${index}`}>{label}</ListSubheader>
+            : (
+              <MenuItem key={`${prefix}-item-${index}`} value={label} sx={setStyleSelectItem(groupId)}>{label}</MenuItem>
+            ))}
+      </Select>
+    </FormControl>
   )
 }

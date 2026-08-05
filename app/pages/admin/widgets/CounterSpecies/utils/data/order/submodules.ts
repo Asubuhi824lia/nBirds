@@ -387,11 +387,12 @@ export const families_low = [
     genera_length: 0,
   },
   {
-    name: "Иреновые",
+    name: "",
     latin_name: "Irenidae",
     species_length: 3,
     genera: [],
     genera_length: 0,
+    alternative_names: ["Иреновые"],
   },
   {
     name: "",

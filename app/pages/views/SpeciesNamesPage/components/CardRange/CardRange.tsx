@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, Grid, List, Typography } from "@mui/mate
 import { ListItemGroup } from "./ListItemGroup";
 import { findNameRoot } from "./utils";
 import { type FamilyGroupPartsStruct, type RootGroupType } from "../../utils";
+import { dash } from "../SelectNamePart/data";
+
 
 interface CardRangeProps {
   groupId: number;
@@ -39,8 +41,6 @@ export const CardRange = ({
 
             const isSpecificValue = isLonely || isSingleOnly || species_num < 10;
 
-            const isAltWithout = typeNameAlt === "alt_names_without";
-
             return (
               <Grid key={`group-${groupId}-part-${partId}`}>
                 <Typography variant="h5" sx={(arr.length === 1) ? { textAlign: "center" } : null}>
@@ -48,11 +48,41 @@ export const CardRange = ({
                 </Typography>
                 <List dense>
                   {families.map((family, familyId) => {
+                    if (
+                      typeNameLatin === "latin_names_without" &&
+                      typeNameAlt === "alt_names_without" &&
+                      !family.name
+                    ) {
+                      return;
+                    }
+
+                    if (
+                      typeNameLatin === "latin_names_without" &&
+                      !family.name &&
+                      !family?.alternative_names?.length
+                    ) {
+                      return
+                    }
+
                     const name =
-                      family.name
-                      || (isAltWithout ? false : family.alternative_names?.[0])
-                      || family.latin_name
-                      || "???";
+                      typeNameLatin === "latin_names_only"
+                        ? family.latin_name || "???" // только латинское
+                        : (
+                          family.name // nameMain
+                          || (
+                            typeNameAlt === "alt_names_without"
+                              ? family.latin_name // либо главное, либо латинское
+                              : (
+                                (typeNameAlt === "alt_names_with_only") && family?.alternative_names?.length
+                                  ? family.alternative_names[0]
+                                  : (
+                                    typeNameLatin === "latin_names_with_only"
+                                      ? family.latin_name
+                                      : dash
+                                  )
+                              )
+                          )
+                        )
 
                     //поиск совпадений
                     const nameParts = selectedNames

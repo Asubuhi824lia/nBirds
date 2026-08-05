@@ -27,12 +27,14 @@ export const colors = [
 export const NamePartLabel = "Корни названий";
 export const NamePartPrefix = "root-name";
 
+export const dash = "—";
+
 // ± DB
 export const nameRootGroups = [
   // 0 _ "запасное" число, на случай отсутствия явного указания
   {
     id: 1,
-    title: "—", //TODO: перепродумать название
+    title: dash, //TODO: перепродумать название
     roots: [
       "птиц",
     ]

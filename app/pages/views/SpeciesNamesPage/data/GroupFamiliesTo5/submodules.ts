@@ -609,8 +609,9 @@ export const TripleFamilies: Array<FamilyStruct> = [
     species_length: 3,
   },
   {
-    name: "Иреновые",
+    name: "",
     latin_name: "Irenidae",
+    alternative_names: ["Иреновые"],
     genera: [
       {
         name: "Ирены",

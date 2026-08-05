@@ -1,4 +1,5 @@
 import type { FamilyGroupStruct } from "../../../data/types";
+import { ucFirst } from "../utils";
 
 interface ItemInfoAdditionProps {
   name: string;
@@ -24,7 +25,7 @@ export const ItemInfoAddition = ({
       {isAltEvery && (
         <>
           {nameAlternatives?.map((name, id) => (
-            <p key={`alternative-name-${id}`}>{name}</p>
+            <p key={`alternative-name-${id}`}>{ucFirst(name)}</p>
           ))}
         </>
       )}
