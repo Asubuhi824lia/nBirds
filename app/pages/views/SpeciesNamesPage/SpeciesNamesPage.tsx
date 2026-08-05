@@ -16,7 +16,7 @@ import SelectNamePart from "./components/SelectNamePart";
 import { CardRange } from "./components/CardRange/CardRange";
 import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "./data";
 import { CustomTabPanel, TabLabel } from "./components/Filters/FiltersClassifications";
-import { GroupsPartsFamilies, type RootGroupType } from "./utils";
+import { filterSelectedFamilies, filterSelectedFamiliesGroups, filterSelectedFamiliesParts, GroupsPartsFamilies, type RootGroupType } from "./utils";
 import { nameRootGroups } from "./components/SelectNamePart/data";
 import { ListNamePart } from "./ListNamePart";
 
@@ -67,7 +67,7 @@ export const SpeciesNamesPage = () => {
 
     // поиск и мутирвоание (дополнение) данных
     GroupsPartsFamilies.forEach((group) => {
-      group.families.forEach((part) => {
+      group.familiesParts.forEach((part) => {
         part[1].forEach((family) => {
           const name = (family.name || family.alternative_names?.[0])?.toLowerCase();
           if (!name)
@@ -138,26 +138,37 @@ export const SpeciesNamesPage = () => {
           <Container sx={StyleMainContainer}>
             <FiltersNaming filterGroups={filterGroups} />
 
+            {/* TODO: Добавить опции
+              При отутствии локализованного названия у таксона "семейство" искать в...
+                1. ...таксоне "род", если единственный
+                2. ...таксоне "род", если известен типовой
+                  3. ...таксоне "вид", если единственный
+                  4. ...таксоне "вид", если известен типовой
+            */}
+
             <section style={{ maxWidth: "350px" }}>
               <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Поиск</Typography>
               <SelectNamePart curValue={selectedNames.map(root => root.root)} onChange={handleNameRootsSelected} />
               <ListNamePart
                 GroupsPartsFamiliesSelected={
-                  GroupsPartsFamilies
-                    .map(({ families, ...others }) => ({
-                      ...others,
-                      families:
-                        families
-                          .filter((group) => group[1].filter(({ SelectedGroups }) => SelectedGroups?.length).length)
-                          .map((group) => ([
-                            group[0],
-                            group[1]
-                              .filter((group) =>
-                                group.SelectedGroups
-                              )
-                            // TODO
-                          ]))
-                    }))
+                  GroupsPartsFamilies.map(({ familiesParts, ...otherTabInfo }) => ({
+                    ...otherTabInfo,
+                    familiesParts:
+                      filterSelectedFamiliesParts(familiesParts)
+                  }))
+                  // .map(({ familiesParts, ...others }) => ({
+                  //   ...others,
+                  //   familiesParts:
+                  //     // отсечь неинформирующие "Parts"
+                  //     filterSelectedFamiliesParts(
+                  //       familiesParts
+                  //     )
+                  //       // в Parts отсечь неинформирующие "семейства"
+                  //       .map(([N, families]) => ([
+                  //         N,
+                  //         filterSelectedFamilies(families)
+                  //       ]))
+                  // }))
                 }
               />
             </section>

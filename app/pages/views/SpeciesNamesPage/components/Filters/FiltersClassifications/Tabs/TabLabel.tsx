@@ -31,7 +31,7 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
       max_species_length: max,
       min_species_length: min,
       families_length,
-      families
+      familiesParts
     },
     isModeActive,
     stateCountType: {
@@ -41,16 +41,16 @@ export const TabLabel = forwardRef<HTMLDivElement, TabLabelProps>(
     ...props
   }, ref) => {
     // TODO: refactor this
-    const lengthSubGroups = families.length;
+    const lengthSubGroups = familiesParts.length;
     const lengthFamilies = useMemo(() => (
       families_length ||
-      families.reduce((acc, subgroup) => acc + subgroup[1].length, 0)
-    ), [families_length, families])
+      familiesParts.reduce((acc, subgroup) => acc + subgroup[1].length, 0)
+    ), [families_length, familiesParts])
     const lengthSpecies = useMemo(() => (
-      families.reduce((acc, subgroup) => (
+      familiesParts.reduce((acc, subgroup) => (
         acc + subgroup[1].reduce((acc, family) => acc + family.species_length, 0)
       ), 0)
-    ), [families])
+    ), [familiesParts])
 
     const isBadgeOverflow = curCountType === "S" && lengthSpecies > 99;
 

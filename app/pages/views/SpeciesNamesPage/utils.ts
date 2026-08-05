@@ -14,15 +14,14 @@ export interface FamilyStruct extends FamilyGroupStruct {
 
 type PartFamiliesStruct = [number, FamilyStruct[]];
 
-
 // TODO: есть ли способ именно заменить тип имеющегося поля?
 export type FamilyGroupPartsStruct = Omit<FamiliesGroup, "families"> & {
-  families: PartFamiliesStruct[];
+  familiesParts: PartFamiliesStruct[];
 }
 export function getPartsByNum(groups: FamiliesGroup[]): FamilyGroupPartsStruct[] {
   return groups.map(({ families, ...other }) => ({
     ...other,
-    families: getGroupPartsByNum(families)
+    familiesParts: getGroupPartsByNum(families)
   }))
 }
 export function getGroupPartsByNum(families: FamilyGroupStruct[]) {
@@ -55,3 +54,24 @@ export function getGroupPartsByNum(families: FamilyGroupStruct[]) {
 // TODO: replace to a new file
 // struct from API
 export const GroupsPartsFamilies = getPartsByNum(FamiliesGroups);
+
+
+// для GroupsPartsFamilies
+// Оставить только группы с частями из семейств с SelectedGroups
+export function filterSelectedFamiliesGroups(group: FamilyGroupPartsStruct[]) {
+  return group.filter(group => (
+    filterSelectedFamiliesParts(group.familiesParts).length
+  ));
+}
+// Оставить только части из семейств с SelectedGroups
+export function filterSelectedFamiliesParts(familiesParts: PartFamiliesStruct[]) {
+  return familiesParts.filter(part => (
+    filterSelectedFamilies(part[1]).length
+  ));
+}
+// Оставить только семейства с SelectedGroups
+export function filterSelectedFamilies(families: FamilyStruct[]) {
+  return families.filter(family => (
+    family.SelectedGroups?.length
+  ));
+}

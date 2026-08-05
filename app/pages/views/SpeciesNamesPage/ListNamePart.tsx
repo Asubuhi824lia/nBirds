@@ -17,7 +17,7 @@ export const ListNamePart = ({
 
   return (
     <List>
-      {GroupsPartsFamiliesSelected?.map(({ families }) => (
+      {GroupsPartsFamiliesSelected?.map(({ familiesParts }) => (
         1
         // {
         //   families.map((family) => (

@@ -32,22 +32,22 @@ export const CardRange = ({
       />
       <CardContent>
         <Grid spacing={3} container>
-          {group.families.map(([species_num, families], partId, arr) => {
+          {group.familiesParts.map(([species_num, part], partId, arr) => {
             const isSingleOnly = new Set(
-              families.map(({ species_length }) => species_length)
+              part.map(({ species_length }) => species_length)
             ).size === 1;
             const isLonely =
-              families.length === 1;
+              part.length === 1;
 
             const isSpecificValue = isLonely || isSingleOnly || species_num < 10;
 
             return (
               <Grid key={`group-${groupId}-part-${partId}`}>
                 <Typography variant="h5" sx={(arr.length === 1) ? { textAlign: "center" } : null}>
-                  {(isSpecificValue ? families[0].species_length : `${species_num}+`)}
+                  {(isSpecificValue ? part[0].species_length : `${species_num}+`)}
                 </Typography>
                 <List dense>
-                  {families.map((family, familyId) => {
+                  {part.map((family, familyId) => {
                     if (
                       typeNameLatin === "latin_names_without" &&
                       typeNameAlt === "alt_names_without" &&
