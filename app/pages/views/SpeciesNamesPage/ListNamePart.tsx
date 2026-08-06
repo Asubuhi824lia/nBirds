@@ -8,8 +8,6 @@ interface ListNamePartProps {
 export const ListNamePart = ({
   GroupsPartsFamiliesSelected
 }: ListNamePartProps) => {
-  console.log(GroupsPartsFamiliesSelected)
-
   // const selectedGroups = Array.from(new Set(selectedNames.map(group => group.groupId)));
   // const selectedGroupsSorted = selectedNames.reduce((acc, { groupId, root }) => (
   //   acc.has(groupId) ? acc.set(groupId, [...acc.get(groupId), root]) : acc.set(groupId, [root])

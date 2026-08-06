@@ -1,21 +1,43 @@
 // import { ArrowCircleDown, ArrowCircleUp } from "@mui/icons-material";
-import { Stack, styled, Switch, Typography } from "@mui/material";
+import { Checkbox, FormControlLabel, Stack, styled, Switch, Typography } from "@mui/material";
+import { useState } from "react";
 
 export enum Direction { ASC, DESC };
 
 interface SortNamingProps {
   dir: boolean;
-  handleNameSorted: (dir: boolean) => void
+  typeNameLatin: string;
+  handleNameSorted: (dir: boolean) => void;
+  handleSeparatelyChanged: (isSeparately: boolean) => void;
 }
 
 export const SortNaming = ({
   dir,
-  handleNameSorted
+  typeNameLatin,
+  handleNameSorted,
+  handleSeparatelyChanged
 }: SortNamingProps) => {
+  // isSortSeparately — локальный стейт
+  // внешнее — для сортировки
+  const [isSortSeparately, setIsSortSeparately] = useState(false);
 
   return (
     <section>
       <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Сортировка</Typography>
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={isSortSeparately}
+            disabled={typeNameLatin === "latin_names_only"}
+            // TODO: дубль стейта?..
+            onChange={({ target: { checked } }) => {
+              setIsSortSeparately(checked);
+              handleSeparatelyChanged(checked);
+            }}
+          />
+        }
+        label="Латынь в конце"
+      />
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
         <Typography>ASC</Typography>
         {/* <DirectionSwitch /> */}

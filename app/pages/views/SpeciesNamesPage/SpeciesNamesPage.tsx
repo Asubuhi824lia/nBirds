@@ -15,7 +15,7 @@ import { StyleMainContainer, StylePageSection, StyleHeaderTabsBox, StyleMainGrid
 import SelectNamePart from "./components/SelectNamePart";
 import { CardRange } from "./components/CardRange/CardRange";
 import { CustomTabPanel, TabLabel } from "./components/Filters/FiltersClassifications";
-import { filterSelectedFamilies, filterSelectedFamiliesParts, getExistName, GroupsPartsFamilies, type RootGroupType } from "./utils";
+import { filterSelectedFamilies, filterSelectedFamiliesParts, getExistName, GroupsPartsFamilies, type FamilyStruct, type RootGroupType } from "./utils";
 import { ListNamePart } from "./ListNamePart";
 import { Direction, SortNaming } from "./components/SelectNamePart/SortNaming";
 
@@ -33,7 +33,9 @@ export const SpeciesNamesPage = () => {
   const stateCountType = useState<CountType>("G");
   const [isModeActive, setIsModeActive] = useState<boolean>(true); // TODO: rename
 
+  // SORT
   const [dir, setDir] = useState<boolean>(!!Direction.ASC);
+  const [isSortSeparately, setIsSortSeparately] = useState(false);
 
   // TODO: +опция "оставить только совпадающие с тэгами"
   const [selectedNames, setSelectedNames] = useState<RootGroupType[]>([]);
@@ -55,7 +57,7 @@ export const SpeciesNamesPage = () => {
       title: "Латинские имена",
       actualType: typeNameLatin,
       onChangeActualType: (newType: string) => {
-        sortGroupsByDir(dir, newType);
+        sortGroupsByDir(dir, isSortSeparately, newType);
         setTypeNameLatin(newType);
         if (newType === "latin_names_only")
           setTypeNameAlt("alt_names_without");
@@ -64,6 +66,10 @@ export const SpeciesNamesPage = () => {
     }
   ]
 
+  const handleSeparatelyChanged = (isSeparately: boolean) => {
+    setIsSortSeparately(isSeparately);
+    sortGroupsByDir(dir, isSeparately);
+  }
   const handleNameSorted = (newDir: boolean) => {
     setDir(newDir);
 
@@ -72,22 +78,55 @@ export const SpeciesNamesPage = () => {
 
     sortGroupsByDir(newDir);
   }
-  function sortGroupsByDir(dir: boolean, typeLatin?: string) {
+  function sortGroupsByDir(dir: boolean, isSeparately: boolean = isSortSeparately, typeLatin?: string) {
     const isLatin = (typeLatin ?? typeNameLatin) === "latin_names_only";
     GroupsPartsFamilies.forEach(group => {
       group.familiesParts.forEach(part => {
-        part[1].sort((a, b) => (
-          a.species_length === b.species_length
-            ? (
-              dir
-                ? getExistName(b, isLatin).charCodeAt(0) - getExistName(a, isLatin).charCodeAt(0)
-                : getExistName(a, isLatin).charCodeAt(0) - getExistName(b, isLatin).charCodeAt(0)
-              // TODO: сортировка по последующим символам, если первы(е) одинаковы
-            )
-            : -1
-        ))
+        /**
+         * Двойная Сортировка
+         * 1 — для локализации
+         * 2 — для латыни
+         */
+        if (isSeparately) {
+          // Все латинские названия — в конец
+          part[1].sort((a, b) => (
+            getIsNameLatin(b) ? 1 : -1 // TODO: to think WHY it doesnt work with "a" this way?
+          ))
+          // Не менять локализованное
+          part[1].sort((a, b) => (
+            getIsNameLatin(a) || getIsNameLatin(b)
+              ? 1
+              : calcNameSortingValue(a, b, isLatin, dir)
+          ))
+          // Не менять латынь
+          part[1].sort((a, b) => (
+            getIsNameLatin(a) || getIsNameLatin(b)
+              ? -1
+              : calcNameSortingValue(a, b, isLatin, dir)
+          ))
+        }
+        else {
+          part[1].sort((a, b) => (
+            calcNameSortingValue(a, b, isLatin, dir)
+          ))
+        }
       })
     })
+  }
+  function getIsNameLatin(elem: FamilyStruct): boolean {
+    return !!getExistName(elem).match(/[a-zA-Z]/g);
+  }
+  function calcNameSortingValue(a: FamilyStruct, b: FamilyStruct, isLatin: boolean, dir: boolean): number {
+    return (
+      a.species_length === b.species_length
+        ? (
+          dir
+            ? getExistName(b, isLatin).charCodeAt(0) - getExistName(a, isLatin).charCodeAt(0)
+            : getExistName(a, isLatin).charCodeAt(0) - getExistName(b, isLatin).charCodeAt(0)
+          // TODO: сортировка по последующим символам, если первы(е) одинаковы
+        )
+        : -1
+    )
   }
 
   const handleNameRootsSelected = (selected: string[]) => {
@@ -169,7 +208,12 @@ export const SpeciesNamesPage = () => {
           </section>
 
           <Container sx={StyleMainContainer}>
-            <SortNaming dir={dir} handleNameSorted={handleNameSorted} />
+            <SortNaming
+              dir={dir}
+              typeNameLatin={typeNameLatin}
+              handleNameSorted={handleNameSorted}
+              handleSeparatelyChanged={handleSeparatelyChanged}
+            />
             <FiltersNaming filterGroups={filterGroups} />
 
             {/* TODO: Добавить опции
