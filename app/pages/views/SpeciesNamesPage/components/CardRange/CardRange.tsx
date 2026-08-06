@@ -71,7 +71,10 @@ export const CardRange = ({
                           family.name // nameMain
                           || (
                             typeNameAlt === "alt_names_without"
-                              ? family.latin_name // либо главное, либо латинское
+                              ? (typeNameLatin === "latin_names_with_every"
+                                ? dash
+                                : family.latin_name // либо главное, либо латинское
+                              )
                               : (
                                 (typeNameAlt === "alt_names_with_only") && family?.alternative_names?.length
                                   ? family.alternative_names[0]
