@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemText, ListSubheader } from "@mui/material"
+import { List, ListItem, ListItemText, ListSubheader, Stack, Typography } from "@mui/material"
 import type { FamilyGroupPartsStruct } from "./utils"
 
 interface ListNamePartProps {
@@ -18,10 +18,21 @@ export const ListNamePart = ({
       <List>
         {GroupsPartsFamiliesSelected?.map(({ familiesParts }, index) => (
           <ListItem key={index}>
-            <ListSubheader>{index}</ListSubheader>
-            <ListItemText>
-              Совпадений: {familiesParts.reduce((acc, part) => acc + part[1].length, 0)}
-            </ListItemText>
+            <Stack direction="column">
+              <section>
+                <ListSubheader>{index + 1}</ListSubheader>
+                <ListItemText>
+                  Совпадений: {familiesParts.reduce((acc, part) => acc + part[1].length, 0)}
+                </ListItemText>
+              </section>
+              {familiesParts.map((part, i) => (
+                part[1].map(family => (
+                  <ListItemText key={`part-${i}`}>
+                    <Typography variant="body2">{family.name}</Typography>
+                  </ListItemText>
+                ))
+              ))}
+            </Stack>
           </ListItem>
         ))}
       </List>
