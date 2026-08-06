@@ -77,6 +77,10 @@ export function filterSelectedFamilies(families: FamilyStruct[]) {
 }
 
 
-export function getExistName(family: FamilyStruct): string {
-  return family.name || family?.alternative_names?.[0] || family.latin_name;
+export function getExistName(family: FamilyStruct, isLatin: boolean = false): string {
+  return (
+    isLatin
+      ? family.latin_name
+      : family.name || family?.alternative_names?.[0] || family.latin_name
+  )
 }

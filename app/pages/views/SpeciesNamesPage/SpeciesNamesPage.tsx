@@ -55,6 +55,7 @@ export const SpeciesNamesPage = () => {
       title: "Латинские имена",
       actualType: typeNameLatin,
       onChangeActualType: (newType: string) => {
+        sortGroupsByDir(dir, newType);
         setTypeNameLatin(newType);
         if (newType === "latin_names_only")
           setTypeNameAlt("alt_names_without");
@@ -63,20 +64,25 @@ export const SpeciesNamesPage = () => {
     }
   ]
 
-  const handleNameSorted = (dir: boolean) => {
-    setDir(dir);
+  const handleNameSorted = (newDir: boolean) => {
+    setDir(newDir);
 
     // Тип 1: Группы сортировки: nameMain & nameAlternatives[0], nameLatin  | sort By LanguageName
     // Тип 2: Группы сортировки: nameMain, nameAlternatives[0], nameLatin   | sort by TypeName
 
+    sortGroupsByDir(newDir);
+  }
+  function sortGroupsByDir(dir: boolean, typeLatin?: string) {
+    const isLatin = (typeLatin ?? typeNameLatin) === "latin_names_only";
     GroupsPartsFamilies.forEach(group => {
       group.familiesParts.forEach(part => {
         part[1].sort((a, b) => (
           a.species_length === b.species_length
             ? (
               dir
-                ? getExistName(b).charCodeAt(0) - getExistName(a).charCodeAt(0)
-                : getExistName(a).charCodeAt(0) - getExistName(b).charCodeAt(0)
+                ? getExistName(b, isLatin).charCodeAt(0) - getExistName(a, isLatin).charCodeAt(0)
+                : getExistName(a, isLatin).charCodeAt(0) - getExistName(b, isLatin).charCodeAt(0)
+              // TODO: сортировка по последующим символам, если первы(е) одинаковы
             )
             : -1
         ))
