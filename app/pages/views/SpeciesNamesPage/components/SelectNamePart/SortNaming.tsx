@@ -6,6 +6,7 @@ export enum Direction { ASC, DESC };
 
 interface SortNamingProps {
   dir: boolean;
+  isSortDisabled: boolean;
   typeNameLatin: string;
   handleNameSorted: (dir: boolean) => void;
   handleSeparatelyChanged: (isSeparately: boolean) => void;
@@ -13,6 +14,7 @@ interface SortNamingProps {
 
 export const SortNaming = ({
   dir,
+  isSortDisabled = false,
   typeNameLatin,
   handleNameSorted,
   handleSeparatelyChanged
@@ -28,7 +30,7 @@ export const SortNaming = ({
         control={
           <Checkbox
             checked={isSortSeparately}
-            disabled={typeNameLatin === "latin_names_only"}
+            disabled={typeNameLatin === "latin_names_only" || isSortDisabled}
             // TODO: дубль стейта?..
             onChange={({ target: { checked } }) => {
               setIsSortSeparately(checked);
@@ -43,6 +45,7 @@ export const SortNaming = ({
         {/* <DirectionSwitch /> */}
         <DirectionSwitch
           checked={!!dir}
+          disabled={isSortDisabled}
           onChange={() => handleNameSorted(!dir)}
         // icon={<ArrowCircleDown />}
         // checkedIcon={<ArrowCircleUp />}

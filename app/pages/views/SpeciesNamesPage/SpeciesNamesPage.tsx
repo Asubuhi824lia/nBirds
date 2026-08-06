@@ -210,6 +210,11 @@ export const SpeciesNamesPage = () => {
           <Container sx={StyleMainContainer}>
             <SortNaming
               dir={dir}
+              isSortDisabled={
+                !GroupsPartsFamilies[tab].familiesParts.filter(part => (
+                  part[1].length > new Set(part[1].map(family => family.species_length)).size
+                )).length
+              }
               typeNameLatin={typeNameLatin}
               handleNameSorted={handleNameSorted}
               handleSeparatelyChanged={handleSeparatelyChanged}
