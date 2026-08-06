@@ -75,3 +75,8 @@ export function filterSelectedFamilies(families: FamilyStruct[]) {
     family.SelectedGroups?.length
   ));
 }
+
+
+export function getExistName(family: FamilyStruct): string {
+  return family.name || family?.alternative_names?.[0] || family.latin_name;
+}

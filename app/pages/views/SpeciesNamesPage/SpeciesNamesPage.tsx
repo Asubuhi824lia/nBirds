@@ -14,20 +14,26 @@ import { FiltersNaming, type RadioGroupNameProps } from "./components/Filters/Fi
 import { StyleMainContainer, StylePageSection, StyleHeaderTabsBox, StyleMainGrid, StyleCenteredWrapper } from "./styles";
 import SelectNamePart from "./components/SelectNamePart";
 import { CardRange } from "./components/CardRange/CardRange";
-import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "./data";
 import { CustomTabPanel, TabLabel } from "./components/Filters/FiltersClassifications";
-import { filterSelectedFamilies, filterSelectedFamiliesParts, GroupsPartsFamilies, type RootGroupType } from "./utils";
-import { nameRootGroups } from "./components/SelectNamePart/data";
+import { filterSelectedFamilies, filterSelectedFamiliesParts, getExistName, GroupsPartsFamilies, type RootGroupType } from "./utils";
 import { ListNamePart } from "./ListNamePart";
+import { Direction, SortNaming } from "./components/SelectNamePart/SortNaming";
+
+import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "./data";
+import { nameRootGroups } from "./components/SelectNamePart/data";
 
 
 export type CountType = "G" | "F" | "S";
 
 export const SpeciesNamesPage = () => {
+  // TODO: явно указать GroupsPartsFamilies
+
   // TABs states
   const [tab, setTab] = useState<number>(0);
   const stateCountType = useState<CountType>("G");
   const [isModeActive, setIsModeActive] = useState<boolean>(true); // TODO: rename
+
+  const [dir, setDir] = useState<boolean>(!!Direction.ASC);
 
   // TODO: +опция "оставить только совпадающие с тэгами"
   const [selectedNames, setSelectedNames] = useState<RootGroupType[]>([]);
@@ -56,6 +62,27 @@ export const SpeciesNamesPage = () => {
       modesName: modesNameLatin
     }
   ]
+
+  const handleNameSorted = (dir: boolean) => {
+    setDir(dir);
+
+    // Тип 1: Группы сортировки: nameMain & nameAlternatives[0], nameLatin  | sort By LanguageName
+    // Тип 2: Группы сортировки: nameMain, nameAlternatives[0], nameLatin   | sort by TypeName
+
+    GroupsPartsFamilies.forEach(group => {
+      group.familiesParts.forEach(part => {
+        part[1].sort((a, b) => (
+          a.species_length === b.species_length
+            ? (
+              dir
+                ? getExistName(b).charCodeAt(0) - getExistName(a).charCodeAt(0)
+                : getExistName(a).charCodeAt(0) - getExistName(b).charCodeAt(0)
+            )
+            : -1
+        ))
+      })
+    })
+  }
 
   const handleNameRootsSelected = (selected: string[]) => {
     // преобразовать, присвоив группу заранее | для всех
@@ -136,6 +163,7 @@ export const SpeciesNamesPage = () => {
           </section>
 
           <Container sx={StyleMainContainer}>
+            <SortNaming dir={dir} handleNameSorted={handleNameSorted} />
             <FiltersNaming filterGroups={filterGroups} />
 
             {/* TODO: Добавить опции
