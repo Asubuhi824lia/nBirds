@@ -1,5 +1,5 @@
 import { Download, Upload } from "@mui/icons-material";
-import { Checkbox, FormControlLabel, Stack, styled, Switch, Typography } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, Stack, styled, Switch, Typography } from "@mui/material";
 import { useState } from "react";
 
 export enum Direction { ASC, DESC };
@@ -41,7 +41,9 @@ export const SortNaming = ({
         label="Латынь в конце"
       />
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-        <Typography>ASC</Typography>
+        <Button variant="text" color="inherit" size="small" onClick={() => handleNameSorted(!!Direction.ASC)} sx={{ minWidth: 0 }}>
+          <Typography>ASC</Typography>
+        </Button>
         {/* <DirectionSwitch /> */}
         <DirectionSwitch
           checked={!!dir}
@@ -49,9 +51,11 @@ export const SortNaming = ({
           size="medium"
           onChange={() => handleNameSorted(!dir)}
           icon={<Download color={isSortDisabled ? "disabled" : "action"} sx={{ borderRadius: "100%", padding: "2px", bgcolor: isSortDisabled ? "lightgray" : "chocolate", color: "beige" }} />}
-          checkedIcon={<Upload color={isSortDisabled ? "disabled" : "action"} sx={{ borderRadius: "100%", padding: "2px", bgcolor: isSortDisabled ? "darkcyan" : "crimson", color: "beige" }} />}
+          checkedIcon={<Upload color={isSortDisabled ? "disabled" : "action"} sx={{ borderRadius: "100%", padding: "2px", bgcolor: isSortDisabled ? "lightgray" : "crimson", color: "beige" }} />}
         />
-        <Typography>DESC</Typography>
+        <Button variant="text" color="inherit" size="small" onClick={() => handleNameSorted(!!Direction.DESC)} sx={{ minWidth: 0 }}>
+          <Typography>DESC</Typography>
+        </Button>
       </Stack>
     </section>
   )
@@ -59,7 +63,7 @@ export const SortNaming = ({
 
 // Switch color Variants
 // on: "crimson", off: "chocolate"
-// on: "darkcyan", off: ""
+// on: "darkcyan", off: "lightseagreen"
 
 
 // TODO: redisign to the Arrows -_-
