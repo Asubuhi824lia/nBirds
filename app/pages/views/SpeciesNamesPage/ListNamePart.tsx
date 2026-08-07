@@ -3,12 +3,14 @@ import type { FamilyGroupPartsStruct } from "./utils"
 
 interface ListNamePartProps {
   tabActual: number;
+  handleTabClicked: (tab: number) => void;
   GroupsPartsFamiliesSelected: FamilyGroupPartsStruct[],
 }
 // if ("реиспользуется") TODO: заменить названия: "конкретные состояния" => "общие параметры"
 export const ListNamePart = ({
   tabActual,
-  GroupsPartsFamiliesSelected
+  GroupsPartsFamiliesSelected,
+  handleTabClicked
 }: ListNamePartProps) => {
   // const selectedGroups = Array.from(new Set(selectedNames.map(group => group.groupId)));
   // const selectedGroupsSorted = selectedNames.reduce((acc, { groupId, root }) => (
@@ -18,24 +20,28 @@ export const ListNamePart = ({
   return (
     <section>
       <List>
-        {GroupsPartsFamiliesSelected?.map(({ familiesParts, ...others }, index) => (
-          <ListItem key={index} sx={{ px: 0 }}>
-            <ListItem sx={{ display: "flex", flexDirection: "column", alignItems: "stretch", px: 0 }}>
-              <ListSubheader sx={{ bgcolor: index === tabActual ? "Background" : "ThreeDFace" }}>
-                <Typography variant="subtitle2" component="center">{getTabLabel(others)}</Typography>
-              </ListSubheader>
-              <List>
-                {familiesParts.map((part, i) => (
-                  part[1].map(family => (
-                    <ListItem key={`part-${i}`}>
-                      <Typography variant="body2">{family.name}</Typography>
-                    </ListItem>
-                  ))
-                ))}
-              </List>
+        {GroupsPartsFamiliesSelected?.map(({ familiesParts, ...others }, index) =>
+          !!familiesParts.length && (
+            <ListItem key={index} sx={{ px: 0 }}>
+              <ListItem sx={{ display: "flex", flexDirection: "column", alignItems: "stretch", px: 0 }}>
+                <ListSubheader
+                  onClick={() => handleTabClicked(index)}
+                  sx={{ bgcolor: index === tabActual ? "Background" : "ThreeDFace" }}
+                >
+                  <Typography variant="subtitle2" component="center">{getTabLabel(others)}</Typography>
+                </ListSubheader>
+                <List>
+                  {familiesParts.map((part, i) => (
+                    part[1].map(family => (
+                      <ListItem key={`part-${i}`}>
+                        <Typography variant="body2">{family.name}</Typography>
+                      </ListItem>
+                    ))
+                  ))}
+                </List>
+              </ListItem>
             </ListItem>
-          </ListItem>
-        ))}
+          ))}
       </List>
     </section>
   )

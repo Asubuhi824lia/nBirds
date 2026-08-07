@@ -245,6 +245,7 @@ export const SpeciesNamesPage = () => {
                         filterSelectedFamilies(part)
                       ]))
                 }))}
+                handleTabClicked={setTab}
               />
             </section>
           </Container>
