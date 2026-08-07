@@ -1,5 +1,7 @@
 import { List, ListItem, ListSubheader, Typography } from "@mui/material"
 import type { FamilyGroupPartsStruct } from "./utils"
+import { TextPartsSelected } from "./components/CardRange/ItemInfo/ItemInfoMain";
+import { findNameRoot } from "./components/CardRange/utils";
 
 interface ListNamePartProps {
   tabActual: number;
@@ -16,7 +18,6 @@ export const ListNamePart = ({
   // const selectedGroupsSorted = selectedNames.reduce((acc, { groupId, root }) => (
   //   acc.has(groupId) ? acc.set(groupId, [...acc.get(groupId), root]) : acc.set(groupId, [root])
   // ), new Map());
-
   return (
     <section>
       <List>
@@ -26,17 +27,58 @@ export const ListNamePart = ({
               <ListItem sx={{ display: "flex", flexDirection: "column", alignItems: "stretch", px: 0 }}>
                 <ListSubheader
                   onClick={() => handleTabClicked(index)}
-                  sx={{ bgcolor: index === tabActual ? "Background" : "ThreeDFace" }}
+                  sx={{ bgcolor: index === tabActual ? "Background" : "ThreeDFace", textAlign: "center", lineHeight: "normal", cursor: "pointer" }}
                 >
-                  <Typography variant="subtitle2" component="center">{getTabLabel(others)}</Typography>
+                  <span style={{ display: "inline-flex", gap: 4 }}>
+                    <Typography variant="subtitle2">{getTabLabel(others)}</Typography>
+                    <Typography variant="subtitle2" color="textSecondary">({familiesParts.length})</Typography>
+                  </span>
                 </ListSubheader>
                 <List>
                   {familiesParts.map((part, i) => (
-                    part[1].map(family => (
-                      <ListItem key={`part-${i}`}>
-                        <Typography variant="body2">{family.name}</Typography>
-                      </ListItem>
-                    ))
+                    part[1].map(family => {
+                      if (!family.SelectedGroups)
+                        return; // для нивелирования дальнейших предупреждений TS
+
+                      const name = family.name.toLowerCase();
+
+                      const SelectedGroupsSorted = family.SelectedGroups
+                        ?.sort((a, b) => family.name.indexOf(a.root) - family.name.indexOf(b.root));
+
+                      //поиск совпадений: уточнённый
+                      const namePartsFull =
+                        SelectedGroupsSorted
+                          .map((nameSelected, id, groups) => {
+                            const indexStart =
+                              id === 0
+                                ? 0
+                                : name.indexOf(groups[id - 1].root) + groups[id - 1].root.length;
+                            const indesEnd =
+                              id === groups.length - 1
+                                ? undefined
+                                : name.indexOf(nameSelected.root) + nameSelected.root.length;
+
+                            const curSubstring = name.slice(indexStart, indesEnd).trim()
+
+                            return findNameRoot({ name: curSubstring, nameSelected })
+                          })
+                          .reduce((acc, names) => names ? [...(acc ?? []), ...names] : acc, []);
+
+                      return (
+                        <ListItem key={`part-${i}`}>
+                          <Typography variant="body2">
+                            <TextPartsSelected
+                              name={family.name}
+                              nameParts={namePartsFull}
+                              getPartGroup={(value: string) => (
+                                family.SelectedGroups
+                                  ?.find(({ root }) => value.toLowerCase().includes(root.toLowerCase()))
+                              )}
+                            />
+                          </Typography>
+                        </ListItem>
+                      )
+                    })
                   ))}
                 </List>
               </ListItem>

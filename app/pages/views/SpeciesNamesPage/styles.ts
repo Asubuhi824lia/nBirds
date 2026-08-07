@@ -14,7 +14,7 @@ export const StylePageSection: React.CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
   flexDirection: 'column',
-  gap: 64,
+  gap: 48,
   width: '80%'
 }
 

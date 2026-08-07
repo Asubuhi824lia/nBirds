@@ -64,7 +64,7 @@ export const CardRange = ({
                       return
                     }
 
-                    const name =
+                    const name = (
                       typeNameLatin === "latin_names_only"
                         ? family.latin_name || "???" // только латинское
                         : (
@@ -86,11 +86,31 @@ export const CardRange = ({
                               )
                           )
                         )
+                    ).toLowerCase();
 
                     //поиск совпадений
-                    const nameParts = selectedNames
-                      .map(nameSelected => findNameRoot({ name, nameSelected }))
-                      .reduce((acc, names) => names ? [...(acc ?? []), ...names] : acc, []);
+                    // TODO: дубль! вынести в функцию
+                    const selectedGroupsSorted = selectedNames
+                      ?.filter(({ root }) => name.includes(root))
+                      .sort((a, b) => family.name.indexOf(a.root) - name.indexOf(b.root));
+
+                    const nameParts =
+                      selectedGroupsSorted
+                        .map((nameSelected, id, groups) => {
+                          const indexStart =
+                            id === 0
+                              ? 0
+                              : name.indexOf(groups[id - 1].root) + groups[id - 1].root.length;
+                          const indesEnd =
+                            id === groups.length - 1
+                              ? undefined
+                              : name.indexOf(nameSelected.root) + nameSelected.root.length;
+
+                          const curSubstring = name.slice(indexStart, indesEnd).trim()
+
+                          return findNameRoot({ name: curSubstring, nameSelected })
+                        })
+                        .reduce((acc, names) => names ? [...(acc ?? []), ...names] : acc, []);
 
                     return (
                       <ListItemGroup

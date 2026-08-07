@@ -191,6 +191,28 @@ export const SpeciesNamesPage = () => {
 
       <main>
         <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />} sx={{ justifyContent: "flex-end" }}>
+          <Container sx={StyleMainContainer}>
+            <section style={{ maxWidth: "350px" }}>
+              <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Поиск</Typography>
+              <SelectNamePart curValue={selectedNames.map(root => root.root)} onChange={handleNameRootsSelected} />
+              <ListNamePart
+                tabActual={tab}
+                GroupsPartsFamiliesSelected={GroupsPartsFamilies.map(({ familiesParts, ...otherTabInfo }) => ({
+                  ...otherTabInfo,
+                  familiesParts:
+                    // оставить информатичные "parts"
+                    filterSelectedFamiliesParts(familiesParts)
+                      .map(([partId, part]) => ([
+                        partId,
+                        // оставить информативные "families"
+                        filterSelectedFamilies(part)
+                      ]))
+                }))}
+                handleTabClicked={setTab}
+              />
+            </section>
+          </Container>
+
           <section style={StyleCenteredWrapper}>
             <Grid container spacing={1} sx={StyleMainGrid}>
               {GroupsPartsFamilies.map((group, index) => (
@@ -228,26 +250,6 @@ export const SpeciesNamesPage = () => {
                   3. ...таксоне "вид", если единственный
                   4. ...таксоне "вид", если известен типовой
             */}
-
-            <section style={{ maxWidth: "350px" }}>
-              <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Поиск</Typography>
-              <SelectNamePart curValue={selectedNames.map(root => root.root)} onChange={handleNameRootsSelected} />
-              <ListNamePart
-                tabActual={tab}
-                GroupsPartsFamiliesSelected={GroupsPartsFamilies.map(({ familiesParts, ...otherTabInfo }) => ({
-                  ...otherTabInfo,
-                  familiesParts:
-                    // оставить информатичные "parts"
-                    filterSelectedFamiliesParts(familiesParts)
-                      .map(([partId, part]) => ([
-                        partId,
-                        // оставить информативные "families"
-                        filterSelectedFamilies(part)
-                      ]))
-                }))}
-                handleTabClicked={setTab}
-              />
-            </section>
           </Container>
         </Stack>
       </main>
