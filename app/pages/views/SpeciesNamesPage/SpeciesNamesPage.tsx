@@ -233,6 +233,7 @@ export const SpeciesNamesPage = () => {
               <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Поиск</Typography>
               <SelectNamePart curValue={selectedNames.map(root => root.root)} onChange={handleNameRootsSelected} />
               <ListNamePart
+                tabActual={tab}
                 GroupsPartsFamiliesSelected={GroupsPartsFamilies.map(({ familiesParts, ...otherTabInfo }) => ({
                   ...otherTabInfo,
                   familiesParts:

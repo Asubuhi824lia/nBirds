@@ -1,11 +1,13 @@
-import { List, ListItem, ListItemText, ListSubheader, Stack, Typography } from "@mui/material"
+import { List, ListItem, ListSubheader, Typography } from "@mui/material"
 import type { FamilyGroupPartsStruct } from "./utils"
 
 interface ListNamePartProps {
-  GroupsPartsFamiliesSelected: FamilyGroupPartsStruct[]
+  tabActual: number;
+  GroupsPartsFamiliesSelected: FamilyGroupPartsStruct[],
 }
 // if ("реиспользуется") TODO: заменить названия: "конкретные состояния" => "общие параметры"
 export const ListNamePart = ({
+  tabActual,
   GroupsPartsFamiliesSelected
 }: ListNamePartProps) => {
   // const selectedGroups = Array.from(new Set(selectedNames.map(group => group.groupId)));
@@ -16,23 +18,22 @@ export const ListNamePart = ({
   return (
     <section>
       <List>
-        {GroupsPartsFamiliesSelected?.map(({ familiesParts }, index) => (
-          <ListItem key={index}>
-            <Stack direction="column">
-              <section>
-                <ListSubheader>{index + 1}</ListSubheader>
-                <ListItemText>
-                  Совпадений: {familiesParts.reduce((acc, part) => acc + part[1].length, 0)}
-                </ListItemText>
-              </section>
-              {familiesParts.map((part, i) => (
-                part[1].map(family => (
-                  <ListItemText key={`part-${i}`}>
-                    <Typography variant="body2">{family.name}</Typography>
-                  </ListItemText>
-                ))
-              ))}
-            </Stack>
+        {GroupsPartsFamiliesSelected?.map(({ familiesParts, ...others }, index) => (
+          <ListItem key={index} sx={{ px: 0 }}>
+            <ListItem sx={{ display: "flex", flexDirection: "column", alignItems: "stretch", px: 0 }}>
+              <ListSubheader sx={{ bgcolor: index === tabActual ? "Background" : "ThreeDFace" }}>
+                <Typography variant="subtitle2" component="center">{getTabLabel(others)}</Typography>
+              </ListSubheader>
+              <List>
+                {familiesParts.map((part, i) => (
+                  part[1].map(family => (
+                    <ListItem key={`part-${i}`}>
+                      <Typography variant="body2">{family.name}</Typography>
+                    </ListItem>
+                  ))
+                ))}
+              </List>
+            </ListItem>
           </ListItem>
         ))}
       </List>
@@ -40,6 +41,18 @@ export const ListNamePart = ({
   )
 }
 
+type GroupRangeType = Pick<FamilyGroupPartsStruct, "max_species_length" | "min_species_length">;
+function getTabLabel(groupRange: GroupRangeType) {
+  const {
+    max_species_length: max,
+    min_species_length: min
+  } = groupRange;
+
+  return (
+    `${min}`
+    + (max ? ` - ${max}` : '+')
+  )
+}
 
 {/* Перечень №1 */ }
 {/* Вид: "ТАБ — число совпадений (общее)" */ }
