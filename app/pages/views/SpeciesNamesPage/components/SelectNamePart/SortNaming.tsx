@@ -30,7 +30,7 @@ export const SortNaming = ({
         control={
           <Checkbox
             checked={isSortSeparately}
-            disabled={typeNameLatin === "latin_names_only" || isSortDisabled}
+            disabled={["latin_names_only", "latin_names_without"].includes(typeNameLatin) || isSortDisabled}
             // TODO: дубль стейта?..
             onChange={({ target: { checked } }) => {
               setIsSortSeparately(checked);
