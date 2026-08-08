@@ -1,4 +1,4 @@
-import { Chip, List, ListItem, ListSubheader, Typography } from "@mui/material"
+import { Badge, List, ListItem, ListSubheader, Typography } from "@mui/material"
 import type { FamilyGroupPartsStruct, RootGroupType } from "./utils"
 import { TextPartsSelected } from "./components/CardRange/ItemInfo/ItemInfoMain";
 import { findNameRoot } from "./components/CardRange/utils";
@@ -69,7 +69,7 @@ export const ListNamePart = ({
                   </span>
                   <p style={{ display: "flex", justifyContent: "center", gap: 4 }}>
                     {Array.from(TypesSelected).map(([typeId, typeCount]) => (
-                      <Chip key={typeId} label={typeCount} size="small" sx={{ bgcolor: getOptionColor(typeId) }} />
+                      <Badge key={typeId} variant="dot" sx={{ color: getOptionColor(typeId) }}>{typeCount}</Badge>
                     ))}
                   </p>
                 </ListSubheader>
