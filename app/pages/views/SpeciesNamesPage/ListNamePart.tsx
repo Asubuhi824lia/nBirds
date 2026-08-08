@@ -15,30 +15,16 @@ export const ListNamePart = ({
   GroupsPartsFamiliesSelected,
   handleTabClicked
 }: ListNamePartProps) => {
-  // const selectedGroups = Array.from(new Set(selectedNames.map(group => group.groupId)));
-  // const selectedGroupsSorted = selectedNames.reduce((acc, { groupId, root }) => (
-  //   acc.has(groupId) ? acc.set(groupId, [...acc.get(groupId), root]) : acc.set(groupId, [root])
-  // ), new Map());
 
-  // const GroupsCountTypesSelected = GroupsPartsFamiliesSelected.map(group => {
-  //   const groupIds = group.familiesParts
-  //     .reduce((acc, part): number[] => (
-  //       [
-  //         ...acc,
-  //         ...part[1]
-  //           .reduce((acc, family): number[] => {
-  //             const groupIds = family.SelectedGroups?.map(({ groupId }) => groupId);
-  //             return groupIds ? [...(acc ?? []), ...groupIds] : acc
-  //           }, [])]
-  //     ), [])
-  //   console.log(groupIds)
-  //   // return [...acc, groupIds]
-  // })
+  const GroupsPartsFamiliesSelectedActual = [
+    GroupsPartsFamiliesSelected[tabActual],
+    ...GroupsPartsFamiliesSelected.filter((_, curIndex) => tabActual !== curIndex)
+  ];
 
   return (
     <section>
       <List>
-        {GroupsPartsFamiliesSelected?.map(({ familiesParts, ...others }, index) => {
+        {GroupsPartsFamiliesSelectedActual?.map(({ familiesParts, ...others }, index) => {
           const PartsCountTypesSelected = familiesParts.reduce((acc, part): RootGroupType[] => ([
             ...acc,
             ...part[1].reduce((acc, family): RootGroupType[] => {
@@ -60,7 +46,7 @@ export const ListNamePart = ({
               <ListItem sx={{ display: "flex", flexDirection: "column", alignItems: "stretch", px: 0 }}>
                 <ListSubheader
                   onClick={() => handleTabClicked(index)}
-                  sx={{ bgcolor: index === tabActual ? "Background" : "ThreeDFace", textAlign: "center", lineHeight: "normal", cursor: "pointer" }}
+                  sx={{ bgcolor: index === 0 ? "Background" : "ThreeDFace", textAlign: "center", lineHeight: "normal", cursor: "pointer" }}
                 >
                   <span style={{ display: "inline-flex", gap: 4 }}>
                     <Typography variant="subtitle2" sx={{ visibility: "hidden" }}>({familiesParts.length})</Typography>  {/* для центрирования */}

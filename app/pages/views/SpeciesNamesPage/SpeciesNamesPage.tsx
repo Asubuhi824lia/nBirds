@@ -155,6 +155,15 @@ export const SpeciesNamesPage = () => {
     })
   }
 
+  function handleTabClicked(tab: number) {
+    setTab(tab);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
+
   return (
     <section style={StylePageSection}>
       {/* TODO: может ли header быть частью, напрямую влияющей на содержание main? до какой степени?*/}
@@ -208,7 +217,7 @@ export const SpeciesNamesPage = () => {
                         filterSelectedFamilies(part)
                       ]))
                 }))}
-                handleTabClicked={setTab}
+                handleTabClicked={handleTabClicked}
               />
             </section>
           </Container>
