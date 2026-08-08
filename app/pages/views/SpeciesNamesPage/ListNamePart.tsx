@@ -1,7 +1,8 @@
-import { List, ListItem, ListSubheader, Typography } from "@mui/material"
-import type { FamilyGroupPartsStruct } from "./utils"
+import { Chip, List, ListItem, ListSubheader, Typography } from "@mui/material"
+import type { FamilyGroupPartsStruct, RootGroupType } from "./utils"
 import { TextPartsSelected } from "./components/CardRange/ItemInfo/ItemInfoMain";
 import { findNameRoot } from "./components/CardRange/utils";
+import { getOptionColor } from "./components/SelectNamePart/utils";
 
 interface ListNamePartProps {
   tabActual: number;
@@ -18,11 +19,43 @@ export const ListNamePart = ({
   // const selectedGroupsSorted = selectedNames.reduce((acc, { groupId, root }) => (
   //   acc.has(groupId) ? acc.set(groupId, [...acc.get(groupId), root]) : acc.set(groupId, [root])
   // ), new Map());
+
+  // const GroupsCountTypesSelected = GroupsPartsFamiliesSelected.map(group => {
+  //   const groupIds = group.familiesParts
+  //     .reduce((acc, part): number[] => (
+  //       [
+  //         ...acc,
+  //         ...part[1]
+  //           .reduce((acc, family): number[] => {
+  //             const groupIds = family.SelectedGroups?.map(({ groupId }) => groupId);
+  //             return groupIds ? [...(acc ?? []), ...groupIds] : acc
+  //           }, [])]
+  //     ), [])
+  //   console.log(groupIds)
+  //   // return [...acc, groupIds]
+  // })
+
   return (
     <section>
       <List>
-        {GroupsPartsFamiliesSelected?.map(({ familiesParts, ...others }, index) =>
-          !!familiesParts.length && (
+        {GroupsPartsFamiliesSelected?.map(({ familiesParts, ...others }, index) => {
+          const PartsCountTypesSelected = familiesParts.reduce((acc, part): RootGroupType[] => ([
+            ...acc,
+            ...part[1].reduce((acc, family): RootGroupType[] => {
+              return family.SelectedGroups ? [...acc, ...family.SelectedGroups] : acc;
+            }, [])
+          ]), [])
+
+          const TypesSelected = new Map();
+
+          PartsCountTypesSelected.forEach(({ groupId }) =>
+            TypesSelected.set(
+              groupId,
+              1 + (TypesSelected.get(groupId) ?? 0)
+            )
+          )
+
+          return !!familiesParts.length && (
             <ListItem key={index} sx={{ px: 0 }}>
               <ListItem sx={{ display: "flex", flexDirection: "column", alignItems: "stretch", px: 0 }}>
                 <ListSubheader
@@ -30,9 +63,15 @@ export const ListNamePart = ({
                   sx={{ bgcolor: index === tabActual ? "Background" : "ThreeDFace", textAlign: "center", lineHeight: "normal", cursor: "pointer" }}
                 >
                   <span style={{ display: "inline-flex", gap: 4 }}>
-                    <Typography variant="subtitle2">{getTabLabel(others)}</Typography>
-                    <Typography variant="subtitle2" color="textSecondary">({familiesParts.length})</Typography>
+                    <Typography variant="subtitle2" sx={{ visibility: "hidden" }}>({familiesParts.length})</Typography>  {/* для центрирования */}
+                    <Typography variant="subtitle1">{getTabLabel(others)}</Typography>
+                    <Typography variant="subtitle2" color="textDisabled">({familiesParts.length})</Typography>
                   </span>
+                  <p style={{ display: "flex", justifyContent: "center", gap: 4 }}>
+                    {Array.from(TypesSelected).map(([typeId, typeCount]) => (
+                      <Chip key={typeId} label={typeCount} size="small" sx={{ bgcolor: getOptionColor(typeId) }} />
+                    ))}
+                  </p>
                 </ListSubheader>
                 <List>
                   {familiesParts.map((part, i) => (
@@ -83,9 +122,10 @@ export const ListNamePart = ({
                 </List>
               </ListItem>
             </ListItem>
-          ))}
+          )
+        })}
       </List>
-    </section>
+    </section >
   )
 }
 
