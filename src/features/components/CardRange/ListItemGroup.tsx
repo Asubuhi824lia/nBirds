@@ -1,5 +1,5 @@
 import { Divider, ListItem, ListItemText } from "@mui/material";
-import type { FamilyGroupStruct } from "../../data/types";
+import type { FamilyGroupStruct } from "@pages/views/SpeciesNamesPage/data/types";
 import { ItemInfoAddition } from "./ItemInfo/ItemInfoAddition";
 import { ItemInfoMain } from "./ItemInfo/ItemInfoMain";
 import type { RootGroupType } from "../../utils";
@@ -27,6 +27,7 @@ export const ListItemGroup = ({
 }: ListGroupProps) => {
   return (
     <ListItem>
+      {/* ToDO: ? */}
       {(familyId > 0) && (<Divider />)}
       <ListItemText
         sx={{

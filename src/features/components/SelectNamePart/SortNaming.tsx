@@ -21,10 +21,15 @@ export const SortNaming = ({
 }: SortNamingProps) => {
   // isSortSeparately — локальный стейт
   // внешнее — для сортировки
+  // TODO: переделать также для «dir»
   const [isSortSeparately, setIsSortSeparately] = useState(false);
+  // TODO: -> isFixedPlacementLatin
 
   return (
     <section>
+      {/* TODO: когда сортировка ни разу еще не выбрана
+      - либо активировать автоматически
+      - либо отображати неактив */}
       <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Сортировка</Typography>
       <FormControlLabel
         control={
@@ -38,13 +43,13 @@ export const SortNaming = ({
             }}
           />
         }
+        // TODO: +визуальное разделение перечня на латыни и локализации
         label="Латынь в конце"
       />
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
         <Button variant="text" color="inherit" size="small" onClick={() => handleNameSorted(!!Direction.ASC)} sx={{ minWidth: 0 }}>
           <Typography>ASC</Typography>
         </Button>
-        {/* <DirectionSwitch /> */}
         <DirectionSwitch
           checked={!!dir}
           disabled={isSortDisabled}

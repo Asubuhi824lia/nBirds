@@ -10,17 +10,17 @@
 import { Box, Container, Divider, Grid, Stack, Tabs, Typography } from "@mui/material"
 // TODO: variable — fromLowerCase
 import { useState } from "react"
-import { FiltersNaming, type RadioGroupNameProps } from "./components/Filters/FiltersNaming";
+import { FiltersNaming, type RadioGroupNameProps } from "@features/components/Filters/FiltersNaming";
 import { StyleMainContainer, StylePageSection, StyleHeaderTabsBox, StyleMainGrid, StyleCenteredWrapper } from "./styles";
-import SelectNamePart from "./components/SelectNamePart";
-import { CardRange } from "./components/CardRange/CardRange";
-import { CustomTabPanel, TabLabel } from "./components/Filters/FiltersClassifications";
-import { filterSelectedFamilies, filterSelectedFamiliesParts, getExistName, GroupsPartsFamilies, type FamilyStruct, type RootGroupType } from "./utils";
-import { ListNamePart } from "./ListNamePart";
-import { Direction, SortNaming } from "./components/SelectNamePart/SortNaming";
+import SelectNamePart from "@features/components/SelectNamePart";
+import { CardRange } from "@features/components/CardRange/CardRange";
+import { CustomTabPanel, TabLabel } from "@features/components/Filters/FiltersClassifications";
+import { filterSelectedFamilies, filterSelectedFamiliesParts, getExistName, GroupsPartsFamilies, type FamilyPartStruct, type RootGroupType } from "../../../features/utils";
+import { ListNamePart } from "../../../features/ListNamePart";
+import { Direction, SortNaming } from "@features/components/SelectNamePart/SortNaming";
 
 import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "./data";
-import { nameRootGroups } from "./components/SelectNamePart/data";
+import { nameRootGroups } from "@features/components/SelectNamePart/data";
 
 
 export type CountType = "G" | "F" | "S";
@@ -80,9 +80,11 @@ export const SpeciesNamesPage = () => {
   }
   function sortGroupsByDir(dir: boolean, isSeparately: boolean = isSortSeparately, typeLatin?: string) {
     const isLatin = (typeLatin ?? typeNameLatin) === "latin_names_only";
+
     GroupsPartsFamilies.forEach(group => {
       group.familiesParts.forEach(part => {
         /**
+         * TODO: тройная же?
          * Двойная Сортировка
          * 1 — для локализации
          * 2 — для латыни
@@ -113,10 +115,10 @@ export const SpeciesNamesPage = () => {
       })
     })
   }
-  function getIsNameLatin(elem: FamilyStruct): boolean {
+  function getIsNameLatin(elem: FamilyPartStruct): boolean {
     return !!getExistName(elem).match(/[a-zA-Z]/g);
   }
-  function calcNameSortingValue(a: FamilyStruct, b: FamilyStruct, isLatin: boolean, dir: boolean): number {
+  function calcNameSortingValue(a: FamilyPartStruct, b: FamilyPartStruct, isLatin: boolean, dir: boolean): number {
     return (
       a.species_length === b.species_length
         ? (
@@ -202,6 +204,7 @@ export const SpeciesNamesPage = () => {
         <Stack direction="row" spacing={1} divider={<Divider orientation="vertical" flexItem />} sx={{ justifyContent: "flex-end" }}>
           <Container sx={StyleMainContainer}>
             <section style={{ maxWidth: "350px" }}>
+              {/* TODO: оставить колонку слева, но следать выше основного контента */}
               <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Поиск</Typography>
               <SelectNamePart curValue={selectedNames.map(root => root.root)} onChange={handleNameRootsSelected} />
               <ListNamePart

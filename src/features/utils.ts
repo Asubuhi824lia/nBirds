@@ -1,18 +1,18 @@
-import { FamiliesGroups } from "./data/FamiliesGroups";
-import type { FamiliesGroup, FamilyGroupStruct } from "./data/types";
+import { FamiliesGroups } from "@/pages/views/SpeciesNamesPage/data/FamiliesGroups";
+import type { FamiliesGroup, FamilyGroupStruct } from "@/pages/views/SpeciesNamesPage/data/types";
 
 // with selected name-root-parts
 // TODO: оставить flat? перевести на SelectedGroup?
 export type RootGroupType = {
   groupId: number;
-  root: string //TODO: конкретизировать типизацию ч/з "FamiliesGroups"
+  root: string
 }
-
-export interface FamilyStruct extends FamilyGroupStruct {
+//TODO: конкретизировать типизацию ч/з "FamiliesGroups"
+export interface FamilyPartStruct extends FamilyGroupStruct {
   SelectedGroups?: RootGroupType[];
 }
 
-type PartFamiliesStruct = [number, FamilyStruct[]];
+type PartFamiliesStruct = [number, FamilyPartStruct[]];
 
 // TODO: есть ли способ именно заменить тип имеющегося поля?
 export type FamilyGroupPartsStruct = Omit<FamiliesGroup, "families"> & {
@@ -25,7 +25,7 @@ export function getPartsByNum(groups: FamiliesGroup[]): FamilyGroupPartsStruct[]
   }))
 }
 export function getGroupPartsByNum(families: FamilyGroupStruct[]) {
-  const parts = new Map<number, FamilyStruct[]>();
+  const parts = new Map<number, FamilyPartStruct[]>();
 
   // get groups
   families.map((family) => {
@@ -35,7 +35,7 @@ export function getGroupPartsByNum(families: FamilyGroupStruct[]) {
     const N = family.species_length; //результат поля в temp не меняется
     const key = N < 10 ? N : (Math.floor(N / 10) * 10);
     if (parts.has(key))
-      parts.set(key, [...parts.get(key) as FamilyStruct[], tempFamily])
+      parts.set(key, [...parts.get(key) as FamilyPartStruct[], tempFamily])
     else
       parts.set(key, [tempFamily])
   })
@@ -70,14 +70,14 @@ export function filterSelectedFamiliesParts(familiesParts: PartFamiliesStruct[])
   ));
 }
 // Оставить только семейства с SelectedGroups
-export function filterSelectedFamilies(families: FamilyStruct[]) {
+export function filterSelectedFamilies(families: FamilyPartStruct[]) {
   return families.filter(family => (
     family.SelectedGroups?.length
   ));
 }
 
 
-export function getExistName(family: FamilyStruct, isLatin: boolean = false): string {
+export function getExistName(family: FamilyPartStruct, isLatin: boolean = false): string {
   return (
     isLatin
       ? family.latin_name

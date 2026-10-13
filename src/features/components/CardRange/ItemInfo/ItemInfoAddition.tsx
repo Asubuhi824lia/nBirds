@@ -1,4 +1,4 @@
-import type { FamilyGroupStruct } from "../../../data/types";
+import type { FamilyGroupStruct } from "@pages/views/SpeciesNamesPage/data/types";
 import { ucFirst } from "../utils";
 
 interface ItemInfoAdditionProps {

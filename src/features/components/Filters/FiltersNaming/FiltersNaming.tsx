@@ -13,7 +13,6 @@ import { prefixGroup } from "./data"
 //    - "без" - сверху, "с" - внизу
 //    - "с" - сверху, "без" - внизу
 
-// TODO: +сортировка DESC/ASC (в пределах одного числа видов)
 // TODO: +фильтр "отделить не повторяющиеся" (опции как по "группам этимологий")
 export const FiltersNaming = ({ filterGroups }: { filterGroups: RadioGroupNameProps[] }) => {
   return (

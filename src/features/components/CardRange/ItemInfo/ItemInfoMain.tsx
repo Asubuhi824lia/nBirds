@@ -1,5 +1,5 @@
-import type { FamilyGroupStruct } from "../../../data/types";
-import type { RootGroupType } from "../../../utils";
+import type { FamilyGroupStruct } from "@pages/views/SpeciesNamesPage/data/types"; 
+import type { RootGroupType } from "@features/utils";
 import { getOptionColor } from "../../SelectNamePart/utils";
 import { ucFirst } from "../utils";
 

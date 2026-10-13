@@ -25,7 +25,7 @@ export const StyleHeaderTabsBox: SxProps<Theme> = {
   display: 'flex',
   justifyContent: "center",
   borderColor: 'divider',
-  bgcolor: 'ThreeDLightShadow'
+  bgcolor: 'rgb(143, 143, 157)'
 }
 
 export const StyleMainContainer: SxProps<Theme> = {

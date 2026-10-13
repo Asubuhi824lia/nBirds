@@ -1,8 +1,8 @@
 {
   "include": [
-    "app/**/*",
-    "app/.server/**/*",
-    "app/.client/**/*",
+    "src/**/*",
+    "src/.server/**/*",
+    "src/.client/**/*",
     ".react-router/types/**/*",
     "*.ts",
     "*.js"
@@ -24,7 +24,10 @@
     "rootDirs": [".", "./.react-router/types"],
     // check "rootDir" | "outDir"
     "paths": {
-      "~/*": ["./app/*"]
+      "@app/*": ["./src/app/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@features/*": ["./src/features/*"],
+      "~/*": ["./src/*"],
     },
     "esModuleInterop": true,
     "verbatimModuleSyntax": true,
