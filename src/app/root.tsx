@@ -1,3 +1,6 @@
+import type { Route } from "./+types/root";
+import "./app.css";
+
 import {
   isRouteErrorResponse,
   Links,
@@ -6,9 +9,6 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-
-import type { Route } from "./+types/root";
-import "./app.css";
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';

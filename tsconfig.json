@@ -28,7 +28,6 @@
       "@app/*": ["./src/app/*"],
       "@pages/*": ["./src/pages/*"],
       "@features/*": ["./src/features/*"],
-      "~/*": ["./*"],
     },
     "esModuleInterop": true,
     "verbatimModuleSyntax": true,
