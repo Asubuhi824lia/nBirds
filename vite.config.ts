@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react-swc';
 import path from "path";
 
 export default defineConfig({
-  plugins: [tailwindcss(), reactRouter(), tsconfigPaths(), react()],
+  plugins: [tsconfigPaths(), tailwindcss(), reactRouter(), react()],
   ssr: {
     // Укажите здесь пакеты, которые нужно обрабатывать через сборку Vite, а не оставлять в виде исходных Node.js модулей
     noExternal: ['@mui/material', 'react-transition-group'],
@@ -16,7 +16,7 @@ export default defineConfig({
       '@app': path.resolve(__dirname, './src/app'),
       '@pages': path.resolve(__dirname, './src/pages'),
       '@features': path.resolve(__dirname, './src/features'),
-      '~': path.resolve(__dirname, "./src/*"),
+      '~': path.resolve(__dirname, "./*"),
     }
   }
 });

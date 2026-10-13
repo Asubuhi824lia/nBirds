@@ -6,7 +6,7 @@
     ".react-router/types/**/*",
     "*.ts",
     "*.js"
-  ],
+, "src/app/root.tsx"  ],
   "exclude": [
     "node_modules",
     "dist",
@@ -15,6 +15,7 @@
     ".react-router"
   ],
   "compilerOptions": {
+    // "baseUrl": ".",
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "types": ["vite/client"],
     "target": "ES2022",
@@ -27,7 +28,7 @@
       "@app/*": ["./src/app/*"],
       "@pages/*": ["./src/pages/*"],
       "@features/*": ["./src/features/*"],
-      "~/*": ["./src/*"],
+      "~/*": ["./*"],
     },
     "esModuleInterop": true,
     "verbatimModuleSyntax": true,
