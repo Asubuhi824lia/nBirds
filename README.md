@@ -5,9 +5,10 @@
 ## Launch instructions
 
 В консоли из папки проекта:
-1. `npm i`
-2. `npm run dev`
-3. Перейти по ссылке из консоли
+1. `git checkout feature-counter`
+2. `npm i`
+3. `npm run dev`
+4. Перейти по ссылке из консоли
 
 ## Groups
 
