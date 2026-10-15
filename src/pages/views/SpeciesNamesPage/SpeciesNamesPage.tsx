@@ -13,7 +13,7 @@ import { useState } from "react"
 import { FiltersNaming, type RadioGroupNameProps } from "@features/components/Filters/FiltersNaming";
 import { StyleMainContainer, StylePageSection, StyleHeaderTabsBox, StyleMainGrid, StyleCenteredWrapper } from "./styles";
 import SelectNamePart from "@features/components/SelectNamePart";
-import { CardRange } from "@features/components/CardRange/CardRange";
+import { CardRange } from "@features/components/CardRange/CardRange/CardRange";
 import { CustomTabPanel, TabLabel } from "@features/components/Filters/FiltersClassifications";
 import { filterSelectedFamilies, filterSelectedFamiliesParts, getExistName, GroupsPartsFamilies, type FamilyPartStruct, type RootGroupType } from "../../../features/utils";
 import { ListNamePart } from "../../../features/ListNamePart";

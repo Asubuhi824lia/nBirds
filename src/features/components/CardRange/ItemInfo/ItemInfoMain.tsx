@@ -1,4 +1,4 @@
-import type { FamilyGroupStruct } from "@pages/views/SpeciesNamesPage/data/types"; 
+import type { FamilyGroupStruct } from "@pages/views/SpeciesNamesPage/data/types";
 import type { RootGroupType } from "@features/utils";
 import { getOptionColor } from "../../SelectNamePart/utils";
 import { ucFirst } from "../utils";
@@ -25,6 +25,7 @@ export const ItemInfoMain = ({
       nameParts={nameParts}
       getPartGroup={(value: string) => selectedNames.find(root => root.root.toLowerCase() === value.toLowerCase())}
     />
+    {/* TODO: isSpecificValue уместно? заменить. */}
     {(length >= 10 && !isSpecificValue) && (
       <span style={{ color: "GrayText" }}>&nbsp;{' — ' + length}</span>
     )}
