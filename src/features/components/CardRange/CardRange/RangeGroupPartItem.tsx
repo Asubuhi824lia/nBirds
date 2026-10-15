@@ -1,14 +1,12 @@
-import type { FamilyPartStruct, RootGroupType } from "@features/utils";
-import { ListItemGroup } from "../ListItemGroup"
+import type { RootGroupType } from "@features/utils";
+import { ListItemInfo } from "../ItemInfo/ListItemInfo"
 import { findNameRoot } from "../utils";
 import { dash } from "../../SelectNamePart/data";
+import { getFamiliesById_noApi } from "./api/api";
 
 interface RangeGroupPartItemProps {
-  // ВНУТРЯНКА
-  family: FamilyPartStruct;
   // определяются из последовательности
   groupId: number;
-  partId: number;
   familyId: number;
 
   isSpecificValue: boolean;
@@ -19,10 +17,7 @@ interface RangeGroupPartItemProps {
 }
 
 export const RangeGroupPartItem = ({
-  family,
-
   groupId,
-  partId,
   familyId,
 
   isSpecificValue,
@@ -31,6 +26,9 @@ export const RangeGroupPartItem = ({
   typeNameAlt,
   selectedNames,
 }: RangeGroupPartItemProps) => {
+
+  const family = getFamiliesById_noApi({ groupId, familyId });
+
   const name = (
     typeNameLatin === "latin_names_only"
       ? family.latin_name || "???" // только латинское
@@ -80,8 +78,7 @@ export const RangeGroupPartItem = ({
       .reduce((acc, names) => names ? [...(acc ?? []), ...names] : acc, []);
 
   return (
-    <ListItemGroup
-      key={`group-${groupId}-part-${partId}-family-${familyId}`}
+    <ListItemInfo
       familyId={familyId}
       family={family}
       name={name}

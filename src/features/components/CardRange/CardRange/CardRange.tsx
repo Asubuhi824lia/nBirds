@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, Grid } from "@mui/material";
-import { type FamilyGroupPartsStruct, type RootGroupType } from "../../../utils";
+import { type RootGroupType } from "../../../utils";
 import { RangeGroupPart } from "./RangeGroupPart";
+import { getGroupById_noApi } from "./api/api";
 
 // 1. `group-${groupId}`
 // 2. `group-${groupId}-part-${partId}`
@@ -8,19 +9,18 @@ import { RangeGroupPart } from "./RangeGroupPart";
 
 interface CardRangeProps {
   groupId: number;
-  group: FamilyGroupPartsStruct;
   typeNameLatin: string;
   typeNameAlt: string;
   selectedNames: RootGroupType[];
 }
 export const CardRange = ({
   groupId,
-  group,
   typeNameLatin,
   typeNameAlt,
   selectedNames
 }: CardRangeProps) => {
   // TODO: check options type!
+  const group = getGroupById_noApi({ groupId });
 
   return (
     <Card key={`group-${groupId}`} sx={{ width: 'fit-content', height: "fit-content" }}>

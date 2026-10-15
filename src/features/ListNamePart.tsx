@@ -1,8 +1,9 @@
 import { Badge, List, ListItem, ListSubheader, Typography } from "@mui/material"
-import type { FamilyGroupPartsStruct, RootGroupType } from "./utils"
+import type { RootGroupType } from "./utils"
 import { TextPartsSelected } from "./components/CardRange/ItemInfo/ItemInfoMain";
 import { findNameRoot } from "./components/CardRange/utils";
 import { getOptionColor } from "./components/SelectNamePart/utils";
+import type { FamilyGroupPartsStruct } from "./components/CardRange/CardRange/api/utils/types";
 
 interface ListNamePartProps {
   tabActual: number;

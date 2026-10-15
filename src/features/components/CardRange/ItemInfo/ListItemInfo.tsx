@@ -1,8 +1,8 @@
 import { Divider, ListItem, ListItemText } from "@mui/material";
 import type { FamilyGroupStruct } from "@pages/views/SpeciesNamesPage/data/types";
-import { ItemInfoAddition } from "./ItemInfo/ItemInfoAddition";
-import { ItemInfoMain } from "./ItemInfo/ItemInfoMain";
-import type { RootGroupType } from "../../utils";
+import { ItemInfoAddition } from "./ItemInfoAddition";
+import { ItemInfoMain } from "./ItemInfoMain";
+import type { RootGroupType } from "../../../utils";
 
 interface ListGroupProps {
   familyId: number;
@@ -18,7 +18,7 @@ interface ListGroupProps {
     typeNameLatin: string;
   }
 }
-export const ListItemGroup = ({
+export const ListItemInfo = ({
   name,
   family,
   familyId,

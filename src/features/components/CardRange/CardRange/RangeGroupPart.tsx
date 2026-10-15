@@ -67,14 +67,11 @@ export const RangeGroupPart = ({
               key={`group-${groupId}-part-${partId}-family-${familyId}`}
               groupId={groupId}
               familyId={familyId}
-              partId={partId}
               isSpecificValue={isSpecificValue}
 
               typeNameAlt={typeNameAlt}
               typeNameLatin={typeNameLatin}
               selectedNames={selectedNames}
-
-              family={family}
             />
           )
         })}

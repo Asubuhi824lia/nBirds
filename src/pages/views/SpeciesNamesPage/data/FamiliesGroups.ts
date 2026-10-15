@@ -7,7 +7,7 @@ import type { FamiliesGroup } from "./types";
  * Flow: 
  *  SpeciesNamesPage => TabLabel (group) => max_species_length / min_species_length
  * 
- *  SpeciesNamesPage => CardRange(group) =**>  ListItemGroup (family) => ItemInfoMain & ItemInfoAddition (family) => ...
+ *  SpeciesNamesPage => CardRange(group) =**>  ListItemInfo (family) => ItemInfoMain & ItemInfoAddition (family) => ...
  *  ... => ItemInfoMain => { species_length }
  *  ... => ItemInfoAddition => { latin_name / alternative_names }
  * 

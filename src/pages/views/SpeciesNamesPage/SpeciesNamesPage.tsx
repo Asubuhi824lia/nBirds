@@ -15,12 +15,14 @@ import { StyleMainContainer, StylePageSection, StyleHeaderTabsBox, StyleMainGrid
 import SelectNamePart from "@features/components/SelectNamePart";
 import { CardRange } from "@features/components/CardRange/CardRange/CardRange";
 import { CustomTabPanel, TabLabel } from "@features/components/Filters/FiltersClassifications";
-import { filterSelectedFamilies, filterSelectedFamiliesParts, getExistName, GroupsPartsFamilies, type FamilyPartStruct, type RootGroupType } from "../../../features/utils";
+import { getExistName, type FamilyPartStruct, type RootGroupType } from "../../../features/utils";
 import { ListNamePart } from "../../../features/ListNamePart";
 import { Direction, SortNaming } from "@features/components/SelectNamePart/SortNaming";
 
 import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "./data";
 import { nameRootGroups } from "@features/components/SelectNamePart/data";
+import { getGroups_noApi } from "@features/components/CardRange/CardRange/api/api";
+import { filterSelectedFamilies, filterSelectedFamiliesParts } from "@features/components/CardRange/CardRange/api/utils/SelectedFamiliesParts";
 
 
 export type CountType = "G" | "F" | "S";
@@ -42,6 +44,8 @@ export const SpeciesNamesPage = () => {
 
   const [typeNameAlt, setTypeNameAlt] = useState(defaultValueAlt);
   const [typeNameLatin, setTypeNameLatin] = useState(defaultValueLatin);
+
+  const GroupsPartsFamilies = getGroups_noApi();
 
   const filterGroups: RadioGroupNameProps[] = [
     {
@@ -231,7 +235,6 @@ export const SpeciesNamesPage = () => {
                 <CustomTabPanel key={`tab-group-${index}`} index={index} value={tab}>
                   <CardRange
                     groupId={index}
-                    group={group}
                     typeNameAlt={typeNameAlt}
                     typeNameLatin={typeNameLatin}
                     selectedNames={selectedNames}
