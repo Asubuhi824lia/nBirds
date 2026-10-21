@@ -16,6 +16,8 @@ export const ListNamePart = ({
   handleTabClicked
 }: ListNamePartProps) => {
 
+  // console.log("tabActual", tabActual)
+
   const GroupsPartsFamiliesSelectedActual = [
     GroupsPartsFamiliesSelected[tabActual],
     ...GroupsPartsFamiliesSelected.filter((_, curIndex) => tabActual !== curIndex)
@@ -24,7 +26,7 @@ export const ListNamePart = ({
   return (
     <section>
       <List>
-        {GroupsPartsFamiliesSelectedActual?.map(({ familiesParts, ...others }, index) => {
+        {GroupsPartsFamiliesSelectedActual?.map(({ familiesParts, tabIndex, ...others }, index) => {
           const PartsCountTypesSelected = familiesParts.reduce((acc, part): RootGroupType[] => ([
             ...acc,
             ...part[1].reduce((acc, family): RootGroupType[] => {
@@ -45,8 +47,13 @@ export const ListNamePart = ({
             <ListItem key={index} sx={{ px: 0 }}>
               <ListItem sx={{ display: "flex", flexDirection: "column", alignItems: "stretch", px: 0 }}>
                 <ListSubheader
-                  onClick={() => handleTabClicked(index)}
-                  sx={{ bgcolor: index === 0 ? "Background" : "ThreeDFace", textAlign: "center", lineHeight: "normal", cursor: "pointer" }}
+                  onClick={() => tabIndex !== tabActual && handleTabClicked(tabIndex as number)}
+                  sx={{
+                    bgcolor: index === 0 ? "Background" : "ThreeDFace",
+                    cursor: index === 0 ? "auto" : "pointer",
+                    textAlign: "center",
+                    lineHeight: "normal",
+                  }}
                 >
                   <span style={{ display: "inline-flex", gap: 4 }}>
                     <Typography variant="subtitle2" sx={{ visibility: "hidden" }}>({familiesParts.length})</Typography>  {/* для центрирования */}

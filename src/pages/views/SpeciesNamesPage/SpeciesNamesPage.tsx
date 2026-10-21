@@ -199,8 +199,9 @@ export const SpeciesNamesPage = () => {
               <SelectNamePart curValue={selectedNames.map(root => root.root)} onChange={handleNameRootsSelected} />
               <ListNamePart
                 tabActual={tab}
-                GroupsPartsFamiliesSelected={GroupsPartsFamilies.map(({ familiesParts, ...otherTabInfo }) => ({
+                GroupsPartsFamiliesSelected={GroupsPartsFamilies.map(({ familiesParts, ...otherTabInfo }, tabIndex) => ({
                   ...otherTabInfo,
+                  tabIndex,
                   familiesParts:
                     // оставить информатичные "parts"
                     filterSelectedFamiliesParts(familiesParts)
