@@ -1,3 +1,5 @@
+import type { RootGroupType } from "@features/utils";
+
 export interface SpeciesStruct {
   name: string;
   latin_name: string;
@@ -6,6 +8,7 @@ export interface SpeciesStruct {
 
 export interface FamilyGroupStruct extends SpeciesStruct {
   species_length: number;
+  SelectedGroups?: RootGroupType[];
 }
 
 export interface FamiliesGroup {

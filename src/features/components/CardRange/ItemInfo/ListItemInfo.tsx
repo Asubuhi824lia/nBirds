@@ -24,10 +24,6 @@ export const ListItemInfo = ({
   specPrimary,
   specSecondary,
 }: ListGroupProps) => {
-  // console.log(
-  //   name,
-  //   specPrimary.selectedNames
-  // )
   return (
     <ListItem>
       {/* ToDO: ? */}

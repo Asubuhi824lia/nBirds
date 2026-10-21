@@ -21,7 +21,7 @@ import { Direction, SortNaming } from "@features/components/SelectNamePart/SortN
 
 import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "./data";
 import { nameRootGroups } from "@features/components/SelectNamePart/data";
-import { getGroups_noApi } from "@features/components/CardRange/CardRange/api/api";
+import { getGroups_noApi, updateGroupSelectedParts_noApi } from "@features/components/CardRange/CardRange/api/api";
 import { filterSelectedFamilies, filterSelectedFamiliesParts } from "@features/components/CardRange/CardRange/api/utils/SelectedFamiliesParts";
 
 
@@ -143,25 +143,9 @@ export const SpeciesNamesPage = () => {
     }))
     setSelectedNames(rootGroups);
 
-    // поиск и мутирвоание (дополнение) данных
-    GroupsPartsFamilies.forEach((group) => {
-      group.familiesParts.forEach((part) => {
-        part[1].forEach((family) => {
-          const name = (family.name || family.alternative_names?.[0])?.toLowerCase();
-          if (!name)
-            return;
-
-          const curSelectedGroups = rootGroups.filter((root) => name.includes(root.root.toLowerCase()));
-
-          // TODO: вроде работает, но переделать на покорректнее
-          // GroupsPartsFamilies[groupId].families[partId][1][familyId].SelectedGroups = [...curSelectedGroups];
-          family.SelectedGroups = [...curSelectedGroups];
-        })
-      })
-    })
+    updateGroupSelectedParts_noApi({ selectedRoots: rootGroups });
   }
 
-  console.log(GroupsPartsFamilies)
 
   function handleTabClicked(tab: number) {
     setTab(tab);
@@ -225,7 +209,8 @@ export const SpeciesNamesPage = () => {
                         // оставить информативные "families"
                         filterSelectedFamilies(part)
                       ]))
-                }))}
+                })
+                )}
                 handleTabClicked={handleTabClicked}
               />
             </section>

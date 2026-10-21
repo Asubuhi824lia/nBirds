@@ -30,8 +30,9 @@ export function getGroupPartsByNum(families: FamilyGroupStruct[]) {
     parts.set(key, partSorted);
   })
 
+
   const partsSorted: PartFamiliesStruct[]
     = (Array.from(parts.entries())).sort((a, b) => a[0] - b[0]);
 
-  return [...partsSorted];
+  return partsSorted;
 }
