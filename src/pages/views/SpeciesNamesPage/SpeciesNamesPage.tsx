@@ -21,7 +21,7 @@ import { Direction, SortNaming } from "@features/components/SelectNamePart/SortN
 
 import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "./data";
 import { nameRootGroups } from "@features/components/SelectNamePart/data";
-import { getGroups_noApi, updateGroupSelectedParts_noApi } from "@features/components/CardRange/CardRange/api/api";
+import { getGroups_noApi, updateGroupSelectedParts_noApi } from "@features/components/CardRange/CardRange/api";
 
 
 export type CountType = "G" | "F" | "S";

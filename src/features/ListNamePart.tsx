@@ -3,7 +3,7 @@ import { Badge, List, ListItem, ListSubheader, Typography } from "@mui/material"
 import type { RootGroupType } from "./utils"
 import { getOptionColor } from "./components/SelectNamePart/utils";
 import type { FamilyGroupPartsStruct } from "./components/CardRange/CardRange/api/utils/types";
-import { getGroupsSelected_noApi } from "./components/CardRange/CardRange/api/api";
+import { getGroupsSelected_noApi } from "./components/CardRange/CardRange/api";
 
 interface ListNamePartProps {
   tabActual: number;

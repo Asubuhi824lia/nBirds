@@ -1,7 +1,7 @@
 import { Grid, List, Typography } from "@mui/material";
 import type { RootGroupType } from "@features/utils";
 import { RangeGroupPartItem } from "./RangeGroupPartItem";
-import { getGroupPartById_noApi } from "./api/api";
+import { getGroupPartById_noApi } from "./api";
 
 interface RangeGroupPartProps {
   // определяются из последовательности

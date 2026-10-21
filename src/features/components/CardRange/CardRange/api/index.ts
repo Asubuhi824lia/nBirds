@@ -1,1 +1,8 @@
-export { getFamiliesById_noApi, getGroupById_noApi, getGroups_noApi } from "./api"
+export { 
+  getGroups_noApi,
+  getGroupById_noApi, 
+  getGroupPartById_noApi,
+  getFamiliesById_noApi, 
+  getGroupsSelected_noApi,
+  updateGroupSelectedParts_noApi,
+} from "./api"
