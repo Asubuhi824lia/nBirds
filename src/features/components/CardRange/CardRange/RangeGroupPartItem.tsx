@@ -1,6 +1,5 @@
 import type { RootGroupType } from "@features/utils";
 import { ListItemInfo } from "../ItemInfo/ListItemInfo"
-import { findNameRoot } from "../utils";
 import { dash } from "../../SelectNamePart/data";
 import { getFamiliesById_noApi } from "./api/api";
 
@@ -53,30 +52,6 @@ export const RangeGroupPartItem = ({
       )
   ).toLowerCase();
 
-  //поиск совпадений
-  // TODO: дубль! вынести в функцию
-  const selectedGroupsSorted = selectedNames
-    ?.filter(({ root }) => name.includes(root))
-    .sort((a, b) => family.name.indexOf(a.root) - name.indexOf(b.root));
-
-  const nameParts =
-    selectedGroupsSorted
-      .map((nameSelected, id, groups) => {
-        const indexStart =
-          id === 0
-            ? 0
-            : name.indexOf(groups[id - 1].root) + groups[id - 1].root.length;
-        const indesEnd =
-          id === groups.length - 1
-            ? undefined
-            : name.indexOf(nameSelected.root) + nameSelected.root.length;
-
-        const curSubstring = name.slice(indexStart, indesEnd).trim()
-
-        return findNameRoot({ name: curSubstring, nameSelected })
-      })
-      .reduce((acc, names) => names ? [...(acc ?? []), ...names] : acc, []);
-
   return (
     <ListItemInfo
       familyId={familyId}
@@ -84,8 +59,7 @@ export const RangeGroupPartItem = ({
       name={name}
       specPrimary={{
         isSpecificValue,
-        selectedNames,
-        nameParts
+        selectedNames
       }}
       specSecondary={{
         typeNameAlt,

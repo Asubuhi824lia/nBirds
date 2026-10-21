@@ -161,6 +161,8 @@ export const SpeciesNamesPage = () => {
     })
   }
 
+  console.log(GroupsPartsFamilies)
+
   function handleTabClicked(tab: number) {
     setTab(tab);
     window.scrollTo({

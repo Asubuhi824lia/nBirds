@@ -11,7 +11,6 @@ interface ListGroupProps {
   specPrimary: {
     isSpecificValue: boolean;
     selectedNames: RootGroupType[];
-    nameParts: string[] | null;
   };
   specSecondary: {
     typeNameAlt: string;
@@ -25,6 +24,10 @@ export const ListItemInfo = ({
   specPrimary,
   specSecondary,
 }: ListGroupProps) => {
+  // console.log(
+  //   name,
+  //   specPrimary.selectedNames
+  // )
   return (
     <ListItem>
       {/* ToDO: ? */}
