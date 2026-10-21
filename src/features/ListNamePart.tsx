@@ -3,30 +3,33 @@ import { Badge, List, ListItem, ListSubheader, Typography } from "@mui/material"
 import type { RootGroupType } from "./utils"
 import { getOptionColor } from "./components/SelectNamePart/utils";
 import type { FamilyGroupPartsStruct } from "./components/CardRange/CardRange/api/utils/types";
+import { getGroupsSelected_noApi } from "./components/CardRange/CardRange/api/api";
 
 interface ListNamePartProps {
   tabActual: number;
   handleTabClicked: (tab: number) => void;
-  GroupsPartsFamiliesSelected: FamilyGroupPartsStruct[],
 }
 // if ("реиспользуется") TODO: заменить названия: "конкретные состояния" => "общие параметры"
 export const ListNamePart = ({
   tabActual,
-  GroupsPartsFamiliesSelected,
   handleTabClicked
 }: ListNamePartProps) => {
 
+  const GroupsPartsFamiliesSelected = getGroupsSelected_noApi();
+
   // console.log("tabActual", tabActual)
 
-  const GroupsPartsFamiliesSelectedActual = [
+  const GroupsPartsFamiliesSelectedActual: (FamilyGroupPartsStruct & { tabIndex?: number })[] = [
     GroupsPartsFamiliesSelected[tabActual],
-    ...GroupsPartsFamiliesSelected.filter((_, curIndex) => tabActual !== curIndex)
+    ...GroupsPartsFamiliesSelected
+      .map((prev, i) => ({ ...prev, tabIndex: i }))
+      .filter((_, curIndex) => tabActual !== curIndex)
   ];
 
   return (
     <section>
       <List>
-        {GroupsPartsFamiliesSelectedActual?.map(({ familiesParts, tabIndex, ...others }, index) => {
+        {GroupsPartsFamiliesSelectedActual?.map(({ familiesParts, tabIndex = tabActual, ...others }, index) => {
           const PartsCountTypesSelected = familiesParts.reduce((acc, part): RootGroupType[] => ([
             ...acc,
             ...part[1].reduce((acc, family): RootGroupType[] => {
@@ -47,7 +50,7 @@ export const ListNamePart = ({
             <ListItem key={index} sx={{ px: 0 }}>
               <ListItem sx={{ display: "flex", flexDirection: "column", alignItems: "stretch", px: 0 }}>
                 <ListSubheader
-                  onClick={() => tabIndex !== tabActual && handleTabClicked(tabIndex as number)}
+                  onClick={() => tabIndex === tabActual || handleTabClicked(tabIndex as number)}
                   sx={{
                     bgcolor: index === 0 ? "Background" : "ThreeDFace",
                     cursor: index === 0 ? "auto" : "pointer",

@@ -22,7 +22,6 @@ import { Direction, SortNaming } from "@features/components/SelectNamePart/SortN
 import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "./data";
 import { nameRootGroups } from "@features/components/SelectNamePart/data";
 import { getGroups_noApi, updateGroupSelectedParts_noApi } from "@features/components/CardRange/CardRange/api/api";
-import { filterSelectedFamilies, filterSelectedFamiliesParts } from "@features/components/CardRange/CardRange/api/utils/SelectedFamiliesParts";
 
 
 export type CountType = "G" | "F" | "S";
@@ -196,22 +195,12 @@ export const SpeciesNamesPage = () => {
             <section style={{ maxWidth: "350px" }}>
               {/* TODO: оставить колонку слева, но следать выше основного контента */}
               <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Поиск</Typography>
-              <SelectNamePart curValue={selectedNames.map(root => root.root)} onChange={handleNameRootsSelected} />
+              <SelectNamePart
+                curValue={selectedNames.map(root => root.root)}
+                onChange={handleNameRootsSelected}
+              />
               <ListNamePart
                 tabActual={tab}
-                GroupsPartsFamiliesSelected={GroupsPartsFamilies.map(({ familiesParts, ...otherTabInfo }, tabIndex) => ({
-                  ...otherTabInfo,
-                  tabIndex,
-                  familiesParts:
-                    // оставить информатичные "parts"
-                    filterSelectedFamiliesParts(familiesParts)
-                      .map(([partId, part]) => ([
-                        partId,
-                        // оставить информативные "families"
-                        filterSelectedFamilies(part)
-                      ]))
-                })
-                )}
                 handleTabClicked={handleTabClicked}
               />
             </section>

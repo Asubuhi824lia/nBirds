@@ -2,6 +2,7 @@ import { FamiliesGroups } from "@pages/views/SpeciesNamesPage/data/FamiliesGroup
 import { getPartsByNum } from "./utils/GroupParts";
 import type { FamilyGroupPartsStruct } from "./utils/types";
 import type { RootGroupType } from "@features/utils";
+import { filterSelectedFamilies, filterSelectedFamiliesParts } from "./utils/SelectedFamiliesParts";
 
 
 export const getFamiliesById_noApi = ({
@@ -16,6 +17,21 @@ export const getFamiliesById_noApi = ({
 
 
 export const getGroups_noApi = () => getPartsByNum(FamiliesGroups) as FamilyGroupPartsStruct[];
+
+export const getGroupsSelected_noApi = (): FamilyGroupPartsStruct[] => {
+  const GroupsPartsFamilies = getGroups_noApi();
+  return GroupsPartsFamilies.map(({ familiesParts, ...otherTabInfo }) => ({
+    ...otherTabInfo,
+    familiesParts:
+      // оставить информатичные "parts"
+      filterSelectedFamiliesParts(familiesParts)
+        .map(([partId, part]) => ([
+          partId,
+          // оставить информативные "families"
+          filterSelectedFamilies(part)
+        ]))
+  }))
+}
 
 export const getGroupById_noApi = ({
   groupId
