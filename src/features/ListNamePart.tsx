@@ -17,8 +17,6 @@ export const ListNamePart = ({
 
   const GroupsPartsFamiliesSelected = getGroupsSelected_noApi();
 
-  // console.log("tabActual", tabActual)
-
   const GroupsPartsFamiliesSelectedActual: (FamilyGroupPartsStruct & { tabIndex?: number })[] = [
     GroupsPartsFamiliesSelected[tabActual],
     ...GroupsPartsFamiliesSelected

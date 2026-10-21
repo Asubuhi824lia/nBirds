@@ -1,11 +1,9 @@
 import { Grid, List, Typography } from "@mui/material";
-import type { FamilyPartStruct, RootGroupType } from "@features/utils";
+import type { RootGroupType } from "@features/utils";
 import { RangeGroupPartItem } from "./RangeGroupPartItem";
+import { getGroupPartById_noApi } from "./api/api";
 
 interface RangeGroupPartProps {
-  // ВНУТРЯНКА
-  species_num: number;
-  part: FamilyPartStruct[];
   // определяются из последовательности
   groupId: number;
   partId: number;
@@ -17,9 +15,6 @@ interface RangeGroupPartProps {
 }
 
 export const RangeGroupPart = ({
-  species_num,
-  part,
-
   groupId,
   partId,
   isSingularPart,
@@ -28,6 +23,8 @@ export const RangeGroupPart = ({
   typeNameAlt,
   selectedNames,
 }: RangeGroupPartProps) => {
+
+  const [species_num, part] = getGroupPartById_noApi({ groupId, partId });
 
   const isSingleOnly = new Set(
     part.map(({ species_length }) => species_length)
@@ -66,6 +63,7 @@ export const RangeGroupPart = ({
             <RangeGroupPartItem
               key={`group-${groupId}-part-${partId}-family-${familyId}`}
               groupId={groupId}
+              partId={partId}
               familyId={familyId}
               isSpecificValue={isSpecificValue}
 

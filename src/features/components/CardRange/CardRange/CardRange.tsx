@@ -33,7 +33,7 @@ export const CardRange = ({
       />
       <CardContent>
         <Grid spacing={3} container>
-          {group.familiesParts.map(([species_num, part], partId, arr) =>
+          {group.familiesParts.map((_, partId, arr) =>
             <RangeGroupPart
               key={`group-${groupId}-part-${partId}`}
               groupId={groupId}
@@ -43,9 +43,6 @@ export const CardRange = ({
               typeNameAlt={typeNameAlt}
               typeNameLatin={typeNameLatin}
               selectedNames={selectedNames}
-
-              part={part}
-              species_num={species_num}
             />
           )}
         </Grid>

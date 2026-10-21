@@ -7,12 +7,15 @@ import { filterSelectedFamilies, filterSelectedFamiliesParts } from "./utils/Sel
 
 export const getFamiliesById_noApi = ({
   groupId,
+  partId,
   familyId,
 }: {
   groupId: number;
+  partId: number;
   familyId: number;
 }) => {
-  return FamiliesGroups[groupId].families[familyId];
+  const [, part] = getGroupPartById_noApi({ groupId, partId });
+  return part[familyId];
 }
 
 
@@ -51,6 +54,17 @@ export const getGroupById_noApi = ({
   })
 
   return GroupsPartsFamilies[groupId];
+}
+
+export const getGroupPartById_noApi = ({
+  groupId,
+  partId
+}: {
+  groupId: number;
+  partId: number;
+}) => {
+  const group = getGroupById_noApi({ groupId });
+  return group.familiesParts[partId]
 }
 
 // TODO: SelectedParts

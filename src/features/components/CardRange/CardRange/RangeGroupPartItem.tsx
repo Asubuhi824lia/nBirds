@@ -6,6 +6,7 @@ import { getFamiliesById_noApi } from "./api/api";
 interface RangeGroupPartItemProps {
   // определяются из последовательности
   groupId: number;
+  partId: number;
   familyId: number;
 
   isSpecificValue: boolean;
@@ -17,6 +18,7 @@ interface RangeGroupPartItemProps {
 
 export const RangeGroupPartItem = ({
   groupId,
+  partId,
   familyId,
 
   isSpecificValue,
@@ -26,7 +28,7 @@ export const RangeGroupPartItem = ({
   selectedNames,
 }: RangeGroupPartItemProps) => {
 
-  const family = getFamiliesById_noApi({ groupId, familyId });
+  const family = getFamiliesById_noApi({ groupId, partId, familyId });
 
   const name = (
     typeNameLatin === "latin_names_only"
