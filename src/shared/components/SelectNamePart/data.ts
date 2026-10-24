@@ -1,3 +1,4 @@
+import { nameRootGroups } from "@shared/data";
 import { ItemType, type NameRootGroup } from "./types"
 
 import {
@@ -26,53 +27,6 @@ export const colors = [
  */
 export const NamePartLabel = "Корни названий";
 export const NamePartPrefix = "root-name";
-
-export const dash = "—";
-
-// ± DB
-export const nameRootGroups = [
-  // 0 _ "запасное" число, на случай отсутствия явного указания
-  {
-    id: 1,
-    title: dash, //TODO: перепродумать название
-    roots: [
-      "птиц",
-    ]
-  },
-  {
-    id: 2,
-    title: "Пение",
-    roots: [
-      "ласточк",
-      "певун",
-      "пищух",
-      "свиристел",
-      "синиц",
-      "славк",
-      "тимел",
-    ]
-  },
-  {
-    id: 3,
-    title: "Поведение",
-    roots: [
-      "вьюр",
-      "ткач",
-      "медосос", // + alt_name
-      "пополз", // + alt_name
-      "сорокопут",
-    ]
-  },
-  {
-    id: 4,
-    title: "Строение",
-    roots: [
-      "глаз",
-      "толстоголовк", // род
-      "хвост",
-    ]
-  }
-]
 
 // ± API
 export const items: NameRootGroup[] = nameRootGroups.map((group) => [

@@ -9,6 +9,9 @@ interface GeneraStruct extends SpeciesStruct {
   species_length: number;
 }
 
+/**
+ * Запрашивается в @pages
+ */
 export interface FamilyStruct extends Omit<GeneraStruct, "species"> {
   genera?: Array<GeneraStruct>;
   genera_length?: number;

@@ -1,5 +1,5 @@
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
-import { prefixGroup } from "./data";
+import { prefixGroup } from "../data";
 
 // with_count
 

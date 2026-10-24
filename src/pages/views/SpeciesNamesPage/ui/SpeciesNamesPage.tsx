@@ -10,18 +10,19 @@
 import { Box, Container, Divider, Grid, Stack, Tabs, Typography } from "@mui/material"
 // TODO: variable — fromLowerCase
 import { useState } from "react"
-import { FiltersNaming, type RadioGroupNameProps } from "../../../../shared/components/Filters/FiltersNaming";
-import { StyleMainContainer, StylePageSection, StyleHeaderTabsBox, StyleMainGrid, StyleCenteredWrapper } from "./styles";
-import SelectNamePart from "../../../../shared/components/SelectNamePart";
-import { CardRange } from "../../../../shared/components/CardRange";
-import { CustomTabPanel, TabLabel } from "../../../../shared/components/Filters/FiltersClassifications";
-import { getExistName, type FamilyPartStruct, type RootGroupType } from "../../../../shared/utils";
-import { ListNamePart } from "../../../../shared/ListNamePart";
-import { Direction, SortNaming } from "../../../../shared/components/SelectNamePart/SortNaming";
 
+import { FiltersNaming, type RadioGroupNameProps } from "@shared/components/Filters/FiltersNaming";
+import SelectNamePart from "@shared/components/SelectNamePart";
+import { CardRange } from "@shared/components/CardRange";
+import { getExistName, type FamilyPartStruct, type RootGroupType } from "@shared/utils";
+import { ListNamePart } from "@shared/ListNamePart";
+import { Direction, SortNaming } from "@shared/components/SelectNamePart/components/SortNaming";
+import { getGroups_noApi, updateGroupSelectedParts_noApi } from "@shared/components/CardRange/api";
+import { CustomTabPanel, TabLabel } from "@shared/components/Filters/Tabs";
+
+import { StyleMainContainer, StylePageSection, StyleHeaderTabsBox, StyleMainGrid, StyleCenteredWrapper } from "./styles";
 import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "../data/modes";
-import { nameRootGroups } from "../../../../shared/components/SelectNamePart/data";
-import { getGroups_noApi, updateGroupSelectedParts_noApi } from "../../../../shared/components/CardRange/api";
+import { nameRootGroups } from "@shared/data";
 
 
 export type CountType = "G" | "F" | "S";

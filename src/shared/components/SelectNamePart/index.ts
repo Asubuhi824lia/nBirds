@@ -1,1 +1,1 @@
-export { SelectNamePart as default } from "./SelectNamePart"
+export { SelectNamePart as default } from "./components/SelectNamePart"

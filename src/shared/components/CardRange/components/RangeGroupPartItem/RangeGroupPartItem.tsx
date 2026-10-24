@@ -1,6 +1,6 @@
-import type { RootGroupType } from "../../../../utils";
+import type { RootGroupType } from "@shared/utils";
+import { dash } from "@shared/data";
 import { ListItemInfo } from "./ItemInfo/ListItemInfo"
-import { dash } from "../../../SelectNamePart/data";
 import { getFamiliesById_noApi } from "../../api";
 
 interface RangeGroupPartItemProps {

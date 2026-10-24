@@ -2,7 +2,7 @@
 
 import { Typography } from "@mui/material"
 import { RadioGroupName, type RadioGroupNameProps } from "./RadioGroupName"
-import { prefixGroup } from "./data"
+import { prefixGroup } from "../data"
 
 // TODO: названия "семейств", соотв. названиям "родов"
 
