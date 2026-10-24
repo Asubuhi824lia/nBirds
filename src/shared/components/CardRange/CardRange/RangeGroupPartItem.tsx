@@ -1,4 +1,4 @@
-import type { RootGroupType } from "@features/utils";
+import type { RootGroupType } from "../../../utils";
 import { ListItemInfo } from "../ItemInfo/ListItemInfo"
 import { dash } from "../../SelectNamePart/data";
 import { getFamiliesById_noApi } from "./api";

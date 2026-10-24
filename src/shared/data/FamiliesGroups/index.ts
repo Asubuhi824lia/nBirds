@@ -296,5 +296,3 @@ export const FamiliesGroups: Array<FamiliesGroup> = [
     min_species_length: 300,
   }
 ];
-
-

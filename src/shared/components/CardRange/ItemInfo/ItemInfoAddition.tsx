@@ -1,5 +1,4 @@
-import type { FamilyGroupStruct } from "@pages/views/SpeciesNamesPage/data/types";
-import { ucFirst } from "../utils";
+import type { FamilyGroupStruct } from "@shared/data/FamiliesGroups/types";
 
 interface ItemInfoAdditionProps {
   name: string;
@@ -18,6 +17,11 @@ export const ItemInfoAddition = ({
 }: ItemInfoAdditionProps) => {
   const isLatinEvery = typeNameLatin === "latin_names_with_every";
   const isAltEvery = typeNameAlt === "alt_names_with_every";
+
+  function ucFirst(str: string) {
+  if (!str) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
 
   return (
     <span>

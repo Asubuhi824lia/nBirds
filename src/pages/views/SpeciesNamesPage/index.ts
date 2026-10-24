@@ -1,1 +1,1 @@
-export { SpeciesNamesPage as default } from "./SpeciesNamesPage";
+export { SpeciesNamesPage as default } from "./ui/SpeciesNamesPage";

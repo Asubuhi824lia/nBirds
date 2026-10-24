@@ -10,18 +10,18 @@
 import { Box, Container, Divider, Grid, Stack, Tabs, Typography } from "@mui/material"
 // TODO: variable — fromLowerCase
 import { useState } from "react"
-import { FiltersNaming, type RadioGroupNameProps } from "@features/components/Filters/FiltersNaming";
+import { FiltersNaming, type RadioGroupNameProps } from "../../../../shared/components/Filters/FiltersNaming";
 import { StyleMainContainer, StylePageSection, StyleHeaderTabsBox, StyleMainGrid, StyleCenteredWrapper } from "./styles";
-import SelectNamePart from "@features/components/SelectNamePart";
-import { CardRange } from "@features/components/CardRange/CardRange/CardRange";
-import { CustomTabPanel, TabLabel } from "@features/components/Filters/FiltersClassifications";
-import { getExistName, type FamilyPartStruct, type RootGroupType } from "../../../features/utils";
-import { ListNamePart } from "../../../features/ListNamePart";
-import { Direction, SortNaming } from "@features/components/SelectNamePart/SortNaming";
+import SelectNamePart from "../../../../shared/components/SelectNamePart";
+import { CardRange } from "../../../../shared/components/CardRange/CardRange/CardRange";
+import { CustomTabPanel, TabLabel } from "../../../../shared/components/Filters/FiltersClassifications";
+import { getExistName, type FamilyPartStruct, type RootGroupType } from "../../../../shared/utils";
+import { ListNamePart } from "../../../../shared/ListNamePart";
+import { Direction, SortNaming } from "../../../../shared/components/SelectNamePart/SortNaming";
 
-import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "./data";
-import { nameRootGroups } from "@features/components/SelectNamePart/data";
-import { getGroups_noApi, updateGroupSelectedParts_noApi } from "@features/components/CardRange/CardRange/api";
+import { defaultValueAlt, defaultValueLatin, modesNameAlt, modesNameLatin } from "../data/modes";
+import { nameRootGroups } from "../../../../shared/components/SelectNamePart/data";
+import { getGroups_noApi, updateGroupSelectedParts_noApi } from "../../../../shared/components/CardRange/CardRange/api";
 
 
 export type CountType = "G" | "F" | "S";
@@ -44,7 +44,11 @@ export const SpeciesNamesPage = () => {
   const [typeNameAlt, setTypeNameAlt] = useState(defaultValueAlt);
   const [typeNameLatin, setTypeNameLatin] = useState(defaultValueLatin);
 
-  const GroupsPartsFamilies = getGroups_noApi();
+  const GroupsPartsFamilies = getGroups_noApi({
+    dir,
+    // isSeparately,
+    isLatin: typeNameLatin === "latin_names_only"
+  });
 
   const filterGroups: RadioGroupNameProps[] = [
     {

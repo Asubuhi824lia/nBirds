@@ -1,5 +1,5 @@
-import type { FamilyPartStruct } from "@features/utils";
-import type { FamiliesGroup } from "@pages/views/SpeciesNamesPage/data/types";
+import type { FamilyPartStruct } from "../../../../../utils";
+import type { FamiliesGroup } from "@shared/data/FamiliesGroups/types";
 
 export type PartFamiliesStruct = [number, FamilyPartStruct[]];
 

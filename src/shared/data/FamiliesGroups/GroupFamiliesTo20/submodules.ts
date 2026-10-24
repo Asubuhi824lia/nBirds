@@ -1,5 +1,4 @@
-import type { FamilyStruct } from "~/pages/admin/widgets/CounterSpecies/utils/data/types";
-
+import type { FamilyStruct } from "@shared/types"
 
 export const TwentyToFamily: Array<FamilyStruct> = [
   // 18 - Африканские славки

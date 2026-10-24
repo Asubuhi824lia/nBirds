@@ -1,5 +1,5 @@
 import { Divider, ListItem, ListItemText } from "@mui/material";
-import type { FamilyGroupStruct } from "@pages/views/SpeciesNamesPage/data/types";
+import type { FamilyGroupStruct } from "@shared/data/FamiliesGroups/types";
 import { ItemInfoAddition } from "./ItemInfoAddition";
 import { ItemInfoMain } from "./ItemInfoMain";
 import type { RootGroupType } from "../../../utils";

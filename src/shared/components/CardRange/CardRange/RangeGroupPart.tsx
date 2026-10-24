@@ -1,5 +1,5 @@
 import { Grid, List, Typography } from "@mui/material";
-import type { RootGroupType } from "@features/utils";
+import type { RootGroupType } from "../../../utils";
 import { RangeGroupPartItem } from "./RangeGroupPartItem";
 import { getGroupPartById_noApi } from "./api";
 

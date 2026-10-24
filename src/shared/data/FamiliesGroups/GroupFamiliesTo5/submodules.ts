@@ -1,7 +1,4 @@
-import type { FamilyStruct } from "~/pages/admin/widgets/CounterSpecies/utils/data/types"
-
-
-
+import type { FamilyStruct } from "@shared/types"
 
 export const FourFamilies: Array<FamilyStruct> = [
   // Corvida

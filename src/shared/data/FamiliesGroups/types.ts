@@ -1,10 +1,5 @@
-import type { RootGroupType } from "@features/utils";
-
-export interface SpeciesStruct {
-  name: string;
-  latin_name: string;
-  alternative_names?: Array<string>;
-}
+import type { SpeciesStruct } from "@shared/types";
+import type { RootGroupType } from "../../utils";
 
 export interface FamilyGroupStruct extends SpeciesStruct {
   species_length: number;
@@ -22,8 +17,3 @@ export interface FamiliesGroup {
  * _________________
  * *genera_length
  */
-
-export type OptionType = {
-  value: number;
-  label: string;
-}

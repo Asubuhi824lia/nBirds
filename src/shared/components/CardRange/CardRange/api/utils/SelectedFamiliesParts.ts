@@ -1,4 +1,4 @@
-import type { FamilyPartStruct } from "@features/utils";
+import type { FamilyPartStruct } from "../../../../../utils";
 import type { FamilyGroupPartsStruct, PartFamiliesStruct } from "./types";
 
 

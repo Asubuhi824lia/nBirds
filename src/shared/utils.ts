@@ -1,7 +1,7 @@
 
 // with selected name-root-parts
 
-import type { FamilyGroupStruct } from "@pages/views/SpeciesNamesPage/data/types";
+import type { FamilyGroupStruct } from "@shared/data/FamiliesGroups/types";
 
 // TODO: оставить flat? перевести на SelectedGroup?
 export type RootGroupType = {
