@@ -1,7 +1,7 @@
 import { forwardRef, useMemo } from "react";
 import { Badge, Chip, Divider, Tab, Tooltip, Typography, type BadgeProps, type TabProps, type TypographyProps } from "@mui/material";
 import type { CountType } from "@pages/views/SpeciesNamesPage/ui/SpeciesNamesPage";
-import type { FamilyGroupPartsStruct } from "@shared/components/CardRange/CardRange/api/utils/types";
+import type { FamilyGroupPartsStruct } from "@shared/components/CardRange/api/utils/types";
 
 /**
  * Format Changes!

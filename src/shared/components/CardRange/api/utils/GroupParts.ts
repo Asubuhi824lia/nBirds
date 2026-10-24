@@ -1,4 +1,4 @@
-import type { FamilyPartStruct } from "../../../../../utils";
+import type { FamilyPartStruct } from "../../../../utils";
 import type { FamiliesGroup, FamilyGroupStruct } from "@shared/data/FamiliesGroups/types";
 import type { FamilyGroupPartsStruct, PartFamiliesStruct } from "./types";
 

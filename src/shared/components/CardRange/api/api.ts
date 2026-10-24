@@ -1,7 +1,7 @@
 import { FamiliesGroups } from "@shared/data/FamiliesGroups";
 import { getPartsByNum } from "./utils/GroupParts";
 import type { FamilyGroupPartsStruct } from "./utils/types";
-import type { RootGroupType } from "../../../../utils";
+import type { RootGroupType } from "../../../utils";
 import { filterSelectedFamilies, filterSelectedFamiliesParts } from "./utils/SelectedFamiliesParts";
 import { calcNameSortingValue, getIsNameLatin } from "./utils/sort";
 

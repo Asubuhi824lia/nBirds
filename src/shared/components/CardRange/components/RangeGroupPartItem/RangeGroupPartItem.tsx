@@ -1,7 +1,7 @@
-import type { RootGroupType } from "../../../utils";
-import { ListItemInfo } from "../ItemInfo/ListItemInfo"
-import { dash } from "../../SelectNamePart/data";
-import { getFamiliesById_noApi } from "./api";
+import type { RootGroupType } from "../../../../utils";
+import { ListItemInfo } from "./ItemInfo/ListItemInfo"
+import { dash } from "../../../SelectNamePart/data";
+import { getFamiliesById_noApi } from "../../api";
 
 interface RangeGroupPartItemProps {
   // определяются из последовательности

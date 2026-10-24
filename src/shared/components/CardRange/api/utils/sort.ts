@@ -1,4 +1,4 @@
-import { getExistName, type FamilyPartStruct } from "../../../../../utils";
+import { getExistName, type FamilyPartStruct } from "../../../../utils";
 
 export function getIsNameLatin(elem: FamilyPartStruct): boolean {
   return !!getExistName(elem).match(/[a-zA-Z]/g);

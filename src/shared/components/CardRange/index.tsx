@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, Grid } from "@mui/material";
-import { type RootGroupType } from "../../../utils";
-import { RangeGroupPart } from "./RangeGroupPart";
+import { type RootGroupType } from "../../utils";
+import { RangeGroupPart } from "./components/RangeGroupPart";
 import { getGroupById_noApi } from "./api";
 
 // 1. `group-${groupId}`

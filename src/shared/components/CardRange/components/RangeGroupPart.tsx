@@ -1,7 +1,7 @@
 import { Grid, List, Typography } from "@mui/material";
 import type { RootGroupType } from "../../../utils";
-import { RangeGroupPartItem } from "./RangeGroupPartItem";
-import { getGroupPartById_noApi } from "./api";
+import { RangeGroupPartItem } from "./RangeGroupPartItem/RangeGroupPartItem";
+import { getGroupPartById_noApi } from "../api";
 
 interface RangeGroupPartProps {
   // определяются из последовательности
@@ -34,7 +34,6 @@ export const RangeGroupPart = ({
     part.length === 1;
 
   const isSpecificValue = isLonely || isSingleOnly || species_num < 10;
-
 
   return (
     <Grid key={`group-${groupId}-part-${partId}`}>
