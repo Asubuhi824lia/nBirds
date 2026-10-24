@@ -15,7 +15,7 @@ import { FiltersNaming, type RadioGroupNameProps } from "@shared/components/Filt
 import SelectNamePart from "@shared/components/SelectNamePart";
 import { CardRange } from "@shared/components/CardRange";
 import { getExistName, type FamilyPartStruct, type RootGroupType } from "@shared/utils";
-import { ListNamePart } from "@shared/ListNamePart";
+import { ListNamePart } from "@shared/components/Lists/ListNamePart";
 import { Direction, SortNaming } from "@shared/components/SelectNamePart/components/SortNaming";
 import { getGroups_noApi, updateGroupSelectedParts_noApi } from "@shared/components/CardRange/api";
 import { CustomTabPanel, TabLabel } from "@shared/components/Filters/Tabs";

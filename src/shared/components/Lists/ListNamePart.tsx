@@ -1,9 +1,9 @@
 import Highlighter from "react-highlight-words";
 import { Badge, List, ListItem, ListSubheader, Typography } from "@mui/material"
-import type { RootGroupType } from "./utils"
-import { getOptionColor } from "./components/SelectNamePart/utils";
-import type { FamilyGroupPartsStruct } from "./components/CardRange/api/utils/types";
-import { getGroupsSelected_noApi } from "./components/CardRange/api";
+import type { RootGroupType } from "../../utils"
+import { getOptionColor } from "../SelectNamePart/utils";
+import type { FamilyGroupPartsStruct } from "../CardRange/api/utils/types";
+import { getGroupsSelected_noApi } from "../CardRange/api";
 
 interface ListNamePartProps {
   tabActual: number;

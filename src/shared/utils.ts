@@ -1,7 +1,8 @@
-
-// with selected name-root-parts
-
 import type { FamilyGroupStruct } from "@shared/data/FamiliesGroups/types";
+
+/**
+ * Запрашивается в @pages
+ */
 
 // TODO: оставить flat? перевести на SelectedGroup?
 export type RootGroupType = {
@@ -12,8 +13,6 @@ export type RootGroupType = {
 export interface FamilyPartStruct extends FamilyGroupStruct {
   SelectedGroups?: RootGroupType[];
 }
-
-
 
 export function getExistName(family: FamilyPartStruct, isLatin: boolean = false): string {
   return (
