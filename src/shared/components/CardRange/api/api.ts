@@ -27,7 +27,7 @@ export const getGroupById_noApi = ({
 }: {
   groupId: number;
 }): FamilyGroupPartsStruct => {
-  const GroupsPartsFamilies = getPartsByNum(FamiliesGroups);
+  const GroupsPartsFamilies = getGroups_noApi();
   return GroupsPartsFamilies[groupId];
 }
 
@@ -52,6 +52,8 @@ export const getFamiliesById_noApi = ({
   familyId: number;
 }): FamilyPartStruct => {
   const [, part] = getGroupPartById_noApi({ groupId, partId });
+  // sort families
+  
   return part[familyId];
 }
 
@@ -66,8 +68,6 @@ export const updateGroupSelectedParts_noApi = ({
 }: {
   selectedRoots: RootGroupType[]
 }) => {
-  // const GroupsPartsFamilies = getGroups_noApi();
-
   FamiliesGroups.forEach((group) => {
     group.families.forEach((family) => {
       const name = (family.name || family.alternative_names?.[0])?.toLowerCase();

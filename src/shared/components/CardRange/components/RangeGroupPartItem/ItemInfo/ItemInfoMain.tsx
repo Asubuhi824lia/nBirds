@@ -2,6 +2,7 @@ import type { FamilyGroupStruct } from "@shared/data/FamiliesGroups/types";
 import type { RootGroupType } from "../../../../../utils";
 import { getOptionColor } from "../../../../SelectNamePart/utils";
 import Highlighter from "react-highlight-words";
+import ucFirst from "./utils";
 
 interface ItemInfoMainProps {
   isSpecificValue: boolean;
@@ -19,8 +20,8 @@ export const ItemInfoMain = ({
 }: ItemInfoMainProps) => (
   <p style={{ display: "flex", justifyContent: "space-between" }}>
     <Highlighter
-      searchWords={selectedNames.map(root => root.root.toLowerCase())}
-      textToHighlight={name.toLowerCase()}
+      searchWords={selectedNames.map(root => root.root)}
+      textToHighlight={ucFirst(name.toLowerCase())}
       highlightTag={({ children, searchIndex }) => (
         <mark style={{ backgroundColor: getOptionColor(selectedNames[searchIndex].groupId), padding: '0 2px' }}>
           {children}

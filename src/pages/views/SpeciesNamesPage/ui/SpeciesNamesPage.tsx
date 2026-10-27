@@ -14,7 +14,7 @@ import { useState } from "react"
 import { FiltersNaming, type RadioGroupNameProps } from "@shared/components/Filters/FiltersNaming";
 import SelectNamePart from "@shared/components/SelectNamePart";
 import { CardRange } from "@shared/components/CardRange";
-import { getExistName, type FamilyPartStruct, type RootGroupType } from "@shared/utils";
+import { type RootGroupType } from "@shared/utils";
 import { ListNamePart } from "@shared/components/Lists/ListNamePart";
 import { Direction, SortNaming } from "@shared/components/SelectNamePart/components/SortNaming";
 import { getGroups_noApi, updateGroupSelectedParts_noApi } from "@shared/components/CardRange/api";
@@ -37,7 +37,7 @@ export const SpeciesNamesPage = () => {
 
   // SORT
   const [dir, setDir] = useState<boolean>(!!Direction.ASC);
-  const [isSortSeparately, setIsSortSeparately] = useState(false);
+  const [isLatinSeparately, setIsLatinSeparately] = useState(false); // true – "Латынь в конце" | false – "Латынь в начале"
 
   // TODO: +опция "оставить только совпадающие с тэгами"
   const [selectedNames, setSelectedNames] = useState<RootGroupType[]>([]);
@@ -61,7 +61,6 @@ export const SpeciesNamesPage = () => {
       title: "Латинские имена",
       actualType: typeNameLatin,
       onChangeActualType: (newType: string) => {
-        sortGroupsByDir(dir, isSortSeparately, newType);
         setTypeNameLatin(newType);
         if (newType === "latin_names_only")
           setTypeNameAlt("alt_names_without");
@@ -70,70 +69,8 @@ export const SpeciesNamesPage = () => {
     }
   ]
 
-  const handleSeparatelyChanged = (isSeparately: boolean) => {
-    setIsSortSeparately(isSeparately);
-    sortGroupsByDir(dir, isSeparately);
-  }
-  const handleNameSorted = (newDir: boolean) => {
-    setDir(newDir);
-
-    // Тип 1: Группы сортировки: nameMain & nameAlternatives[0], nameLatin  | sort By LanguageName
-    // Тип 2: Группы сортировки: nameMain, nameAlternatives[0], nameLatin   | sort by TypeName
-
-    sortGroupsByDir(newDir);
-  }
-  function sortGroupsByDir(dir: boolean, isSeparately: boolean = isSortSeparately, typeLatin?: string) {
-    const isLatin = (typeLatin ?? typeNameLatin) === "latin_names_only";
-
-    GroupsPartsFamilies.forEach(group => {
-      group.familiesParts.forEach(part => {
-        /**
-         * TODO: тройная же?
-         * Двойная Сортировка
-         * 1 — для локализации
-         * 2 — для латыни
-         */
-        if (isSeparately) {
-          // Все латинские названия — в конец
-          part[1].sort((a, b) => (
-            getIsNameLatin(b) ? 1 : -1 // TODO: to think WHY it doesnt work with "a" this way?
-          ))
-          // Не менять локализованное
-          part[1].sort((a, b) => (
-            getIsNameLatin(a) || getIsNameLatin(b)
-              ? 1
-              : calcNameSortingValue(a, b, isLatin, dir)
-          ))
-          // Не менять латынь
-          part[1].sort((a, b) => (
-            getIsNameLatin(a) || getIsNameLatin(b)
-              ? -1
-              : calcNameSortingValue(a, b, isLatin, dir)
-          ))
-        }
-        else {
-          part[1].sort((a, b) => (
-            calcNameSortingValue(a, b, isLatin, dir)
-          ))
-        }
-      })
-    })
-  }
-  function getIsNameLatin(elem: FamilyPartStruct): boolean {
-    return !!getExistName(elem).match(/[a-zA-Z]/g);
-  }
-  function calcNameSortingValue(a: FamilyPartStruct, b: FamilyPartStruct, isLatin: boolean, dir: boolean): number {
-    return (
-      a.species_length === b.species_length
-        ? (
-          dir
-            ? getExistName(b, isLatin).charCodeAt(0) - getExistName(a, isLatin).charCodeAt(0)
-            : getExistName(a, isLatin).charCodeAt(0) - getExistName(b, isLatin).charCodeAt(0)
-          // TODO: сортировка по последующим символам, если первы(е) одинаковы
-        )
-        : -1
-    )
-  }
+  const handleSeparatelyChanged = (isSeparately: boolean) => setIsLatinSeparately(isSeparately);
+  const handleNameSorted = (newDir: boolean) => setDir(newDir);
 
   const handleNameRootsSelected = (selected: string[]) => {
     // преобразовать, присвоив группу заранее | для всех
@@ -209,13 +146,17 @@ export const SpeciesNamesPage = () => {
 
           <section style={StyleCenteredWrapper}>
             <Grid container spacing={1} sx={StyleMainGrid}>
-              {GroupsPartsFamilies.map((group, index) => (
+              {GroupsPartsFamilies.map((_, index) => (
                 <CustomTabPanel key={`tab-group-${index}`} index={index} value={tab}>
                   <CardRange
                     groupId={index}
                     typeNameAlt={typeNameAlt}
                     typeNameLatin={typeNameLatin}
                     selectedNames={selectedNames}
+
+                    dir={dir ? Direction.DESC : Direction.ASC}
+                    isLatin={typeNameLatin === "latin_names_only"}
+                    isLatinSeparately={isLatinSeparately}
                   />
                 </CustomTabPanel>
               ))}
@@ -226,8 +167,8 @@ export const SpeciesNamesPage = () => {
             <SortNaming
               dir={dir}
               isSortDisabled={
-                !GroupsPartsFamilies[tab].familiesParts.filter(part => (
-                  part[1].length > new Set(part[1].map(family => family.species_length)).size
+                !GroupsPartsFamilies[tab].familiesParts.filter(([, families]) => (
+                  families.length > new Set(families.map(family => family.species_length)).size
                 )).length
               }
               typeNameLatin={typeNameLatin}

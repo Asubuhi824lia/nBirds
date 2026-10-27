@@ -19,10 +19,10 @@ export const SortNaming = ({
   handleNameSorted,
   handleSeparatelyChanged
 }: SortNamingProps) => {
-  // isSortSeparately — локальный стейт
+  // isLatinSeparately — локальный стейт
   // внешнее — для сортировки
   // TODO: переделать также для «dir»
-  const [isSortSeparately, setIsSortSeparately] = useState(false);
+  const [isLatinSeparately, setIsLatinSeparately] = useState(false);
   // TODO: -> isFixedPlacementLatin
 
   return (
@@ -34,11 +34,11 @@ export const SortNaming = ({
       <FormControlLabel
         control={
           <Checkbox
-            checked={isSortSeparately}
+            checked={isLatinSeparately}
             disabled={["latin_names_only", "latin_names_without"].includes(typeNameLatin) || isSortDisabled}
             // TODO: дубль стейта?..
             onChange={({ target: { checked } }) => {
-              setIsSortSeparately(checked);
+              setIsLatinSeparately(checked);
               handleSeparatelyChanged(checked);
             }}
           />

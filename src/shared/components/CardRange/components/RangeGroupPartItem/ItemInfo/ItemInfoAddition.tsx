@@ -2,6 +2,7 @@ import { getOptionColor } from "@shared/components/SelectNamePart/utils";
 import type { FamilyGroupStruct } from "@shared/data/FamiliesGroups/types";
 import type { RootGroupType } from "@shared/utils";
 import Highlighter from "react-highlight-words";
+import ucFirst from "./utils";
 
 interface ItemInfoAdditionProps {
   name: string;
@@ -31,8 +32,8 @@ export const ItemInfoAddition = ({
           {nameAlternatives?.map((name, id) => (
             <p key={`alternative-name-${id}`}>
               <Highlighter
-                searchWords={selectedNames.map(root => root.root.toLowerCase())}
-                textToHighlight={name.toLowerCase()}
+                searchWords={selectedNames.map(root => root.root)}
+                textToHighlight={ucFirst(name.toLowerCase())}
                 highlightTag={({ children, searchIndex }) => (
                   <mark style={{ backgroundColor: getOptionColor(selectedNames[searchIndex].groupId), opacity: .6, padding: '0 2px' }}>
                     {children}

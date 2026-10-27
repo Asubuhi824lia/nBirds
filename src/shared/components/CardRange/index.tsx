@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, Grid } from "@mui/material";
 import { type RootGroupType } from "../../utils";
 import { RangeGroupPart } from "./components/RangeGroupPart";
 import { getGroupById_noApi } from "./api";
+import type { Direction } from "../SelectNamePart/components/SortNaming";
 
 // 1. `group-${groupId}`
 // 2. `group-${groupId}-part-${partId}`
@@ -12,12 +13,20 @@ interface CardRangeProps {
   typeNameLatin: string;
   typeNameAlt: string;
   selectedNames: RootGroupType[];
+  // sort flags
+  dir: Direction;
+  isLatin: boolean;
+  isLatinSeparately: boolean;
 }
 export const CardRange = ({
   groupId,
   typeNameLatin,
   typeNameAlt,
-  selectedNames
+  selectedNames,
+
+  dir,
+  isLatin,
+  isLatinSeparately
 }: CardRangeProps) => {
   // TODO: check options type!
   const group = getGroupById_noApi({ groupId });
@@ -43,6 +52,10 @@ export const CardRange = ({
               typeNameAlt={typeNameAlt}
               typeNameLatin={typeNameLatin}
               selectedNames={selectedNames}
+
+              dir={dir}
+              isLatin={isLatin}
+              isLatinSeparately={isLatinSeparately}
             />
           )}
         </Grid>
