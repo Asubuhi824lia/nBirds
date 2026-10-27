@@ -36,8 +36,8 @@ export const SpeciesNamesPage = () => {
   const [isModeActive, setIsModeActive] = useState<boolean>(true); // TODO: rename
 
   // SORT
-  const [dir, setDir] = useState<boolean>(!!Direction.ASC);
-  const [isLatinSeparately, setIsLatinSeparately] = useState(false); // true – "Латынь в конце" | false – "Латынь в начале"
+  const [dir, setDir] = useState<Direction>(Direction.ASC);
+  const [isLatinSeparately, setIsLatinSeparately] = useState(true); // true – "Латынь в конце" | false – "Латынь в начале"
 
   // TODO: +опция "оставить только совпадающие с тэгами"
   const [selectedNames, setSelectedNames] = useState<RootGroupType[]>([]);
@@ -69,8 +69,8 @@ export const SpeciesNamesPage = () => {
     }
   ]
 
+  const handleNameSorted = (newDir: Direction) => setDir(newDir);
   const handleSeparatelyChanged = (isSeparately: boolean) => setIsLatinSeparately(isSeparately);
-  const handleNameSorted = (newDir: boolean) => setDir(newDir);
 
   const handleNameRootsSelected = (selected: string[]) => {
     // преобразовать, присвоив группу заранее | для всех
@@ -166,6 +166,7 @@ export const SpeciesNamesPage = () => {
           <Container sx={StyleMainContainer}>
             <SortNaming
               dir={dir}
+              isLatinSeparately={isLatinSeparately}
               isSortDisabled={
                 !GroupsPartsFamilies[tab].familiesParts.filter(([, families]) => (
                   families.length > new Set(families.map(family => family.species_length)).size

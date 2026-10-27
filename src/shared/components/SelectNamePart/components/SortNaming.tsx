@@ -1,14 +1,15 @@
 import { Download, Upload } from "@mui/icons-material";
 import { Button, Checkbox, FormControlLabel, Stack, styled, Switch, Typography } from "@mui/material";
-import { useState } from "react";
 
 export enum Direction { ASC, DESC };
 
 interface SortNamingProps {
-  dir: boolean;
+  dir: Direction;
   isSortDisabled: boolean;
   typeNameLatin: string;
-  handleNameSorted: (dir: boolean) => void;
+
+  isLatinSeparately: boolean;
+  handleNameSorted: (dir: Direction) => void;
   handleSeparatelyChanged: (isSeparately: boolean) => void;
 }
 
@@ -16,15 +17,11 @@ export const SortNaming = ({
   dir,
   isSortDisabled = false,
   typeNameLatin,
+  // TODO: -> isFixedPlacementLatin
+  isLatinSeparately,
   handleNameSorted,
   handleSeparatelyChanged
 }: SortNamingProps) => {
-  // isLatinSeparately — локальный стейт
-  // внешнее — для сортировки
-  // TODO: переделать также для «dir»
-  const [isLatinSeparately, setIsLatinSeparately] = useState(false);
-  // TODO: -> isFixedPlacementLatin
-
   return (
     <section>
       {/* TODO: когда сортировка ни разу еще не выбрана
@@ -35,10 +32,9 @@ export const SortNaming = ({
         control={
           <Checkbox
             checked={isLatinSeparately}
-            disabled={["latin_names_only", "latin_names_without"].includes(typeNameLatin) || isSortDisabled}
+            disabled={["latin_names_only", "latin_names_without"].includes(typeNameLatin) || isSortDisabled || dir === Direction.ASC}
             // TODO: дубль стейта?..
             onChange={({ target: { checked } }) => {
-              setIsLatinSeparately(checked);
               handleSeparatelyChanged(checked);
             }}
           />
@@ -47,18 +43,18 @@ export const SortNaming = ({
         label="Латынь в конце"
       />
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-        <Button variant="text" color="inherit" size="small" onClick={() => handleNameSorted(!!Direction.ASC)} sx={{ minWidth: 0 }}>
+        <Button variant="text" color="inherit" size="small" onClick={() => handleNameSorted(Direction.ASC)} sx={{ minWidth: 0 }}>
           <Typography>ASC</Typography>
         </Button>
         <DirectionSwitch
           checked={!!dir}
           disabled={isSortDisabled}
           size="medium"
-          onChange={() => handleNameSorted(!dir)}
+          onChange={() => handleNameSorted((dir ^ 1) as Direction)} // XOR
           icon={<Download color={isSortDisabled ? "disabled" : "action"} sx={{ borderRadius: "100%", padding: "2px", bgcolor: isSortDisabled ? "lightgray" : "chocolate", color: "beige" }} />}
           checkedIcon={<Upload color={isSortDisabled ? "disabled" : "action"} sx={{ borderRadius: "100%", padding: "2px", bgcolor: isSortDisabled ? "lightgray" : "crimson", color: "beige" }} />}
         />
-        <Button variant="text" color="inherit" size="small" onClick={() => handleNameSorted(!!Direction.DESC)} sx={{ minWidth: 0 }}>
+        <Button variant="text" color="inherit" size="small" onClick={() => handleNameSorted(Direction.DESC)} sx={{ minWidth: 0 }}>
           <Typography>DESC</Typography>
         </Button>
       </Stack>
