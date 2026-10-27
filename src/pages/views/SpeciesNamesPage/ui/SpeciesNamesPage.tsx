@@ -38,6 +38,7 @@ export const SpeciesNamesPage = () => {
   // SORT
   const [dir, setDir] = useState<Direction>(Direction.ASC);
   const [isLatinSeparately, setIsLatinSeparately] = useState(true); // true – "Латынь в конце" | false – "Латынь в начале"
+  const [isSortSpecies, setIsSortSpecies] = useState(true);
 
   // TODO: +опция "оставить только совпадающие с тэгами"
   const [selectedNames, setSelectedNames] = useState<RootGroupType[]>([]);
@@ -82,7 +83,6 @@ export const SpeciesNamesPage = () => {
 
     updateGroupSelectedParts_noApi({ selectedRoots: rootGroups });
   }
-
 
   function handleTabClicked(tab: number) {
     setTab(tab);
@@ -154,7 +154,8 @@ export const SpeciesNamesPage = () => {
                     typeNameLatin={typeNameLatin}
                     selectedNames={selectedNames}
 
-                    dir={dir ? Direction.DESC : Direction.ASC}
+                    dir={dir}
+                    isSortSpecies={isSortSpecies}
                     isLatin={typeNameLatin === "latin_names_only"}
                     isLatinSeparately={isLatinSeparately}
                   />
@@ -172,6 +173,8 @@ export const SpeciesNamesPage = () => {
                   families.length > new Set(families.map(family => family.species_length)).size
                 )).length
               }
+              isSortSpecies={isSortSpecies}
+              setIsSortSpecies={setIsSortSpecies}
               typeNameLatin={typeNameLatin}
               handleNameSorted={handleNameSorted}
               handleSeparatelyChanged={handleSeparatelyChanged}

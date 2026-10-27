@@ -3,7 +3,7 @@ import type { FamilyPartStruct, RootGroupType } from "../../../utils";
 import { RangeGroupPartItem } from "./RangeGroupPartItem/RangeGroupPartItem";
 import { getGroupPartById_noApi } from "../api";
 import { Direction } from "@shared/components/SelectNamePart/components/SortNaming";
-import { calcNameSortingValue, getIsLatinName } from "../api/utils/sort";
+import { calcNameSortingValue, calcSpeciesSorting, getIsLatinName } from "../api/utils/sort";
 
 interface RangeGroupPartProps {
   // определяются из последовательности
@@ -16,6 +16,7 @@ interface RangeGroupPartProps {
   selectedNames: RootGroupType[];
   // sort flags
   dir: Direction;
+  isSortSpecies: boolean;
   isLatin: boolean;
   isLatinSeparately: boolean;
 }
@@ -30,6 +31,7 @@ export const RangeGroupPart = ({
   selectedNames,
 
   dir,
+  isSortSpecies,
   isLatin,
   isLatinSeparately
 }: RangeGroupPartProps) => {
@@ -46,6 +48,7 @@ export const RangeGroupPart = ({
   sortPartFamilies({
     part: partNamesOrdered,
     dir,
+    isSortSpecies,
     isLatin,
     isLatinSeparately
   });
@@ -112,11 +115,13 @@ export const RangeGroupPart = ({
 function sortPartFamilies({
   part,
   dir,
+  isSortSpecies,
   isLatin = false,
   isLatinSeparately,
 }: {
   part: FamilyPartStruct[];
   dir: Direction;
+  isSortSpecies: boolean;
   isLatin?: boolean;
   isLatinSeparately: boolean;
 }) {
@@ -130,25 +135,35 @@ function sortPartFamilies({
   // TODO: переименовать isLatinSeparately –> isLatinSeparately
   if (isLatinSeparately) {
     part.sort((a, b) => {
+      // ШАГ 1: Сортировка по числу видов.
+      if (a.species_length !== b.species_length) {
+        return calcSpeciesSorting(a, b, dir, isSortSpecies)
+      }
+
+      // ШАГ 2: Группировка. Русские названия (isLatin === false) всегда должны быть перед латинскими (isLatin === true)
       const isALatin = getIsLatinName(a);
       const isBLatin = getIsLatinName(b);
 
-      // ШАГ 1: Группировка. Русские названия (isLatin === false) всегда должны быть перед латинскими (isLatin === true)
       if (isALatin !== isBLatin) {
         // Если a - это латынь, она должна идти после b (возвращаем 1).
         // Если b - это латынь, a должна идти перед b (возвращаем -1).
         return isALatin ? 1 : -1;
       }
 
-      // ШАГ 2: Если оба объекта принадлежат к односу языку, 
-      // сортируем их алфавитно с учетом флага dir
+      // ШАГ 3: Если оба объекта принадлежат к одному языку.
       return calcNameSortingValue(a, b, isLatin, Boolean(dir));
     });
   }
   else {
-    part.sort((a, b) => (
-      calcNameSortingValue(a, b, isLatin, Boolean(dir))
-    ))
+    part.sort((a, b) => {
+      // ШАГ 1: Сортировка по числу видов.
+      if (a.species_length !== b.species_length) {
+        return calcSpeciesSorting(a, b, dir, isSortSpecies)
+      }
+
+      // ШАГ 2: Если оба объекта принадлежат к одному языку.
+      return calcNameSortingValue(a, b, isLatin, Boolean(dir));
+    })
   }
   // мутируем объект по ссылке
 }

@@ -4,22 +4,30 @@ import { Button, Checkbox, FormControlLabel, Stack, styled, Switch, Typography }
 export enum Direction { ASC, DESC };
 
 interface SortNamingProps {
-  dir: Direction;
   isSortDisabled: boolean;
   typeNameLatin: string;
 
-  isLatinSeparately: boolean;
+  isSortSpecies: boolean;
+  setIsSortSpecies: React.Dispatch<React.SetStateAction<boolean>>
+
+  dir: Direction;
   handleNameSorted: (dir: Direction) => void;
+
+  isLatinSeparately: boolean;
   handleSeparatelyChanged: (isSeparately: boolean) => void;
 }
 
 export const SortNaming = ({
-  dir,
   isSortDisabled = false,
   typeNameLatin,
   // TODO: -> isFixedPlacementLatin
-  isLatinSeparately,
+  isSortSpecies,
+  setIsSortSpecies,
+
+  dir,
   handleNameSorted,
+
+  isLatinSeparately,
   handleSeparatelyChanged
 }: SortNamingProps) => {
   return (
@@ -31,27 +39,24 @@ export const SortNaming = ({
       <FormControlLabel
         control={
           <Checkbox
-          // checked={isLatinSeparately}
-          // onChange={({ target: { checked } }) => {
-          //   handleSeparatelyChanged(checked);
-          // }}
+            disabled={dir === Direction.ASC}
+            checked={isSortSpecies}
+            onChange={({ target: { checked } }) => setIsSortSpecies(checked)}
           />
         }
         // TODO: +визуальное разделение перечня на латыни и локализации
-        label="По числу видов"
+        label="Закрепить число видов"
       />
       <FormControlLabel
         control={
           <Checkbox
-            checked={isLatinSeparately}
             disabled={["latin_names_only", "latin_names_without"].includes(typeNameLatin) || isSortDisabled || dir === Direction.ASC}
-            onChange={({ target: { checked } }) => {
-              handleSeparatelyChanged(checked);
-            }}
+            checked={isLatinSeparately}
+            onChange={({ target: { checked } }) => handleSeparatelyChanged(checked)}
           />
         }
         // TODO: +визуальное разделение перечня на латыни и локализации
-        label="Латынь в конце"
+        label="Закрепить латынь в конце"
       />
       <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
         <Button variant="text" color="inherit" size="small" onClick={() => handleNameSorted(Direction.ASC)} sx={{ minWidth: 0 }}>

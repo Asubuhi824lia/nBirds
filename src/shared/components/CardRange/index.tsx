@@ -15,6 +15,7 @@ interface CardRangeProps {
   selectedNames: RootGroupType[];
   // sort flags
   dir: Direction;
+  isSortSpecies: boolean;
   isLatin: boolean;
   isLatinSeparately: boolean;
 }
@@ -25,6 +26,7 @@ export const CardRange = ({
   selectedNames,
 
   dir,
+  isSortSpecies,
   isLatin,
   isLatinSeparately
 }: CardRangeProps) => {
@@ -54,6 +56,7 @@ export const CardRange = ({
               selectedNames={selectedNames}
 
               dir={dir}
+              isSortSpecies={isSortSpecies}
               isLatin={isLatin}
               isLatinSeparately={isLatinSeparately}
             />

@@ -1,3 +1,4 @@
+import { Direction } from "@shared/components/SelectNamePart/components/SortNaming";
 import { getExistName, type FamilyPartStruct } from "../../../../utils";
 
 // Проверка существования названий, помимо латыни
@@ -19,4 +20,16 @@ export function calcNameSortingValue(a: FamilyPartStruct, b: FamilyPartStruct, i
   const compareResult = nameA.localeCompare(nameB, isLatin ? 'en' : 'ru', { sensitivity: 'base' });
 
   return dir ? -compareResult : compareResult;
+}
+
+export function calcSpeciesSorting(a: FamilyPartStruct, b: FamilyPartStruct, dir: Direction, isSortSpecies: boolean) {
+  if (isSortSpecies)
+    return a.species_length > b.species_length ? 1 : -1;
+
+  switch (dir) {
+    case Direction.ASC:
+      return a.species_length > b.species_length ? 1 : -1;
+    case Direction.DESC:
+      return a.species_length < b.species_length ? 1 : -1;
+  }
 }
