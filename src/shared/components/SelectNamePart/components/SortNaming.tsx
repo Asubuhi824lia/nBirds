@@ -31,9 +31,20 @@ export const SortNaming = ({
       <FormControlLabel
         control={
           <Checkbox
+          // checked={isLatinSeparately}
+          // onChange={({ target: { checked } }) => {
+          //   handleSeparatelyChanged(checked);
+          // }}
+          />
+        }
+        // TODO: +визуальное разделение перечня на латыни и локализации
+        label="По числу видов"
+      />
+      <FormControlLabel
+        control={
+          <Checkbox
             checked={isLatinSeparately}
             disabled={["latin_names_only", "latin_names_without"].includes(typeNameLatin) || isSortDisabled || dir === Direction.ASC}
-            // TODO: дубль стейта?..
             onChange={({ target: { checked } }) => {
               handleSeparatelyChanged(checked);
             }}

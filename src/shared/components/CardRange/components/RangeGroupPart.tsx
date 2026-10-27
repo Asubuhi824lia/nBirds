@@ -34,7 +34,7 @@ export const RangeGroupPart = ({
   isLatinSeparately
 }: RangeGroupPartProps) => {
   const [species_num, part] = getGroupPartById_noApi({ groupId, partId });
-  console.log(species_num, part)
+
   // Упрощённый массив с информацией про названия
   const partNamesOrdered: FamilyPartStruct[] =
     part.map(({ name, latin_name, alternative_names, species_length }) => ({

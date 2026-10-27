@@ -34,6 +34,7 @@ export const SelectNamePart = ({
   curValue: string[],
   onChange: (value: string[]) => void
 }) => {
+  const NONE = "None";
   // последовательность "корней названий"
   const nameRootsSequence = useMemo(() =>
     nameRootGroups.reduce((acc, { roots }) => [...acc, ...roots], [] as string[])
@@ -53,15 +54,17 @@ export const SelectNamePart = ({
         // задаёт отступ для label у линии select
         label={label}
         onChange={({ target: { value } }) =>
-          onChange(
-            typeof value === 'string' ? value.split(',') : value
-          )
+          value.includes(NONE)
+            ? onChange([])
+            : onChange(
+              typeof value === 'string' ? value.split(',') : value
+            )
         }
         renderValue={(selected) => {
           return (
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
               {(selected.length === 0)
-                ? <em>None</em>
+                ? <em>{NONE}</em>
                 : nameRootsSequence.map((root) => selected.includes(root) && (
                   <Chip key={root} label={root} sx={{ bgcolor: getOptionColorFromValue(root) }} />
                 ))
@@ -70,7 +73,7 @@ export const SelectNamePart = ({
           )
         }}
       >
-        <MenuItem key={`${prefix}-group-null`} value="" disabled defaultChecked><em>None</em></MenuItem>
+        <MenuItem key={`${prefix}-group-null`} value={NONE} defaultChecked><em>{NONE}</em></MenuItem>
         {/* `index` не последовательный для `MenuItem` */}
         {items.map(({ label, type, groupId }, index) =>
           type
