@@ -45,11 +45,7 @@ export const SpeciesNamesPage = () => {
   const [typeNameAlt, setTypeNameAlt] = useState(defaultValueAlt);
   const [typeNameLatin, setTypeNameLatin] = useState(defaultValueLatin);
 
-  const GroupsPartsFamilies = getGroups_noApi({
-    dir,
-    // isSeparately,
-    isLatin: typeNameLatin === "latin_names_only"
-  });
+  const GroupsPartsFamilies = getGroups_noApi();
 
   const filterGroups: RadioGroupNameProps[] = [
     {

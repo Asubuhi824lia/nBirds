@@ -14,6 +14,7 @@ export const nameRootGroups = [
     title: "Пение",
     roots: [
       "ласточк",
+      "мухоловк",
       "певун",
       "пищух",
       "свиристел",
@@ -29,6 +30,7 @@ export const nameRootGroups = [
       "вьюр",
       "ткач",
       "медосос", // + alt_name
+      "ед",
       "пополз", // + alt_name
       "сорокопут",
     ]
@@ -39,6 +41,7 @@ export const nameRootGroups = [
     roots: [
       "глаз",
       "толстоголовк", // род
+      "клюв",
       "хвост",
     ]
   }

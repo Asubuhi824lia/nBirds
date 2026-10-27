@@ -1,5 +1,6 @@
 import { Box, Chip, FormControl, InputLabel, ListSubheader, MenuItem, Select } from "@mui/material"
-import { items, NamePartPrefix as prefix, NamePartLabel as label, nameRootGroups } from "../data";
+import { nameRootGroups } from "@shared/data";
+import { items, NamePartPrefix as prefix, NamePartLabel as label } from "../data";
 import { getOptionColorFromValue, setStyleSelectItem } from "../utils";
 import { useMemo } from "react";
 

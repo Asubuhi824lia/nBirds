@@ -59,9 +59,9 @@ export const RangeGroupPartItem = ({
       familyId={familyId}
       family={family}
       name={name}
+      selectedNames={selectedNames}
       specPrimary={{
-        isSpecificValue,
-        selectedNames
+        isSpecificValue
       }}
       specSecondary={{
         typeNameAlt,

@@ -8,9 +8,9 @@ interface ListGroupProps {
   familyId: number;
   family: FamilyGroupStruct;
   name: string;
+  selectedNames: RootGroupType[];
   specPrimary: {
     isSpecificValue: boolean;
-    selectedNames: RootGroupType[];
   };
   specSecondary: {
     typeNameAlt: string;
@@ -21,6 +21,7 @@ export const ListItemInfo = ({
   name,
   family,
   familyId,
+  selectedNames,
   specPrimary,
   specSecondary,
 }: ListGroupProps) => {
@@ -37,6 +38,7 @@ export const ListItemInfo = ({
           <ItemInfoMain
             name={name}
             family={family}
+            selectedNames={selectedNames}
             {...specPrimary}
           />
         }
@@ -44,6 +46,7 @@ export const ListItemInfo = ({
           <ItemInfoAddition
             name={name}
             family={family}
+            selectedNames={selectedNames}
             {...specSecondary}
           />
         }

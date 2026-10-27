@@ -1,8 +1,12 @@
+import { getOptionColor } from "@shared/components/SelectNamePart/utils";
 import type { FamilyGroupStruct } from "@shared/data/FamiliesGroups/types";
+import type { RootGroupType } from "@shared/utils";
+import Highlighter from "react-highlight-words";
 
 interface ItemInfoAdditionProps {
   name: string;
   family: FamilyGroupStruct;
+  selectedNames: RootGroupType[];
   typeNameLatin: string;
   typeNameAlt: string;
 }
@@ -12,16 +16,12 @@ export const ItemInfoAddition = ({
     latin_name: nameLatin,
     alternative_names: nameAlternatives
   },
+  selectedNames,
   typeNameLatin,
   typeNameAlt
 }: ItemInfoAdditionProps) => {
   const isLatinEvery = typeNameLatin === "latin_names_with_every";
   const isAltEvery = typeNameAlt === "alt_names_with_every";
-
-  function ucFirst(str: string) {
-  if (!str) return str;
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
 
   return (
     <span>
@@ -29,7 +29,17 @@ export const ItemInfoAddition = ({
       {isAltEvery && (
         <>
           {nameAlternatives?.map((name, id) => (
-            <p key={`alternative-name-${id}`}>{ucFirst(name)}</p>
+            <p key={`alternative-name-${id}`}>
+              <Highlighter
+                searchWords={selectedNames.map(root => root.root.toLowerCase())}
+                textToHighlight={name.toLowerCase()}
+                highlightTag={({ children, searchIndex }) => (
+                  <mark style={{ backgroundColor: getOptionColor(selectedNames[searchIndex].groupId), opacity: .6, padding: '0 2px' }}>
+                    {children}
+                  </mark>
+                )}
+              />
+            </p>
           ))}
         </>
       )}

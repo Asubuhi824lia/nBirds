@@ -1,5 +1,6 @@
 import type { SxProps, Theme } from "@mui/material";
-import { colors, nameRootGroups } from "./data";
+import { nameRootGroups } from "@shared/data";
+import { colors } from "./data";
 
 // TODO: для обобщения нужен +арг. массива цветов || "colors" - дефолтный
 export const setStyleSelectItem = (groupId: number): SxProps<Theme> => ({
