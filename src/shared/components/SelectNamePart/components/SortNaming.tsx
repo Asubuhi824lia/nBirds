@@ -1,14 +1,15 @@
-import { Download, Upload } from "@mui/icons-material";
-import { Button, Checkbox, FormControlLabel, Stack, styled, Switch, Typography } from "@mui/material";
+import { Checkbox, FormControlLabel, Stack, Typography } from "@mui/material";
+import { LabelDirSwitch } from "./LabelDirSwitch";
 
 export enum Direction { ASC, DESC };
 
 interface SortNamingProps {
-  isSortDisabled: boolean;
+  isDisabledSortLatin: boolean;
+  isDisabledSortSpecies: boolean;
   typeNameLatin: string;
 
-  isSortSpecies: boolean;
-  setIsSortSpecies: React.Dispatch<React.SetStateAction<boolean>>
+  isSortSpecies: Direction | null;
+  setIsSortSpecies: React.Dispatch<React.SetStateAction<Direction | null>>
 
   dir: Direction;
   handleNameSorted: (dir: Direction) => void;
@@ -18,7 +19,8 @@ interface SortNamingProps {
 }
 
 export const SortNaming = ({
-  isSortDisabled = false,
+  isDisabledSortLatin = false,
+  isDisabledSortSpecies = false,
   typeNameLatin,
   // TODO: -> isFixedPlacementLatin
   isSortSpecies,
@@ -31,108 +33,51 @@ export const SortNaming = ({
   handleSeparatelyChanged
 }: SortNamingProps) => {
   return (
-    <section>
+    <Stack direction="column" spacing={2}>
       {/* TODO: когда сортировка ни разу еще не выбрана
       - либо активировать автоматически
       - либо отображати неактив */}
       <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Сортировка</Typography>
-      <FormControlLabel
-        control={
-          <Checkbox
-            disabled={dir === Direction.ASC}
-            checked={isSortSpecies}
-            onChange={({ target: { checked } }) => setIsSortSpecies(checked)}
-          />
-        }
-        // TODO: +визуальное разделение перечня на латыни и локализации
-        label="Закрепить число видов"
+      <LabelDirSwitch
+        isChecked={!!dir}
+        isDisabled={isDisabledSortLatin}
+        handleChangeDirection={handleNameSorted}
       />
       <FormControlLabel
         control={
           <Checkbox
-            disabled={["latin_names_only", "latin_names_without"].includes(typeNameLatin) || isSortDisabled || dir === Direction.ASC}
+            disabled={["latin_names_only", "latin_names_without"].includes(typeNameLatin) || isDisabledSortLatin || dir === Direction.ASC}
             checked={isLatinSeparately}
             onChange={({ target: { checked } }) => handleSeparatelyChanged(checked)}
+            sx={{ paddingLeft: 0 }}
           />
         }
         // TODO: +визуальное разделение перечня на латыни и локализации
-        label="Закрепить латынь в конце"
+        label="Латынь в конце"
       />
-      <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-        <Button variant="text" color="inherit" size="small" onClick={() => handleNameSorted(Direction.ASC)} sx={{ minWidth: 0 }}>
-          <Typography>ASC</Typography>
-        </Button>
-        <DirectionSwitch
-          checked={!!dir}
-          disabled={isSortDisabled}
-          size="medium"
-          onChange={() => handleNameSorted((dir ^ 1) as Direction)} // XOR
-          icon={<Download color={isSortDisabled ? "disabled" : "action"} sx={{ borderRadius: "100%", padding: "2px", bgcolor: isSortDisabled ? "lightgray" : "chocolate", color: "beige" }} />}
-          checkedIcon={<Upload color={isSortDisabled ? "disabled" : "action"} sx={{ borderRadius: "100%", padding: "2px", bgcolor: isSortDisabled ? "lightgray" : "crimson", color: "beige" }} />}
+      <Stack direction="column">
+        <FormControlLabel
+          control={
+            <Checkbox
+              disabled={isDisabledSortSpecies}
+              checked={isSortSpecies !== null}
+              onChange={({ target: { checked } }) => setIsSortSpecies(checked ? Direction.ASC : null)}
+              sx={{ paddingLeft: 0 }}
+            />
+          }
+          // TODO: +визуальное разделение перечня на латыни и локализации
+          label="Закрепить число видов"
+          sx={{ margin: 0 }}
         />
-        <Button variant="text" color="inherit" size="small" onClick={() => handleNameSorted(Direction.DESC)} sx={{ minWidth: 0 }}>
-          <Typography>DESC</Typography>
-        </Button>
+        {(isSortSpecies !== null) && (
+          <LabelDirSwitch
+            type="secondary"
+            isChecked={!!isSortSpecies}
+            isDisabled={isDisabledSortSpecies}
+            handleChangeDirection={setIsSortSpecies}
+          />
+        )}
       </Stack>
-    </section>
+    </Stack>
   )
 }
-
-// Switch color Variants
-// on: "crimson", off: "chocolate"
-// on: "darkcyan", off: "lightseagreen"
-
-
-// TODO: redisign to the Arrows -_-
-const DirectionSwitch = styled(Switch)(({ theme }) => ({
-  width: 56,
-  height: 34,
-  padding: 7,
-  '& .MuiSwitch-switchBase': {
-    margin: 1,
-    padding: 0,
-    transform: 'translateX(6px)',
-    '&.Mui-checked': {
-      color: '#fff',
-      transform: 'translateX(22px)',
-      '& + .MuiSwitch-track': {
-        opacity: 1,
-        backgroundColor: '#e2e2e2',
-        ...theme.applyStyles('dark', {
-          backgroundColor: '#acacac',
-        }),
-      },
-      // '& .MuiSwitch-thumb': {
-      //   // backgroundColor: '#003892', // Темно-синий для включенного
-      // },
-      '& .Mui-disabled': {
-        backgroundColor: '#000',
-      }
-    },
-  },
-  '& .MuiSwitch-thumb': {
-    backgroundColor: '#001e3c',
-    width: 32,
-    height: 32,
-    display: 'flex',         // Добавляем flex для центрирования иконки
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxSizing: 'border-box',
-    // Стили для самой иконки
-    '& svg': {
-      fontSize: 22,          // Подберите нужный размер
-      color: '#fff',         // Цвет иконки
-    },
-  },
-  '& .MuiSwitch-track': {
-    opacity: 1,
-    backgroundColor: '#e2e2e2',
-    borderRadius: 20 / 2,
-    ...theme.applyStyles('dark', {
-      backgroundColor: '#acacac',
-    }),
-    '& .Mui-disabled': {
-      backgroundColor: '#000',
-    }
-  },
-}));

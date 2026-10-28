@@ -15,7 +15,7 @@ interface CardRangeProps {
   selectedNames: RootGroupType[];
   // sort flags
   dir: Direction;
-  isSortSpecies: boolean;
+  isSortSpecies: Direction | null;
   isLatin: boolean;
   isLatinSeparately: boolean;
 }

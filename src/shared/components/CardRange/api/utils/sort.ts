@@ -22,14 +22,9 @@ export function calcNameSortingValue(a: FamilyPartStruct, b: FamilyPartStruct, i
   return dir ? -compareResult : compareResult;
 }
 
-export function calcSpeciesSorting(a: FamilyPartStruct, b: FamilyPartStruct, dir: Direction, isSortSpecies: boolean) {
-  if (isSortSpecies)
+export function calcSpeciesSorting(a: FamilyPartStruct, b: FamilyPartStruct, dir: Direction, isSortSpecies: Direction) {
+  if (dir === Direction.DESC || isSortSpecies)
+    return a.species_length < b.species_length ? 1 : -1;
+  else
     return a.species_length > b.species_length ? 1 : -1;
-
-  switch (dir) {
-    case Direction.ASC:
-      return a.species_length > b.species_length ? 1 : -1;
-    case Direction.DESC:
-      return a.species_length < b.species_length ? 1 : -1;
-  }
 }

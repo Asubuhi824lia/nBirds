@@ -16,7 +16,7 @@ interface RangeGroupPartProps {
   selectedNames: RootGroupType[];
   // sort flags
   dir: Direction;
-  isSortSpecies: boolean;
+  isSortSpecies: Direction | null;
   isLatin: boolean;
   isLatinSeparately: boolean;
 }
@@ -121,7 +121,7 @@ function sortPartFamilies({
 }: {
   part: FamilyPartStruct[];
   dir: Direction;
-  isSortSpecies: boolean;
+  isSortSpecies: Direction | null;
   isLatin?: boolean;
   isLatinSeparately: boolean;
 }) {
@@ -131,15 +131,13 @@ function sortPartFamilies({
    * 2 — для латыни
    */
   // Все латинские названия — в конец
+  part.sort((a, b) => {
+    // ШАГ 1: Сортировка по числу видов.
+    if (isSortSpecies !== null && a.species_length !== b.species_length) {
+      return calcSpeciesSorting(a, b, dir, isSortSpecies);
+    }
 
-  // TODO: переименовать isLatinSeparately –> isLatinSeparately
-  if (isLatinSeparately) {
-    part.sort((a, b) => {
-      // ШАГ 1: Сортировка по числу видов.
-      if (a.species_length !== b.species_length) {
-        return calcSpeciesSorting(a, b, dir, isSortSpecies)
-      }
-
+    if (isLatinSeparately) {
       // ШАГ 2: Группировка. Русские названия (isLatin === false) всегда должны быть перед латинскими (isLatin === true)
       const isALatin = getIsLatinName(a);
       const isBLatin = getIsLatinName(b);
@@ -149,21 +147,9 @@ function sortPartFamilies({
         // Если b - это латынь, a должна идти перед b (возвращаем -1).
         return isALatin ? 1 : -1;
       }
+    }
 
-      // ШАГ 3: Если оба объекта принадлежат к одному языку.
-      return calcNameSortingValue(a, b, isLatin, Boolean(dir));
-    });
-  }
-  else {
-    part.sort((a, b) => {
-      // ШАГ 1: Сортировка по числу видов.
-      if (a.species_length !== b.species_length) {
-        return calcSpeciesSorting(a, b, dir, isSortSpecies)
-      }
-
-      // ШАГ 2: Если оба объекта принадлежат к одному языку.
-      return calcNameSortingValue(a, b, isLatin, Boolean(dir));
-    })
-  }
-  // мутируем объект по ссылке
+    // ШАГ 3: Если оба объекта принадлежат к одному языку.
+    return calcNameSortingValue(a, b, isLatin, Boolean(dir));
+  })
 }

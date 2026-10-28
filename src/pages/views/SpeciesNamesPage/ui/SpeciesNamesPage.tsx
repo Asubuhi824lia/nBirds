@@ -38,7 +38,7 @@ export const SpeciesNamesPage = () => {
   // SORT
   const [dir, setDir] = useState<Direction>(Direction.ASC);
   const [isLatinSeparately, setIsLatinSeparately] = useState(true); // true – "Латынь в конце" | false – "Латынь в начале"
-  const [isSortSpecies, setIsSortSpecies] = useState(true);
+  const [isSortSpecies, setIsSortSpecies] = useState<Direction | null>(null);
 
   // TODO: +опция "оставить только совпадающие с тэгами"
   const [selectedNames, setSelectedNames] = useState<RootGroupType[]>([]);
@@ -168,10 +168,15 @@ export const SpeciesNamesPage = () => {
             <SortNaming
               dir={dir}
               isLatinSeparately={isLatinSeparately}
-              isSortDisabled={
-                !GroupsPartsFamilies[tab].familiesParts.filter(([, families]) => (
-                  families.length > new Set(families.map(family => family.species_length)).size
+              isDisabledSortLatin={
+                !GroupsPartsFamilies[tab].familiesParts.filter(([, partFamilies]) => (
+                  partFamilies.length > new Set(partFamilies.map(family => family.species_length)).size
                 )).length
+              }
+              isDisabledSortSpecies={
+                !GroupsPartsFamilies[tab].familiesParts.find(([, partFamilies]) => (
+                  new Set(partFamilies.map(family => family.species_length)).size > 1
+                ))
               }
               isSortSpecies={isSortSpecies}
               setIsSortSpecies={setIsSortSpecies}
