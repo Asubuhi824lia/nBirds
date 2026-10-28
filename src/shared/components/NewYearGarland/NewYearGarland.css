@@ -1,0 +1,207 @@
+.newyear-garland {
+  --ny-wire: #1a3a2e;
+  --ny-red: #e63946;
+  --ny-green: #2a9d8f;
+  --ny-gold: #f4d35e;
+  --ny-blue: #4cc9f0;
+  --ny-height: 3.25rem;
+  --ny-shade-height: 5.5rem;
+
+  position: relative;
+  z-index: 50;
+  width: 100%;
+  height: var(--ny-height);
+  overflow: visible;
+  pointer-events: none;
+  user-select: none;
+}
+
+.newyear-garland::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--ny-shade-height);
+  background: linear-gradient(
+    180deg,
+    rgba(6, 18, 32, 0.72) 0%,
+    rgba(10, 28, 48, 0.48) 42%,
+    rgba(10, 28, 48, 0.16) 72%,
+    rgba(10, 28, 48, 0) 100%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.newyear-garland__wire {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0.55rem;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--ny-wire) 4%,
+    #2f6b55 50%,
+    var(--ny-wire) 96%,
+    transparent 100%
+  );
+  box-shadow: 0 1px 0 rgba(244, 211, 94, 0.2);
+}
+
+.newyear-garland__row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 0 clamp(0.25rem, 1.5vw, 1rem);
+}
+
+.newyear-garland__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 0;
+  min-width: 0;
+  transform-origin: top center;
+  animation: ny-sway 3.4s ease-in-out infinite;
+}
+
+.newyear-garland__item:nth-child(odd) {
+  animation-duration: 3.8s;
+  animation-direction: reverse;
+}
+
+.newyear-garland__item:nth-child(3n) {
+  animation-duration: 4.2s;
+}
+
+.newyear-garland__item:nth-child(4n) {
+  animation-delay: -0.8s;
+}
+
+.newyear-garland__item:nth-child(5n) {
+  animation-delay: -1.6s;
+}
+
+.newyear-garland__string {
+  width: 1px;
+  height: 0.55rem;
+  background: var(--ny-wire);
+  opacity: 0.85;
+}
+
+.newyear-garland__bulb {
+  width: 0.55rem;
+  height: 0.7rem;
+  border-radius: 45% 45% 55% 55%;
+  margin-top: 0.05rem;
+  box-shadow:
+    0 0 6px currentColor,
+    0 0 12px color-mix(in srgb, currentColor 55%, transparent);
+  animation: ny-twinkle 1.8s ease-in-out infinite;
+}
+
+.newyear-garland__bulb--red {
+  color: var(--ny-red);
+  background: radial-gradient(circle at 35% 30%, #ffc9ce, var(--ny-red) 55%, #9b1c26);
+  animation-delay: 0s;
+}
+
+.newyear-garland__bulb--green {
+  color: var(--ny-green);
+  background: radial-gradient(circle at 35% 30%, #c8f5ef, var(--ny-green) 55%, #156b5e);
+  animation-delay: -0.45s;
+}
+
+.newyear-garland__bulb--gold {
+  color: var(--ny-gold);
+  background: radial-gradient(circle at 35% 30%, #fff6d0, var(--ny-gold) 55%, #b8961f);
+  animation-delay: -0.9s;
+}
+
+.newyear-garland__bulb--blue {
+  color: var(--ny-blue);
+  background: radial-gradient(circle at 35% 30%, #d9f6ff, var(--ny-blue) 55%, #1a7fa0);
+  animation-delay: -1.35s;
+}
+
+.newyear-garland__charm {
+  margin-top: 0.1rem;
+  font-size: clamp(0.85rem, 2.2vw, 1.15rem);
+  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+  animation: ny-bob 2.6s ease-in-out infinite;
+}
+
+.newyear-garland__item:nth-child(even) .newyear-garland__charm {
+  animation-delay: -1.1s;
+}
+
+.newyear-garland__item:nth-child(3n) .newyear-garland__charm {
+  animation-duration: 3.1s;
+}
+
+@keyframes ny-sway {
+  0%,
+  100% {
+    transform: rotate(-7deg);
+  }
+  50% {
+    transform: rotate(7deg);
+  }
+}
+
+@keyframes ny-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(2px);
+  }
+}
+
+@keyframes ny-twinkle {
+  0%,
+  100% {
+    opacity: 0.45;
+    filter: brightness(0.75);
+    transform: scale(0.92);
+  }
+  40% {
+    opacity: 1;
+    filter: brightness(1.25);
+    transform: scale(1.05);
+  }
+  70% {
+    opacity: 0.7;
+    filter: brightness(0.95);
+    transform: scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .newyear-garland__item,
+  .newyear-garland__charm,
+  .newyear-garland__bulb {
+    animation: none;
+  }
+
+  .newyear-garland__bulb {
+    opacity: 0.9;
+    filter: brightness(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .newyear-garland {
+    --ny-height: 2.75rem;
+  }
+
+  .newyear-garland__item:nth-child(6n) {
+    display: none;
+  }
+}

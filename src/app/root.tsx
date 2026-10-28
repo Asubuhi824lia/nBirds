@@ -16,6 +16,7 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import { HalloweenGarland, isHalloweenGarlandSeason } from "@shared/components/HalloweenGarland";
+import { NewYearGarland, isNewYearGarlandSeason } from "@shared/components/NewYearGarland";
 
 
 export const links: Route.LinksFunction = () => [
@@ -52,7 +53,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <>
-      {isHalloweenGarlandSeason() ? <HalloweenGarland /> : null}
+      {isNewYearGarlandSeason() ? (
+        <NewYearGarland />
+      ) : isHalloweenGarlandSeason() ? (
+        <HalloweenGarland />
+      ) : null}
       <section style={{ display: "flex", justifyContent: "center" }}>
         <Outlet />
       </section>
