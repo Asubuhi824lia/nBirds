@@ -76,19 +76,19 @@ export const ListNamePart = ({
                   </ListSubheader>
                   <List>
                     {filterSelectedFamiliesParts(familiesParts, isVisibleAlt)
-                      .map((part, i) => (
+                      .map((part, pardInd) => (
                         filterSelectedFamilies(part[1], isVisibleAlt)
-                          .map(family => {
+                          .map((family, familyInd) => {
                             const actualNames =
                               [family.name, ...family.alternative_names || '']
                                 .filter(name => family.SelectedGroups?.filter(({ root }) => name.toLowerCase().includes(root))[0])
 
                             return (
                               <>
-                                {i > 0 && <Divider orientation="horizontal" variant="fullWidth" flexItem sx={{ borderColor: "plum" }} />}
-                                <Stack direction="column" key={`part-${i}`}>
-                                  {actualNames.map((actualName, j) => (
-                                    <ListItem key={`part-${i}-name-${j}`} sx={actualNames.length > 1 ? { paddingY: .5 } : { paddingY: 1.2 }}>
+                                {(familyInd > 0 || pardInd > 0) && <Divider orientation="horizontal" variant="fullWidth" flexItem sx={{ borderColor: "plum" }} />}
+                                <Stack direction="column" key={`part-${pardInd}`}>
+                                  {actualNames.map((actualName, nameInd) => (
+                                    <ListItem key={`part-${pardInd}-name-${nameInd}`} sx={actualNames.length > 1 ? { paddingY: .5 } : { paddingY: 1.2 }}>
                                       <Typography variant="body2">
                                         <Highlighter
                                           searchWords={family.SelectedGroups?.map(({ root }) => root) || []}
