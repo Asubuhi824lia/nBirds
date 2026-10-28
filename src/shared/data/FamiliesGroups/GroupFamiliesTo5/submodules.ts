@@ -1,4 +1,4 @@
-import type { FamilyStruct } from "@shared/types"
+import type { FamilyStruct } from "@shared/lib/types"
 
 export const FourFamilies: Array<FamilyStruct> = [
   // Corvida

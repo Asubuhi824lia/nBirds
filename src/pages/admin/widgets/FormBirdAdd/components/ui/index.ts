@@ -1,3 +1,0 @@
-export {
-  FormikTextField
-} from "./FormikTextField";

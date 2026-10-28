@@ -1,5 +1,5 @@
-import type { SpeciesStruct } from "@shared/types";
-import type { RootGroupType } from "../../utils";
+import type { SpeciesStruct } from "@shared/lib/types";
+import type { RootGroupType } from "@shared/lib/utils";
 
 export interface FamilyGroupStruct extends SpeciesStruct {
   species_length: number;

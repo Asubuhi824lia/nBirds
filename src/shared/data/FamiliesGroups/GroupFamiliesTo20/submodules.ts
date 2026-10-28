@@ -1,4 +1,4 @@
-import type { FamilyStruct } from "@shared/types"
+import type { FamilyStruct } from "@shared/lib/types"
 
 export const TwentyToFamily: Array<FamilyStruct> = [
   // 18 - Африканские славки

@@ -26,7 +26,7 @@
     // check "rootDir" | "outDir"
     "paths": {
       "@app/*": ["./src/app/*"],
-      "@pages/*": ["./src/pages/*"],
+      "@features/*": ["./src/features/*"],
       "@shared/*": ["./src/shared/*"],
     },
     "esModuleInterop": true,
@@ -34,7 +34,9 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    // Prevent macOS case-insensitive FS from treating Foo.ts and foo.ts as two modules
+    "forceConsistentCasingInFileNames": true
     // "sourceMap": true // позволяет отладку TS в браузере
   }
 }

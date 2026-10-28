@@ -15,8 +15,8 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import { HalloweenGarland, isHalloweenGarlandSeason } from "@shared/components/HalloweenGarland";
-import { NewYearGarland, isNewYearGarlandSeason } from "@shared/components/NewYearGarland";
+import { HalloweenGarland, isHalloweenGarlandSeason } from "@shared/ui/HalloweenGarland";
+import { NewYearGarland, isNewYearGarlandSeason } from "@shared/ui/NewYearGarland";
 
 
 export const links: Route.LinksFunction = () => [
