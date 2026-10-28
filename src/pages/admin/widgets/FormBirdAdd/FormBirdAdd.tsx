@@ -64,3 +64,5 @@ export const FormBirdAdd = () => {
     </Formik>
   );
 }
+
+export default FormBirdAdd;

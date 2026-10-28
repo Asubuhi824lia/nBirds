@@ -88,3 +88,5 @@ export const CounterSpecies = () => {
     </section>
   )
 }
+
+export default CounterSpecies;
