@@ -23,7 +23,7 @@ export function filterSelectedFamilies(families: FamilyPartStruct[], isVisibleAl
   if (!isVisibleAlt) {
     return families.filter(family => (
       family.SelectedGroups
-        ?.filter(({ root }) => family.name.toLowerCase().includes(root))
+        ?.filter(({ root }) => (family.name || family.alternative_names?.[0])?.toLowerCase().includes(root))
         ?.length
     ));
   }
