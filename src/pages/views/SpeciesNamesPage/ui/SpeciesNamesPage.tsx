@@ -92,7 +92,7 @@ export const SpeciesNamesPage = () => {
     });
   }
 
-
+console.log(typeNameAlt)
   return (
     <section style={StylePageSection}>
       {/* TODO: может ли header быть частью, напрямую влияющей на содержание main? до какой степени?*/}
@@ -140,6 +140,7 @@ export const SpeciesNamesPage = () => {
               <ListNamePart
                 tabActual={tab}
                 handleTabClicked={handleTabClicked}
+                isVisibleAlt={typeNameAlt === "alt_names_with_every"}
               />
             </section>
           </Container>

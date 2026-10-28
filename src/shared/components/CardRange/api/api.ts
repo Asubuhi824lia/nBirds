@@ -53,7 +53,7 @@ export const getFamiliesById_noApi = ({
 }): FamilyPartStruct => {
   const [, part] = getGroupPartById_noApi({ groupId, partId });
   // sort families
-  
+
   return part[familyId];
 }
 
@@ -66,7 +66,7 @@ export const getFamiliesById_noApi = ({
 export const updateGroupSelectedParts_noApi = ({
   selectedRoots
 }: {
-  selectedRoots: RootGroupType[]
+  selectedRoots: RootGroupType[];
 }) => {
   FamiliesGroups.forEach((group) => {
     group.families.forEach((family) => {
@@ -74,7 +74,10 @@ export const updateGroupSelectedParts_noApi = ({
       if (!name)
         return;
 
-      const curSelectedGroups = selectedRoots.filter((root) => name.includes(root.root.toLowerCase()));
+      const curSelectedGroups = selectedRoots
+        .filter(({ root }) =>
+          name.includes(root) || family.alternative_names?.find(name => name.toLowerCase().includes(root))
+        );
 
       // TODO: вроде работает, но переделать на покорректнее
       // GroupsPartsFamilies[groupId].families[partId][1][familyId].SelectedGroups = [...curSelectedGroups];

@@ -31,7 +31,6 @@ export const nameRootGroups = [
       "вьюр",
       "ткач",
       "медосос", // + alt_name
-      "ед",
       "пополз", // + alt_name
       "сорокопут",
     ]

@@ -33,7 +33,7 @@ export const SortNaming = ({
   handleSeparatelyChanged
 }: SortNamingProps) => {
   return (
-    <Stack direction="column" spacing={2}>
+    <Stack direction="column" spacing={1}>
       {/* TODO: когда сортировка ни разу еще не выбрана
       - либо активировать автоматически
       - либо отображати неактив */}
