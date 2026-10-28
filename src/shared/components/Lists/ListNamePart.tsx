@@ -1,10 +1,11 @@
 import Highlighter from "react-highlight-words";
-import { Badge, List, ListItem, ListSubheader, Typography } from "@mui/material"
+import { Badge, Divider, List, ListItem, ListSubheader, Stack, Typography } from "@mui/material"
 import type { RootGroupType } from "../../utils"
 import { getOptionColor } from "../SelectNamePart/utils";
 import type { FamilyGroupPartsStruct } from "../CardRange/api/utils/types";
 import { getGroupsSelected_noApi } from "../CardRange/api";
 import { filterSelectedFamilies, filterSelectedFamiliesParts } from "../CardRange/api/utils/SelectedFamiliesParts";
+import ucFirst from "../CardRange/components/RangeGroupPartItem/ItemInfo/utils";
 
 interface ListNamePartProps {
   isVisibleAlt: boolean;
@@ -27,8 +28,6 @@ export const ListNamePart = ({
       .map((prev, i) => ({ ...prev, tabIndex: i }))
       .filter((_, curIndex) => tabActual !== curIndex)
   ];
-
-  console.log("group", GroupsPartsFamiliesSelectedActual)
 
   return (
     <section>
@@ -79,23 +78,35 @@ export const ListNamePart = ({
                     {filterSelectedFamiliesParts(familiesParts, isVisibleAlt)
                       .map((part, i) => (
                         filterSelectedFamilies(part[1], isVisibleAlt)
-                          .map(family => !!family.SelectedGroups
-                            && (
-                              <ListItem key={`part-${i}`}>
-                                <Typography variant="body2">
-                                  <Highlighter
-                                    searchWords={family.SelectedGroups.map(({ root }) => root)}
-                                    textToHighlight={family.name}
-                                    highlightTag={({ children, searchIndex }) => (
-                                      <mark style={{ backgroundColor: getOptionColor(family.SelectedGroups?.[searchIndex].groupId), padding: '0 2px' }}>
-                                        {children}
-                                      </mark>
-                                    )}
-                                  />
-                                </Typography>
-                              </ListItem>
+                          .map(family => {
+                            const actualNames =
+                              [family.name, ...family.alternative_names || '']
+                                .filter(name => family.SelectedGroups?.filter(({ root }) => name.toLowerCase().includes(root))[0])
+
+                            return (
+                              <>
+                                {i > 0 && <Divider orientation="horizontal" variant="fullWidth" flexItem sx={{ borderColor: "plum" }} />}
+                                <Stack direction="column" key={`part-${i}`}>
+                                  {actualNames.map((actualName, j) => (
+                                    <ListItem key={`part-${i}-name-${j}`} sx={actualNames.length > 1 ? { paddingY: .5 } : { paddingY: 1.2 }}>
+                                      <Typography variant="body2">
+                                        <Highlighter
+                                          searchWords={family.SelectedGroups?.map(({ root }) => root) || []}
+                                          textToHighlight={ucFirst(actualName)}
+                                          highlightTag={({ children, searchIndex }) => (
+                                            <mark style={{ backgroundColor: getOptionColor(family.SelectedGroups?.[searchIndex].groupId), padding: '0 2px' }}>
+                                              {children}
+                                            </mark>
+                                          )}
+                                        />
+                                      </Typography>
+                                    </ListItem>
+                                  ))
+                                  }
+                                </Stack>
+                              </>
                             )
-                          )))}
+                          })))}
                   </List>
                 </ListItem>
               </ListItem>
