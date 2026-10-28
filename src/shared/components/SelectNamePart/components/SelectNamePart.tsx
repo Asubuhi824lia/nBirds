@@ -73,7 +73,7 @@ export const SelectNamePart = ({
           )
         }}
       >
-        <MenuItem key={`${prefix}-group-null`} value={NONE} defaultChecked><em>{NONE}</em></MenuItem>
+        <MenuItem key={`${prefix}-group-null`} value={NONE} disabled={!curValue.length} defaultChecked><em>{NONE}</em></MenuItem>
         {/* `index` не последовательный для `MenuItem` */}
         {items.map(({ label, type, groupId }, index) =>
           type
