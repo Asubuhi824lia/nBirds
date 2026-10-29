@@ -1,5 +1,13 @@
 # Welcome to nBirds!
 
+## Launch instructions
+
+В консоли из папки проекта:
+1. `git checkout feature-namings`
+2. `npm i`
+3. `npm run dev`
+4. Перейти по ссылке из консоли
+
 ## Секция
 
 - «_Birds: Counter Species_»
