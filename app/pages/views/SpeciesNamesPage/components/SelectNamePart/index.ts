@@ -1,1 +1,0 @@
-export { SelectNamePart as default } from "./SelectNamePart"

@@ -7,7 +7,7 @@
     "dev": "react-router dev",
     "lint": "eslint .",
     "start": "react-router-serve ./build/server/index.js",
-    "typecheck": "react-router typegen && tsc",
+    "typecheck": "react-router typegen && tsc --noEmit",
     "clear": "rm -rf node_modules/.vite node_modules/.eslintcache"
   },
   "dependencies": {
@@ -22,6 +22,7 @@
     "isbot": "^5.1.36",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-highlight-words": "^1.0.0",
     "react-hook-form": "^7.73.1",
     "react-router": "7.13.2"
   },

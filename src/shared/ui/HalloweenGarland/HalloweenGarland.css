@@ -1,0 +1,208 @@
+.halloween-garland {
+  --hg-wire: #2a1a12;
+  --hg-orange: #ff7a18;
+  --hg-purple: #9b5de5;
+  --hg-lime: #7bed9f;
+  --hg-amber: #ffd166;
+  --hg-height: 3.25rem;
+  --hg-shade-height: 5.5rem;
+
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  height: var(--hg-height);
+  overflow: visible;
+  pointer-events: none;
+  user-select: none;
+}
+
+.halloween-garland::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: var(--hg-shade-height);
+  background: linear-gradient(
+    180deg,
+    rgba(18, 8, 2, 0.72) 0%,
+    rgba(28, 12, 4, 0.48) 42%,
+    rgba(28, 12, 4, 0.16) 72%,
+    rgba(28, 12, 4, 0) 100%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.halloween-garland__wire {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0.55rem;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--hg-wire) 4%,
+    #4a2c1a 50%,
+    var(--hg-wire) 96%,
+    transparent 100%
+  );
+  box-shadow: 0 1px 0 rgba(255, 140, 40, 0.15);
+}
+
+.halloween-garland__row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 0 clamp(0.25rem, 1.5vw, 1rem);
+}
+
+.halloween-garland__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 0;
+  min-width: 0;
+  transform-origin: top center;
+  animation: hg-sway 3.4s ease-in-out infinite;
+}
+
+.halloween-garland__item:nth-child(odd) {
+  animation-duration: 3.8s;
+  animation-direction: reverse;
+}
+
+.halloween-garland__item:nth-child(3n) {
+  animation-duration: 4.2s;
+}
+
+.halloween-garland__item:nth-child(4n) {
+  animation-delay: -0.8s;
+}
+
+.halloween-garland__item:nth-child(5n) {
+  animation-delay: -1.6s;
+}
+
+.halloween-garland__string {
+  width: 1px;
+  height: 0.55rem;
+  background: var(--hg-wire);
+  opacity: 0.85;
+}
+
+.halloween-garland__bulb {
+  width: 0.55rem;
+  height: 0.7rem;
+  border-radius: 45% 45% 55% 55%;
+  margin-top: 0.05rem;
+  box-shadow:
+    0 0 6px currentColor,
+    0 0 12px color-mix(in srgb, currentColor 55%, transparent);
+  animation: hg-twinkle 1.8s ease-in-out infinite;
+}
+
+.halloween-garland__bulb--orange {
+  color: var(--hg-orange);
+  background: radial-gradient(circle at 35% 30%, #ffe0b0, var(--hg-orange) 55%, #c44d00);
+  animation-delay: 0s;
+}
+
+.halloween-garland__bulb--purple {
+  color: var(--hg-purple);
+  background: radial-gradient(circle at 35% 30%, #e8d4ff, var(--hg-purple) 55%, #5b2a9a);
+  animation-delay: -0.45s;
+}
+
+.halloween-garland__bulb--lime {
+  color: var(--hg-lime);
+  background: radial-gradient(circle at 35% 30%, #eafff0, var(--hg-lime) 55%, #2f9e5b);
+  animation-delay: -0.9s;
+}
+
+.halloween-garland__bulb--amber {
+  color: var(--hg-amber);
+  background: radial-gradient(circle at 35% 30%, #fff6d6, var(--hg-amber) 55%, #c9971a);
+  animation-delay: -1.35s;
+}
+
+.halloween-garland__charm {
+  margin-top: 0.1rem;
+  font-size: clamp(0.85rem, 2.2vw, 1.15rem);
+  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+  animation: hg-bob 2.6s ease-in-out infinite;
+}
+
+.halloween-garland__item:nth-child(even) .halloween-garland__charm {
+  animation-delay: -1.1s;
+}
+
+.halloween-garland__item:nth-child(3n) .halloween-garland__charm {
+  animation-duration: 3.1s;
+}
+
+@keyframes hg-sway {
+  0%,
+  100% {
+    transform: rotate(-7deg);
+  }
+  50% {
+    transform: rotate(7deg);
+  }
+}
+
+@keyframes hg-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(2px);
+  }
+}
+
+@keyframes hg-twinkle {
+  0%,
+  100% {
+    opacity: 0.45;
+    filter: brightness(0.75);
+    transform: scale(0.92);
+  }
+  40% {
+    opacity: 1;
+    filter: brightness(1.25);
+    transform: scale(1.05);
+  }
+  70% {
+    opacity: 0.7;
+    filter: brightness(0.95);
+    transform: scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .halloween-garland__item,
+  .halloween-garland__charm,
+  .halloween-garland__bulb {
+    animation: none;
+  }
+
+  .halloween-garland__bulb {
+    opacity: 0.9;
+    filter: brightness(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .halloween-garland {
+    --hg-height: 2.75rem;
+  }
+
+  .halloween-garland__item:nth-child(6n) {
+    display: none;
+  }
+}

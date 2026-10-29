@@ -2,6 +2,7 @@ import type { Config } from "@react-router/dev/config";
 
 export default {
   // Config options...
+  appDirectory: "src/app", // <-- './app/'
   // Server-side render by default, to enable SPA mode set this to `false`
   ssr: true,
 } satisfies Config;

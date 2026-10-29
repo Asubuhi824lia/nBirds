@@ -1,12 +1,12 @@
 {
   "include": [
-    "app/**/*",
-    "app/.server/**/*",
-    "app/.client/**/*",
+    "src/**/*",
+    "src/.server/**/*",
+    "src/.client/**/*",
     ".react-router/types/**/*",
     "*.ts",
     "*.js"
-  ],
+, "src/app/root.tsx"  ],
   "exclude": [
     "node_modules",
     "dist",
@@ -15,6 +15,7 @@
     ".react-router"
   ],
   "compilerOptions": {
+    // "baseUrl": ".",
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "types": ["vite/client"],
     "target": "ES2022",
@@ -24,14 +25,18 @@
     "rootDirs": [".", "./.react-router/types"],
     // check "rootDir" | "outDir"
     "paths": {
-      "~/*": ["./app/*"]
+      "@app/*": ["./src/app/*"],
+      "@features/*": ["./src/features/*"],
+      "@shared/*": ["./src/shared/*"],
     },
     "esModuleInterop": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    // Prevent macOS case-insensitive FS from treating Foo.ts and foo.ts as two modules
+    "forceConsistentCasingInFileNames": true
     // "sourceMap": true // позволяет отладку TS в браузере
   }
 }

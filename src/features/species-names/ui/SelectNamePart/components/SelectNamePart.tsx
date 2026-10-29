@@ -1,0 +1,87 @@
+import { Box, Chip, FormControl, InputLabel, ListSubheader, MenuItem, Select } from "@mui/material"
+import { nameRootGroups } from "@shared/data";
+import { items, NamePartPrefix as prefix, NamePartLabel as label } from "../data";
+import { getOptionColorFromValue, setStyleSelectItem } from "../utils";
+import { useMemo } from "react";
+
+// общие названия семейств — по форме (корню)
+// указывать кол-во для каждого таба — (+общее?)
+
+
+// TODO:
+// + multiple: отдельная часть — отдельным цветом
+/** 1. подготовить цвета — в кол-ве items.length штук
+ *    .1 + возм-ть выбрать ВСЕ
+ *    .2 + возм-ть очистить ВСЕ
+ *    .3 + возм-ть выбрать цвет из палитры 
+ *  2. multiple — при выборе значения + строка с ним, опцию в disabled
+ *    .? строкой? Select`ом?
+ *    .* при выборе nameRoots, всех из группы "subheader", заменить на отдельный "Chip" с вертикальным списом с возможностью убрать *)
+ * -----
+ * //Багфиксы
+ * //Рефакторинг
+ */
+
+/**
+ * TODO: добавить поиск "частей названий" и среди "альтернативных названий"
+ * + опции, что есть только у "альтернативных названий", отображать disabled и полноценно показывать при "alt_names_with_every"
+ * - (опциональные отображать ЛИБО в меню Select ЛИБО в самом списке)
+ */
+export const SelectNamePart = ({
+  curValue = [],
+  onChange
+}: {
+  curValue: string[],
+  onChange: (value: string[]) => void
+}) => {
+  const NONE = "None";
+  // последовательность "корней названий"
+  const nameRootsSequence = useMemo(() =>
+    nameRootGroups.reduce((acc, { roots }) => [...acc, ...roots], [] as string[])
+    , []);
+
+  return (
+    <FormControl fullWidth sx={{ marginTop: 1 }}>
+      <InputLabel htmlFor={`${prefix}-select`} id={`${prefix}-select-label`} shrink>{label}</InputLabel>
+      <Select
+        multiple
+        fullWidth
+        displayEmpty
+        // клик по label даёт клик по select
+        labelId={`${prefix}-select-label`}
+        id={`${prefix}-select`}
+        value={curValue}
+        // задаёт отступ для label у линии select
+        label={label}
+        onChange={({ target: { value } }) =>
+          value.includes(NONE)
+            ? onChange([])
+            : onChange(
+              typeof value === 'string' ? value.split(',') : value
+            )
+        }
+        renderValue={(selected) => {
+          return (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {(selected.length === 0)
+                ? <em>{NONE}</em>
+                : nameRootsSequence.map((root) => selected.includes(root) && (
+                  <Chip key={root} label={root} sx={{ bgcolor: getOptionColorFromValue(root) }} />
+                ))
+              }
+            </Box>
+          )
+        }}
+      >
+        <MenuItem key={`${prefix}-group-null`} value={NONE} disabled={!curValue.length} defaultChecked><em>{NONE}</em></MenuItem>
+        {/* `index` не последовательный для `MenuItem` */}
+        {items.map(({ label, type, groupId }, index) =>
+          type
+            ? <ListSubheader key={`${prefix}-subheader-${index}`}>{label}</ListSubheader>
+            : (
+              <MenuItem key={`${prefix}-item-${index}`} value={label} sx={setStyleSelectItem(groupId)}>{label}</MenuItem>
+            ))}
+      </Select>
+    </FormControl>
+  )
+}
