@@ -27,6 +27,8 @@ export function DailyMatchScore({ variant = "chip" }: DailyMatchScoreProps) {
     };
   }, []);
 
+  if (score <= 0) return null;
+
   if (variant === "inline") {
     return (
       <Typography variant="body2" color="text.secondary">
