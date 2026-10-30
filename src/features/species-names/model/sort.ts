@@ -22,9 +22,20 @@ export function calcNameSortingValue(a: FamilyPartStruct, b: FamilyPartStruct, i
   return dir ? -compareResult : compareResult;
 }
 
-export function calcSpeciesSorting(a: FamilyPartStruct, b: FamilyPartStruct, dir: Direction, isSortSpecies: Direction) {
-  if (dir === Direction.DESC || isSortSpecies)
-    return a.species_length < b.species_length ? 1 : -1;
-  else
-    return a.species_length > b.species_length ? 1 : -1;
+/**
+ * Фиксирует порядок по species_length (направление — isSortSpecies).
+ * При равном species_length возвращает 0: дальше решает алфавит (dir) / латынь в sortPartFamilies.
+ */
+export function calcSpeciesSorting(
+  a: FamilyPartStruct,
+  b: FamilyPartStruct,
+  isSortSpecies: Direction,
+): number {
+  if (a.species_length === b.species_length) return 0;
+
+  const aBeforeB = a.species_length < b.species_length;
+  if (isSortSpecies === Direction.ASC) {
+    return aBeforeB ? -1 : 1;
+  }
+  return aBeforeB ? 1 : -1;
 }

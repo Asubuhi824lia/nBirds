@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, Stack, Typography } from "@mui/material";
+import { Checkbox, FormControlLabel, FormLabel, Stack, Typography } from "@mui/material";
 import { LabelDirSwitch } from "./LabelDirSwitch";
 
 export enum Direction { ASC, DESC };
@@ -33,51 +33,61 @@ export const SortNaming = ({
   handleSeparatelyChanged
 }: SortNamingProps) => {
   return (
-    <Stack direction="column" spacing={1}>
+    <Stack direction="column" spacing={3}>
       {/* TODO: когда сортировка ни разу еще не выбрана
       - либо активировать автоматически
       - либо отображати неактив */}
       <Typography sx={{ marginBottom: 2, fontWeight: 500 }}>Сортировка</Typography>
-      <LabelDirSwitch
-        isChecked={!!dir}
-        isDisabled={isDisabledSortLatin}
-        handleChangeDirection={handleNameSorted}
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            disabled={["latin_names_only", "latin_names_without"].includes(typeNameLatin) || isDisabledSortLatin || dir === Direction.ASC}
-            checked={isLatinSeparately}
-            onChange={({ target: { checked } }) => handleSeparatelyChanged(checked)}
-            sx={{ paddingLeft: 0 }}
-          />
-        }
-        // TODO: +визуальное разделение перечня на латыни и локализации
-        label="Латынь в конце"
-      />
-      <Stack direction="column">
+
+      <Stack component="fieldset" direction="column" spacing={.8} sx={{ border: 0, m: 0, p: 0 }}>
+        <FormLabel component="legend">По алфавиту</FormLabel>
+        <LabelDirSwitch
+          isChecked={!!dir}
+          isDisabled={isDisabledSortLatin}
+          handleChangeDirection={handleNameSorted}
+        />
         <FormControlLabel
           control={
             <Checkbox
-              disabled={isDisabledSortSpecies}
-              checked={isSortSpecies !== null}
-              onChange={({ target: { checked } }) => setIsSortSpecies(checked ? Direction.ASC : null)}
+              disabled={
+                ["latin_names_only", "latin_names_without"].includes(typeNameLatin)
+                || isDisabledSortLatin
+                || dir === Direction.ASC
+              }
+              checked={isLatinSeparately}
+              onChange={({ target: { checked } }) => handleSeparatelyChanged(checked)}
               sx={{ paddingLeft: 0 }}
             />
           }
           // TODO: +визуальное разделение перечня на латыни и локализации
-          label="Закрепить число видов"
-          sx={{ margin: 0 }}
+          label="Латынь в конце"
         />
-        {(isSortSpecies !== null) && (
-          <LabelDirSwitch
-            type="secondary"
-            isChecked={!!isSortSpecies}
-            isDisabled={isDisabledSortSpecies}
-            handleChangeDirection={setIsSortSpecies}
-          />
-        )}
       </Stack>
+
+      {!isDisabledSortSpecies && (
+        <Stack component="fieldset" direction="column" spacing={.8} sx={{ border: 0, m: 0, p: 0 }}>
+          <FormLabel component="legend">По числу видов</FormLabel>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={isSortSpecies !== null}
+                onChange={({ target: { checked } }) => setIsSortSpecies(checked ? Direction.ASC : null)}
+                sx={{ paddingLeft: 0 }}
+              />
+            }
+            // TODO: +визуальное разделение перечня на латыни и локализации
+            label="Закрепить число видов"
+            sx={{ margin: 0 }}
+          />
+          {(isSortSpecies !== null) && (
+            <LabelDirSwitch
+              type="secondary"
+              isChecked={!!isSortSpecies}
+              handleChangeDirection={setIsSortSpecies}
+            />
+          )}
+        </Stack>
+      )}
     </Stack>
   )
 }

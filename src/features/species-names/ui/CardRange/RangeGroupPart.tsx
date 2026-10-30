@@ -132,9 +132,11 @@ function sortPartFamilies({
    */
   // Все латинские названия — в конец
   part.sort((a, b) => {
-    // ШАГ 1: Сортировка по числу видов.
-    if (isSortSpecies !== null && a.species_length !== b.species_length) {
-      return calcSpeciesSorting(a, b, dir, isSortSpecies);
+    // ШАГ 1: При закреплённом числе видов — порядок по species_length через isSortSpecies.
+    // Одинаковый species_length → 0, дальше шаги 2–3 (латынь / алфавит через dir).
+    if (isSortSpecies !== null) {
+      const bySpecies = calcSpeciesSorting(a, b, isSortSpecies);
+      if (bySpecies !== 0) return bySpecies;
     }
 
     if (isLatinSeparately) {
@@ -149,7 +151,8 @@ function sortPartFamilies({
       }
     }
 
-    // ШАГ 3: Если оба объекта принадлежат к одному языку.
+    // ШАГ 3: Алфавит (dir) — всегда; в т.ч. при неактивном «По числу видов»
+    // и внутри блоков с одинаковым species_length.
     return calcNameSortingValue(a, b, isLatin, Boolean(dir));
   })
 }

@@ -70,6 +70,16 @@ export const SpeciesNamesPage = () => {
     }
   ]
 
+  const isDisabledSortSpecies =
+    !GroupsPartsFamilies[tab].familiesParts.find(([, partFamilies]) => (
+      new Set(partFamilies.map(family => family.species_length)).size > 1
+    ))
+  
+  const isDisabledSortLatin =
+    !GroupsPartsFamilies[tab].familiesParts.filter(([, partFamilies]) => (
+      partFamilies.length > new Set(partFamilies.map(family => family.species_length)).size
+    )).length
+
   const handleNameSorted = (newDir: Direction) => setDir(newDir);
   const handleSeparatelyChanged = (isSeparately: boolean) => setIsLatinSeparately(isSeparately);
 
@@ -155,7 +165,7 @@ export const SpeciesNamesPage = () => {
                     selectedNames={selectedNames}
 
                     dir={dir}
-                    isSortSpecies={isSortSpecies}
+                    isSortSpecies={isDisabledSortSpecies ? null : isSortSpecies}
                     isLatin={typeNameLatin === "latin_names_only"}
                     isLatinSeparately={isLatinSeparately}
                   />
@@ -168,16 +178,8 @@ export const SpeciesNamesPage = () => {
             <SortNaming
               dir={dir}
               isLatinSeparately={isLatinSeparately}
-              isDisabledSortLatin={
-                !GroupsPartsFamilies[tab].familiesParts.filter(([, partFamilies]) => (
-                  partFamilies.length > new Set(partFamilies.map(family => family.species_length)).size
-                )).length
-              }
-              isDisabledSortSpecies={
-                !GroupsPartsFamilies[tab].familiesParts.find(([, partFamilies]) => (
-                  new Set(partFamilies.map(family => family.species_length)).size > 1
-                ))
-              }
+              isDisabledSortLatin={isDisabledSortLatin}
+              isDisabledSortSpecies={isDisabledSortSpecies}
               isSortSpecies={isSortSpecies}
               setIsSortSpecies={setIsSortSpecies}
               typeNameLatin={typeNameLatin}
