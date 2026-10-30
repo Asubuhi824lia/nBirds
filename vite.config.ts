@@ -6,8 +6,19 @@ import path from "path";
 
 export default defineConfig({
   plugins: [tsconfigPaths(), tailwindcss(), reactRouter()],
+  resolve: {
+    // One React instance for client + SSR (prevents "dispatcher is null" / broken useContext)
+    dedupe: ["react", "react-dom"],
+  },
   ssr: {
     // Укажите здесь пакеты, которые нужно обрабатывать через сборку Vite, а не оставлять в виде исходных Node.js модулей
-    noExternal: ['@mui/material', 'react-transition-group'],
+    noExternal: [
+      "@mui/material",
+      "react-transition-group",
+      "@dnd-kit/react",
+      "@dnd-kit/dom",
+      "@dnd-kit/abstract",
+      "@dnd-kit/state",
+    ],
   },
 });
