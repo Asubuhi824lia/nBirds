@@ -10,6 +10,10 @@ export default defineConfig({
     // One React instance for client + SSR (prevents "dispatcher is null" / broken useContext)
     dedupe: ["react", "react-dom"],
   },
+  server: {
+    // Avoid EMFILE on macOS when too many files are watched
+    watch: { usePolling: true, interval: 300 },
+  },
   ssr: {
     // Укажите здесь пакеты, которые нужно обрабатывать через сборку Vite, а не оставлять в виде исходных Node.js модулей
     noExternal: [
