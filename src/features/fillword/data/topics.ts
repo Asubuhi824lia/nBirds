@@ -61,6 +61,29 @@ export const builtinFillwordTopics: FillwordTopic[] = [
     ],
     config: { ...DEFAULT_GRID_CONFIG, rows: 10, cols: 10 },
   },
+  // Воробьинообразные: систематика
+  {
+    "id": "надсемейство-muscicapoidea",
+    "title": "Надсемейство Muscicapoidea (2019 г.)",
+    "description": "Уникальные названия типовых видов семейств надсемейства (6 / 7)",
+    "words": [
+      "ВОЛОКЛЮЙ",
+      "ДРОЗД",
+      "МУХОЛОВКА",
+      "ОЛЯПКА",
+      "ПЕРЕСМЕШНИК",
+      "СКВОРЕЦ",
+    ],
+    "config": {
+      "rows": 11,
+      "cols": 11,
+      "allowReverse": true,
+      "allowDiagonal": true,
+      "allowOverlap": false,
+      "fillBlanks": false,
+      "allowTurns": false
+    }
+  }
 ];
 
 export function getBuiltinTopic(id: string): FillwordTopic | undefined {

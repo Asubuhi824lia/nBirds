@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Stack, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router";
-import { WordSearchGrid, type PlacedWord } from "word-search-puzzle-generator";
+import type { PlacedWord } from "word-search-puzzle-generator";
 import { createFillwordPuzzle } from "../model/generate";
 import type { FillwordTopic } from "../model/types";
+import { FillwordGrid } from "./FillwordGrid";
 
 type PlayPuzzleProps = {
   topic: FillwordTopic;
@@ -29,6 +30,7 @@ export function PlayPuzzle({ topic, topicsHref = "/fillword" }: PlayPuzzleProps)
   const foundCount = placedWords.filter((w) => w.found).length;
   const total = placedWords.length;
   const done = total > 0 && foundCount === total;
+  const allowTurns = Boolean(topic.config.allowTurns);
 
   const handleWordFound = useCallback((word: string) => {
     setPlacedWords((prev) =>
@@ -50,6 +52,9 @@ export function PlayPuzzle({ topic, topicsHref = "/fillword" }: PlayPuzzleProps)
           <Typography className="fillword-muted">
             Найдено: {foundCount} / {total}
             {done ? " — все слова найдены!" : ""}
+            {allowTurns
+              ? " · проводите слово по соседним клеткам"
+              : ""}
           </Typography>
         </div>
         <Stack direction="row" spacing={1}>
@@ -64,19 +69,13 @@ export function PlayPuzzle({ topic, topicsHref = "/fillword" }: PlayPuzzleProps)
 
       <div className="fillword-play-layout">
         <div className="fillword-grid-wrap">
-          <WordSearchGrid
-            key={`${topic.id}-${seed}`}
+          <FillwordGrid
+            remountKey={`${topic.id}-${seed}`}
             grid={puzzle.grid}
             placedWords={placedWords}
+            allowTurns={allowTurns}
+            allowDiagonal={topic.config.allowDiagonal}
             onWordFound={handleWordFound}
-            classNames={{
-              container: "fillword-grid",
-              grid: "fillword-grid",
-              row: "fillword-row",
-              cell: "fillword-cell",
-              cellSelected: "fillword-cell-selected",
-              cellFound: "fillword-cell-found",
-            }}
           />
         </div>
 

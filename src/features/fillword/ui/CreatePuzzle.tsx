@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import {
+  Alert,
   Button,
   Checkbox,
   FormControlLabel,
@@ -7,18 +8,21 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import type { PlacedWord } from "word-search-puzzle-generator";
 import {
-  WordSearchGrid,
-  type GridConfig,
-  type PlacedWord,
-} from "word-search-puzzle-generator";
-import {
+  clampGridSide,
   createFillwordPuzzle,
   DEFAULT_GRID_CONFIG,
+  longestWordLength,
+  MAX_GRID_SIDE,
+  MIN_GRID_SIDE,
+  minGridSideForWords,
+  resolveGridConfig,
 } from "../model/generate";
 import { parseWordsInput, slugifyTopicId } from "../model/normalize";
 import { topicToJson } from "../model/customTopics";
-import type { FillwordTopicJson } from "../model/types";
+import type { FillwordGridConfig, FillwordTopicJson } from "../model/types";
+import { FillwordGrid } from "./FillwordGrid";
 
 type CreatePuzzleProps = {
   onAddTopic: (topic: FillwordTopicJson) => void;
@@ -30,7 +34,9 @@ export function CreatePuzzle({ onAddTopic }: CreatePuzzleProps) {
   const [wordsText, setWordsText] = useState(
     "СИНИЦА\nДРОЗД\nВОРОНА\nЛАСТОЧКА\nСКВОРЕЦ",
   );
-  const [config, setConfig] = useState<GridConfig>({ ...DEFAULT_GRID_CONFIG });
+  const [config, setConfig] = useState<FillwordGridConfig>({
+    ...DEFAULT_GRID_CONFIG,
+  });
   const [previewKey, setPreviewKey] = useState(0);
   const [previewGrid, setPreviewGrid] = useState<string[][] | null>(null);
   const [placedWords, setPlacedWords] = useState<PlacedWord[]>([]);
@@ -38,6 +44,19 @@ export function CreatePuzzle({ onAddTopic }: CreatePuzzleProps) {
   const [copied, setCopied] = useState(false);
 
   const words = useMemo(() => parseWordsInput(wordsText), [wordsText]);
+  const longest = useMemo(() => longestWordLength(words), [words]);
+  const minSide = useMemo(
+    () => minGridSideForWords(words, Boolean(config.allowTurns)),
+    [words, config.allowTurns],
+  );
+  const effectiveConfig = useMemo(
+    () => resolveGridConfig(words, config),
+    [words, config],
+  );
+
+  const rowsRaised = config.rows < effectiveConfig.rows;
+  const colsRaised = config.cols < effectiveConfig.cols;
+  const sizeRaised = rowsRaised || colsRaised;
 
   const topicDraft: FillwordTopicJson = useMemo(
     () => ({
@@ -45,12 +64,9 @@ export function CreatePuzzle({ onAddTopic }: CreatePuzzleProps) {
       title: title.trim() || "Без названия",
       description: description.trim() || undefined,
       words,
-      config: {
-        ...config,
-        fillBlanks: false,
-      },
+      config: effectiveConfig,
     }),
-    [title, description, words, config],
+    [title, description, words, effectiveConfig],
   );
 
   const jsonText = useMemo(() => topicToJson(topicDraft), [topicDraft]);
@@ -132,10 +148,17 @@ export function CreatePuzzle({ onAddTopic }: CreatePuzzleProps) {
           onChange={(e) =>
             setConfig((c) => ({
               ...c,
-              rows: Math.min(25, Math.max(5, Number(e.target.value) || 5)),
+              rows: clampGridSide(Number(e.target.value)),
             }))
           }
-          slotProps={{ htmlInput: { min: 5, max: 25 } }}
+          helperText={
+            rowsRaised
+              ? `В превью: ${effectiveConfig.rows}`
+              : `мин. ${minSide}`
+          }
+          slotProps={{
+            htmlInput: { min: MIN_GRID_SIDE, max: MAX_GRID_SIDE },
+          }}
         />
         <TextField
           label="Столбцы"
@@ -145,18 +168,69 @@ export function CreatePuzzle({ onAddTopic }: CreatePuzzleProps) {
           onChange={(e) =>
             setConfig((c) => ({
               ...c,
-              cols: Math.min(25, Math.max(5, Number(e.target.value) || 5)),
+              cols: clampGridSide(Number(e.target.value)),
             }))
           }
-          slotProps={{ htmlInput: { min: 5, max: 25 } }}
+          helperText={
+            colsRaised
+              ? `В превью: ${effectiveConfig.cols}`
+              : `мин. ${minSide}`
+          }
+          slotProps={{
+            htmlInput: { min: MIN_GRID_SIDE, max: MAX_GRID_SIDE },
+          }}
         />
       </div>
+
+      {words.length > 0 && sizeRaised && (
+        <Alert severity="info">
+          {config.allowTurns ? (
+            <>Минимальный размер сетки генератора — {MIN_GRID_SIDE}×{MIN_GRID_SIDE}.</>
+          ) : longest > MIN_GRID_SIDE ? (
+            <>
+              В режиме прямой линии сторона сетки не может быть меньше самого
+              длинного слова («{words.find((w) => w.length === longest) ?? ""}»,{" "}
+              {longest} букв).
+            </>
+          ) : (
+            <>
+              Минимальный размер сетки генератора — {MIN_GRID_SIDE}×
+              {MIN_GRID_SIDE}.
+            </>
+          )}{" "}
+          Для превью и JSON используется {effectiveConfig.rows}×
+          {effectiveConfig.cols}.
+        </Alert>
+      )}
+
+      {words.length > 0 && !sizeRaised && (
+        <Typography className="fillword-muted" variant="body2">
+          Размер сетки: от {minSide} до {MAX_GRID_SIDE}
+          {config.allowTurns
+            ? " (слова могут изгибаться, длина слова не ограничивает сторону)."
+            : longest > MIN_GRID_SIDE
+              ? ` (нижняя граница = длина самого длинного слова, ${longest}).`
+              : ` (минимум генератора — ${MIN_GRID_SIDE}).`}
+        </Typography>
+      )}
 
       <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap" }}>
         <FormControlLabel
           control={
             <Checkbox
+              checked={Boolean(config.allowTurns)}
+              onChange={(e) =>
+                setConfig((c) => ({ ...c, allowTurns: e.target.checked }))
+              }
+            />
+          }
+          label="Повороты в слове"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
               checked={config.allowReverse}
+              disabled={Boolean(config.allowTurns)}
               onChange={(e) =>
                 setConfig((c) => ({ ...c, allowReverse: e.target.checked }))
               }
@@ -188,6 +262,15 @@ export function CreatePuzzle({ onAddTopic }: CreatePuzzleProps) {
         />
       </Stack>
 
+      {config.allowTurns && (
+        <Alert severity="warning">
+          Режим поворотов не входит в{" "}
+          <code>word-search-puzzle-generator</code> (только прямые линии).
+          Размещение и выбор слова идут по соседним клеткам нашей реализацией;
+          формат <code>PlacedWord.path</code> тот же.
+        </Alert>
+      )}
+
       <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap" }}>
         <Button variant="contained" onClick={regenerate}>
           Сгенерировать превью
@@ -212,10 +295,12 @@ export function CreatePuzzle({ onAddTopic }: CreatePuzzleProps) {
 
       {previewGrid && (
         <div className="fillword-grid-wrap">
-          <WordSearchGrid
-            key={previewKey}
+          <FillwordGrid
+            remountKey={previewKey}
             grid={previewGrid}
             placedWords={placedWords}
+            allowTurns={Boolean(effectiveConfig.allowTurns)}
+            allowDiagonal={effectiveConfig.allowDiagonal}
             onWordFound={(word) =>
               setPlacedWords((prev) =>
                 prev.map((pw) =>
@@ -223,14 +308,6 @@ export function CreatePuzzle({ onAddTopic }: CreatePuzzleProps) {
                 ),
               )
             }
-            classNames={{
-              container: "fillword-grid",
-              grid: "fillword-grid",
-              row: "fillword-row",
-              cell: "fillword-cell",
-              cellSelected: "fillword-cell-selected",
-              cellFound: "fillword-cell-found",
-            }}
           />
         </div>
       )}
