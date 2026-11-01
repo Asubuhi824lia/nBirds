@@ -6,6 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router";
+import { BackHomeLink } from "@shared/ui/BackHomeLink";
 import { matchLevels } from "../data/catalog";
 import { DailyMatchScore } from "./DailyMatchScore";
 import "./matchQuiz.css";
@@ -13,6 +14,7 @@ import "./matchQuiz.css";
 export function MatchTopicsPage() {
   return (
     <section className="match-quiz-page match-topics-page">
+      <BackHomeLink sx={{ mb: 1 }} />
       <Stack spacing={3}>
         <Stack spacing={1} className="match-quiz-meta" sx={{ alignItems: "flex-start" }}>
           <Typography variant="h4" component="h1" sx={{ fontWeight: 700 }}>
@@ -53,15 +55,6 @@ export function MatchTopicsPage() {
             </Card>
           ))}
         </Stack>
-
-        <Typography
-          component={RouterLink}
-          to="/"
-          variant="body2"
-          sx={{ color: "var(--mq-purple-deep)", alignSelf: "flex-start" }}
-        >
-          ← На главную
-        </Typography>
       </Stack>
     </section>
   );

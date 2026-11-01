@@ -1,0 +1,45 @@
+.counter-page {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.counter-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  background-color: lightseagreen;
+  color: #fff;
+}
+
+.counter-page__header-spacer {
+  width: 110px;
+  flex: 0 0 auto;
+}
+
+.counter-page__main {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: auto;
+  padding: 0 8px 16px;
+}
+
+/* Narrow: centered. Wider than viewport: left-aligned so full range is scrollable. */
+.counter-page__board {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: max-content;
+  max-width: none;
+  margin-inline: auto;
+}

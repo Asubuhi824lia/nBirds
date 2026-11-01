@@ -1,5 +1,6 @@
 import { Paper, Stack, Typography } from "@mui/material";
 import { useState } from "react"
+import { BackHomeLink } from "@shared/ui/BackHomeLink";
 import { NumCardList } from "./NumCardList/NumCardList";
 import { checkAchievements } from "../model/checkAchievements";
 import { achievements } from "../data/achievements";
@@ -7,6 +8,7 @@ import { CounterPaper } from "./CounterPaper/CounterPaper";
 import { order } from "../data/order";
 import { AchieveCardList, type AchievesType } from "./AchieveCardList/AchieveCardList"; 
 import type { ListType } from "../data/types";
+import "./counter.css";
 
 /** 
  * Доп.
@@ -49,41 +51,49 @@ export const CounterSpecies = () => {
   }
 
   return (
-    <section style={{ display: "flex", gap: 24, justifyContent: "center", flexDirection: "column" }}>
-      <header style={{ display: "flex", justifyContent: "center", padding: 16, backgroundColor: "lightseagreen" }}>
-        <Typography variant="h5" component="h1">Отряд: {order.name || order.latin_name}</Typography>
+    <section className="counter-page">
+      <header className="counter-page__header">
+        <BackHomeLink tone="inverse" />
+        <Typography variant="h5" component="h1" sx={{ flex: 1, textAlign: "center" }}>
+          Отряд: {order.name || order.latin_name}
+        </Typography>
+        <span className="counter-page__header-spacer" aria-hidden />
       </header>
-      <main style={{ display: "flex", justifyContent: "center" }}>
-        <NumCardList
-          list={listLeft}
-          curCount={count}
-          changeCountHandler={setCount}
-        />
-        <Stack spacing={1} sx={{ alignItems: 'center', mx: 1, zIndex: 1, gap: 2 }}>
-          <CounterPaper
-            count={count}
-            isAchieve={achieves.some((achieve) => achieve.count === count)}
-            listLength={listLeft.length + listRight.length}
-            order={order}
-            addListItem={(isBilateral) => !isBilateral ? setListLeft : setListRight}
-            changeCountHandler={changeCountHandler}
+      <main className="counter-page__main">
+        <div className="counter-page__board">
+          <NumCardList
+            list={listLeft}
+            curCount={count}
+            changeCountHandler={setCount}
           />
-          {!!achieves.length && (
-            <Paper elevation={5} sx={{ p: 2, mx: 1.5 }}>
-              <Typography variant="caption">{achieves.length}/{Object.keys(achievements).length}</Typography>
-              <AchieveCardList
-                achieves={achieves}
-                count={count}
-                changeCountHandler={changeCountHandler}
-              />
-            </Paper>
-          )}
-        </Stack>
-        <NumCardList
-          list={listRight}
-          curCount={count}
-          changeCountHandler={setCount}
-        />
+          <Stack spacing={1} sx={{ alignItems: "center", mx: 1, zIndex: 1, gap: 2 }}>
+            <CounterPaper
+              count={count}
+              isAchieve={achieves.some((achieve) => achieve.count === count)}
+              listLength={listLeft.length + listRight.length}
+              order={order}
+              addListItem={(isBilateral) => (!isBilateral ? setListLeft : setListRight)}
+              changeCountHandler={changeCountHandler}
+            />
+            {!!achieves.length && (
+              <Paper elevation={5} sx={{ p: 2, mx: 1.5 }}>
+                <Typography variant="caption">
+                  {achieves.length}/{Object.keys(achievements).length}
+                </Typography>
+                <AchieveCardList
+                  achieves={achieves}
+                  count={count}
+                  changeCountHandler={changeCountHandler}
+                />
+              </Paper>
+            )}
+          </Stack>
+          <NumCardList
+            list={listRight}
+            curCount={count}
+            changeCountHandler={setCount}
+          />
+        </div>
       </main>
     </section>
   )

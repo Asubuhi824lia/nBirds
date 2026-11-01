@@ -58,7 +58,16 @@ export default function App() {
       ) : isHalloweenGarlandSeason() ? (
         <HalloweenGarland />
       ) : null}
-      <section style={{ display: "flex", justifyContent: "center" }}>
+      <section
+        style={{
+          display: "flex",
+          justifyContent: "safe center",
+          width: "100%",
+          maxWidth: "100%",
+          boxSizing: "border-box",
+          minWidth: 0,
+        }}
+      >
         <Outlet />
       </section>
     </>

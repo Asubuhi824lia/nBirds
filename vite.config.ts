@@ -9,6 +9,13 @@ export default defineConfig({
   resolve: {
     // One React instance for client + SSR (prevents "dispatcher is null" / broken useContext)
     dedupe: ["react", "react-dom"],
+    alias: {
+      // Package points `module` to missing dist/index.mjs — force the existing entry.
+      "word-search-puzzle-generator": path.resolve(
+        __dirname,
+        "node_modules/word-search-puzzle-generator/dist/index.js",
+      ),
+    },
   },
   server: {
     // Avoid EMFILE on macOS when too many files are watched
@@ -23,6 +30,7 @@ export default defineConfig({
       "@dnd-kit/dom",
       "@dnd-kit/abstract",
       "@dnd-kit/state",
+      "word-search-puzzle-generator",
     ],
   },
 });

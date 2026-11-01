@@ -5,8 +5,10 @@
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-html, body {
+html,
+body {
   background-color: honeydew;
+  max-width: 100%;
 }
 
 /* html,

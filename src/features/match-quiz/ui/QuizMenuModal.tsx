@@ -29,15 +29,6 @@ export function QuizMenuModal({ open, onClose, onRestart }: QuizMenuModalProps) 
           >
             К темам
           </Button>
-          <Button
-            component={RouterLink}
-            to="/"
-            variant="outlined"
-            color="inherit"
-            fullWidth
-          >
-            На главную
-          </Button>
           <Button variant="contained" color="primary" fullWidth onClick={onClose}>
             Продолжить
           </Button>

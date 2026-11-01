@@ -15,6 +15,7 @@ import { FiltersNaming, type RadioGroupNameProps } from "./Filters/FiltersNaming
 import SelectNamePart from "./SelectNamePart";
 import { CardRange } from "./CardRange";
 import { type RootGroupType } from "@shared/lib/utils";
+import { BackHomeLink } from "@shared/ui/BackHomeLink";
 import { ListNamePart } from "./ListNamePart";
 import { Direction, SortNaming } from "./SelectNamePart/components/SortNaming";
 import { getGroups_noApi, updateGroupSelectedParts_noApi } from "../model";
@@ -112,6 +113,9 @@ export const SpeciesNamesPage = () => {
         3. + показ в кружочках "цвета" кол-ва имён из данной "группы", пересекающихся с другими "группами"
       */}
       <header>
+        <Box sx={{ px: 2, pt: 1.5, pb: 0.5 }}>
+          <BackHomeLink />
+        </Box>
         <Box sx={StyleHeaderTabsBox}>
           <Tabs centered value={tab} onChange={(_, newValue) => setTab(newValue)}>
             {GroupsPartsFamilies.map((group, index) => (

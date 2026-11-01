@@ -6,6 +6,7 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
+import { BackHomeLink } from "@shared/ui/BackHomeLink";
 import { useFamilyLinks } from "../model/useFamilyLinks";
 import type {
   ColumnSide,
@@ -61,6 +62,7 @@ export function FamilyLinksPage() {
 
   return (
     <section className="family-links-page">
+      <BackHomeLink sx={{ mb: 1 }} />
       <Stack
         direction={{ xs: "column", sm: "row" }}
         spacing={1}
